@@ -670,6 +670,7 @@ int main()
     Student s;
 
     Line l;
+    pickup_point p;
 
     while (true)
     {
@@ -689,20 +690,21 @@ int main()
         case 2:
         {
              l=select_line();
-            cout << l.get_Line_point_Name();
-            l.set_Line_Name("yousef");
-            cout << l.get_Line_point_Name();
             break;
         }
         case 3:
         {
             l=select_line();
             l.Display_pickup_point();
+           p= l.select_pickup_point();
+           p.set_count_go();
             break;
         }
         case 4:
         {
             add_pickup_point_interface();
+
+            
         }
         case 5:
         {
@@ -713,7 +715,7 @@ int main()
         {
             s = s_t.Search_Item(221101573);
 
-            view_line_go(s.get_student_line());
+            view_line_go(l);
 
             break;
         }
