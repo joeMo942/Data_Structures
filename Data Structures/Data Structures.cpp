@@ -427,7 +427,7 @@ public:
     string get_password() const;
     string get_phone_number() const;
     // ---- Other---- //
-    //void print() const;
+    void person_print() const;
 };
 
 // ---------- STUDENT HEADER ---------- //
@@ -1311,7 +1311,7 @@ void Person::set_name(string name)
 }
 int Person::set_age(string age)
 {
-    if (age.length() > 17 && age.length() <= 100)
+    if (stoi(age) > 17 && stoi(age) <= 100)
     {
         this->age = age;
         return 1;
@@ -1384,12 +1384,15 @@ string Person::get_phone_number() const
     return phone_number;
 }
 // ---- Other ---- //
-/*void Person::print() const
+void Person::person_print() const
 {
-    cout << "Name : " << name << endl;
-    cout << "Age : " << age << endl;
-    cout << "National ID : " << national_id << endl;
-}*/
+    cout << get_name() << endl;
+    cout  << get_age() << endl;
+    cout  << get_national_id() << endl;
+   cout << get_gender() << endl;
+     cout << get_password() << endl;
+    cout << get_phone_number() << endl;
+}
 
 
 
@@ -1505,8 +1508,9 @@ pickup_point Student::get_student_pickupPoint()
 // ---- Other---- //
 void Student::class_print_Student()
 {
-    cout << get_name() << endl;
+    person_print();
     cout << get_id() << endl;
+    cout << get_mail() << endl;
     print_line_pickupPoint();
 }
 // string getName();
@@ -1620,8 +1624,9 @@ int company::set_phone_number(string num)
     string str;
 
     //str = phone_number.resize(2);
+   
     str = num.substr(0, 3);
-    if (str == "010" || str == "011" || str == "012" || str == "015")
+    if ((str == "010" || str == "011" || str == "012" || str == "015" ) && num.length() == 11)
     {
         
         this->phone_number = num;
@@ -1860,14 +1865,14 @@ void Student_Table::Table_Student_save()
         // CSV file doesn't exist, so create it
         ofstream csv_file;
         csv_file.open("shiref.csv", ios::out | ios::trunc);
-        csv_file << "Name,ID \n";
+        csv_file << "ID, Name, age, national_id, gender, password, phone_number, address, mail \n";
         csv_file.close();
     }
     else
     {
         ofstream csv_file;
         csv_file.open("shiref.csv", ios::out | ios::trunc);
-        csv_file << "Name,ID \n";
+        csv_file << "ID,Name,age,national_id,gender,password,phone_number,address,mail \n";
         for (int i = 0; i < Bucket; i++)
         {
             cout << "Bucket Number : " << i << endl;
@@ -1877,9 +1882,20 @@ void Student_Table::Table_Student_save()
             }
             else
             {
+                
                 while (Table[i].Return_Data(&s1))
                 {
-                    csv_file << s1.get_name() << "," << s1.get_id() << endl;
+                    csv_file << s1.get_id() << ","
+                        << s1.get_name() << "," 
+                        << s1.get_age() << "," 
+                        << s1.get_national_id() << "," 
+                        << s1.get_gender() <<  "," 
+                        << s1.get_password() << ","
+                        << s1.get_phone_number() << ","
+                        << s1.get_address() << ","
+                        << s1.get_mail() << endl;
+
+
                     if (Table[i].Next(&s1) == 0)
                     {
                         break;
@@ -1912,24 +1928,39 @@ void Student_Table::Table_Student_load()
         while (getline(csv_file, line)) {
             stringstream lineStream(line);
             string cell;
-            string name, id_string;
+            string name, id_string , age, national_id, gender, password, phone_number, address, mail;
             int id;
 
-            getline(lineStream, name, ',');
+
+           // ID, Name, age, national_id, gender, password, phone_number, address, mail
+
             getline(lineStream, id_string, ',');
             id = stoi(id_string);
+            getline(lineStream, name, ',');
+            getline(lineStream, age, ',');
+            getline(lineStream, national_id, ',');
+            getline(lineStream, gender, ',');
+            getline(lineStream, password, ',');
+            getline(lineStream, phone_number, ',');
+            getline(lineStream, address, ',');
+            getline(lineStream, mail, ',');
 
-            s1.set_name(name);
+
             s1.set_id(id);
+            s1.set_name(name);
+            s1.set_age(age);
+            s1.set_national_id(national_id);
+            s1.set_gender(gender);
+            s1.set_password(password);
+            s1.set_phone_number(phone_number);
+            s1.set_address(address);
+            s1.set_mail(mail);
+           
+           
             Insert_Item(s1.get_id(), s1);
 
 
-            // Get the index and data from the CSV file
-
-           /*getline(csv_file, cell, ',');
-            s1.get_id() = stoi(cell);
-            getline(csv_file, cell, ',');
-            s1.get_name() = stoi(cell);*/
+            
 
         }
     }
@@ -3277,11 +3308,11 @@ void company_menue()
 }
 
 
-   
+     
 
 // ############# university menue ############# //
 
- 
+       
 
 void university_menue()
 {
@@ -3298,7 +3329,7 @@ void university_menue()
     }
     case 2:
     {
-        
+        edit_student();
         break;
     }
     case 3:
@@ -3335,15 +3366,13 @@ void university_menue()
 
 // ############# driver menue ############# //
 
-
+     
 
 void driver_menue()
 {
     int x;
     cout << "1-see line\n2-menue of students\n3-log out\n";//feh hagat msh mgm3ha
     cin >> x;
-
-    // st = c_t.Search_Item(id);
 
     switch (x)
     {
