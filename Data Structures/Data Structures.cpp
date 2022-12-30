@@ -282,7 +282,7 @@ public:
     void delete_pickup_point(pickup_point point);
     void print_line();
     void Display_pickup_point();
-    pickup_point select_pickup_point();
+    void select_pickup_point(pickup_point& p);
     void get_linkedlist_pickup_point(linked_list<pickup_point>& p );
 
 };
@@ -542,7 +542,7 @@ public:
     company_table();
     company_table(int Bucket);
     void all_companys_print();
-    company Search_Item(string mail);
+    void Search_Item(string mail,company& c);
 
 };
 
@@ -628,7 +628,7 @@ Line select_line();
 
 void booking_ticket();
 
-company select_company();
+void select_company(company& c1);
 
 
 
@@ -687,15 +687,26 @@ int num_of_error(int error, int& counter, int limit_of_error);
 int main()
 {
     Student s;
-
+    company c;
     Line l;
     pickup_point p;
 
+    add_company();
+
+    view_companys();
+
+    select_company(c);
+
+    c.set_name("yousef");
+
+    view_companys();
+
+   /* add_line();
     
-    while (1)
-    {
-        university_menue();
-    }
+    select_line();
+
+    ALL_LINES.go_head(&l);*/
+
     
 
     /*
@@ -1234,12 +1245,12 @@ void Line::Display_pickup_point()
         }
     }
 }
-pickup_point Line::select_pickup_point()
+void Line::select_pickup_point(pickup_point& p)
 {
     int counter = 0;
     int x;
 
-    pickup_point p;
+   // pickup_point p;
 
     cout << "chosse the pickupoint :";
     cin >> x;
@@ -1253,7 +1264,7 @@ pickup_point Line::select_pickup_point()
         pickup_point_Names.Next(&p);
     }
 
-    return p;
+   
 }
 void Line::get_linkedlist_pickup_point(linked_list<pickup_point>& p)
 {
@@ -2000,17 +2011,17 @@ void company_table::all_companys_print()
     }
 
 }
-company company_table::Search_Item(string mail)
+void company_table::Search_Item(string mail,company& c)
 {
     int key = convert_to_key(mail);
     int index = Hash_Function(key);
-    Table[index].Return_Data(&c1);
-    while (mail != c1.get_email() && Table[index].Next(&c1) != 0)
+    Table[index].Return_Data(&c);
+    while (mail != c.get_email() && Table[index].Next(&c) != 0)
     {
         //Table[index].Next(&c1);
-        Table[index].Return_Data(&c1);
+        Table[index].Return_Data(&c);
     }
-    return c1;
+    
 }
 
 
@@ -2318,6 +2329,7 @@ void add_company()
    
 
     int key = c_t.convert_to_key(c1.get_email());
+    ALL_COMPANYS.Push_Back(c1.get_email());
     c_t.Insert_Item(key, c1);
 
 }
@@ -2929,8 +2941,8 @@ void signup_student()
     cout << "select your line";
     l = select_line();
     s1.set_student_line(l);
-
-    s1.set_student_pickup_point(l.select_pickup_point());
+    l.select_pickup_point(p);
+    s1.set_student_pickup_point(p);
 
 
 
@@ -3077,7 +3089,7 @@ int login_company()
 
 
 
-    st = c_t.Search_Item(id);
+   // st = c_t.Search_Item(id);
 
     if (st.get_pass() == pass)
     {
@@ -3106,12 +3118,12 @@ void booking_ticket()
     company c;
     linked_list<Line> l;
 
-    c = select_company();
+     select_company(c);
     c.get_lines(l);
 
     l1 = select_line();
     t1.set_student_ticket_line(l1);
-    p1 = l1.select_pickup_point();
+    l1.select_pickup_point(p1);
     t1.set_student_ticket_pickup_point(p1);
 
 
@@ -3144,10 +3156,10 @@ void booking_ticket()
 
 // ############# select company ############# //
 
-company select_company()
+void select_company(company& c1)
 {
     string x;
-    company c;
+    //company c;
     int choise;
 
     ALL_COMPANYS.go_head(&x);
@@ -3156,8 +3168,8 @@ company select_company()
     {
         ALL_COMPANYS.Return_Data(&x);
 
-        c = c_t.Search_Item(x);
-        cout << c.get_name();
+         c_t.Search_Item(x,c1);
+        cout << c1.get_name();
         if (!ALL_COMPANYS.Next(&x))
         {
             break;
@@ -3170,8 +3182,7 @@ company select_company()
     {
         ALL_COMPANYS.Next(&x);
     }
-    c = c_t.Search_Item(x);
-    return c;
+     c_t.Search_Item(x,c1);
 
 }
 
