@@ -16,6 +16,7 @@ class Queue;
 template <class T> class Hash;
 class pickup_point;
 class Line;
+class student_ticket;
 class Person;
 class Student;
 class driver;
@@ -26,7 +27,7 @@ class driver_table;
 class car;
 class ticket;
 class company_ticket;
-class student_ticket;
+//class student_ticket;
 
 
 enum type { high_s, super_jet, mini_bus };
@@ -330,7 +331,7 @@ public:
     void set_pass(string pass);
     int set_email(string mail);
     void set_address(string address);
-    void set_lines(Line l);
+    void set_lines(linked_list<Line> l);
     int set_phone_number(string num);
     void set_profit(int profit);
     // ---- get ---- //
@@ -388,6 +389,33 @@ public:
     int get_statues();
     company get_company();
     // ---- Other---- //
+    void print_ticket();
+};
+
+// ---------- STUDENT TICKET HEADER ---------- //
+class student_ticket
+{
+private:
+    int student_ticket_id;
+    string student_ticket_date;
+    pickup_point student_ticket_pickup_point;
+    Line student_ticket_line;
+    company student_ticket_company;
+
+public:
+    student_ticket();
+    student_ticket(int id, string date, pickup_point t_pickup, Line t_line, company t_company);
+    void set_student_ticket_id(int id);
+    void set_student_ticket_date(string date);
+    void set_student_ticket_pickup_point(pickup_point point);
+    void set_student_ticket_line(Line t_line);
+    void set_student_ticket_company(company t_company);
+    int get_student_ticket_id();
+    string get_student_ticket_date();
+    pickup_point get_student_ticket_pickup_point();
+    Line get_student_ticket_line();
+    company get_student_ticket_company();
+    void print_ticket();
 };
 
 // ---------- PERSON HEADER ---------- //
@@ -432,7 +460,7 @@ private:
     string mail;
     Line student_line;
     pickup_point student_pickup_point;
-    ticket student_ticket;
+    student_ticket st;
     //string name;
     //double GPA;
     //linked_list <> p1;
@@ -447,6 +475,8 @@ public:
     void set_address(string address);
     void set_student_line(Line l);
     void set_student_pickup_point(pickup_point p);
+    void set_student_ticket(student_ticket ticket);
+    
     // ---- get ---- //
     int get_id();
     string get_address();
@@ -455,9 +485,11 @@ public:
     pickup_point get_student_pickup_point();
     // ---- Other---- //
     void class_print_Student();
+    void print_ticket();
     //new//
     void print_line_pickupPoint();
     pickup_point get_student_pickupPoint();
+    void get_student_ticket(student_ticket & st);
     //new//
     // string getName();
     // double getGPA();
@@ -572,30 +604,7 @@ public:
     Line get_company_ticket_line();
 };
 
-// ---------- STUDENT TICKET HEADER ---------- //
-class student_ticket
-{
-private:
-    int student_ticket_id;
-    string student_ticket_date;
-    pickup_point student_ticket_pickup_point;
-    Line student_ticket_line;
-    company student_ticket_company;
 
-public:
-    student_ticket();
-    student_ticket(int id, string date, pickup_point t_pickup, Line t_line, company t_company);
-    void set_student_ticket_id(int id);
-    void set_student_ticket_date(string date);
-    void set_student_ticket_pickup_point(pickup_point point);
-    void set_student_ticket_line(Line t_line);
-    void set_student_ticket_company(company t_company);
-    int get_student_ticket_id();
-    string get_student_ticket_date();
-    pickup_point get_student_ticket_pickup_point();
-    Line get_student_ticket_line();
-    company get_student_ticket_company();
-};
 
 
 Student_Table s_t(13);
@@ -614,7 +623,7 @@ void add_line();
 void add_pickup_point_interface();
 void view_all_lines();
 Line select_line();
-void booking_ticket();
+void booking_ticket(Student& s );
 
 void select_company(company& c1);
 
@@ -645,14 +654,14 @@ void view_line_go(Line l);
 void view_line_come(Line l);
 void profit();
 void signup_student();
-int login_Student();
+int login_page(Student& s);
 void signup_company();
 int login_company();
 
 
 /////// all menus///////
 void university_menue();
-void student_menue();
+void student_menue(Student* s);
 void company_menue();
 void driver_menue();
 int Select_from_to(int start, int end);
@@ -661,80 +670,58 @@ int num_of_error(int error, int& counter, int limit_of_error);
 
 int main()
 {
+   
     Student s;
-    company c;
-    Line l;
-    pickup_point p;
-
+    student_ticket ss;
     
-    signup_student();
-
-    s_t.Search_Item(221101573);
-
-
-    
-
-   // select_company(c);
-
-    c.set_name("yousef");
-
-    view_companys();
-
-   /* add_line();
-    
-    select_line();
-
-    ALL_LINES.go_head(&l);*/
-
-    
-
-    /*
     while (true)
     {
 
 
         int x;
-        cout << "1-add line\n2-sign up student\n3-view student\n4-book ticket\n5-creat line go\n6-view line go\n7-exit\n";
+        cout << "1-signup student\n2-login student\n3-add line\n4-add company\n5-book ticket\n6-view tcket\n7-exit\n";
         cin >> x;
 
         switch (x)
         {
         case 1:
-
         {
-            add_line();
+            signup_student();
             break;
         }
         case 2:
         {
-            l = select_line();
+            if (login_page(s))
+            {
+                student_menue(&s);
+            }
+            else
+            {
+                cout << "wrong user or pass\n";
+                break;
+            }
             break;
         }
         case 3:
         {
-            l = select_line();
-            l.Display_pickup_point();
-            p = l.select_pickup_point();
-            p.set_count_go();
+            add_line();
             break;
         }
         case 4:
         {
-            add_pickup_point_interface();
-
+            add_company();
+            break;
 
         }
         case 5:
         {
-            create_line_go();
+            //booking_ticket();
             break;
         }
         case 6:
         {
-           // s = s_t.Search_Item(221101573);
-            l = select_line();
-            view_line_go(l);
-
+           
+            
             break;
         }
         case 7:
@@ -745,7 +732,7 @@ int main()
             break;
         }
     }
-    */
+    
 
 
 
@@ -1001,7 +988,7 @@ template<class T> bool linked_list<T>::go_head(T* data)
 template<class T> bool linked_list<T>::Next(T* data)
 {
 
-    if (head->next == 0 || head == 0)
+    if (head == 0 ||head->next == 0 )
     {
         return 0;
     }
@@ -1446,6 +1433,10 @@ void Student::set_student_pickup_point(pickup_point p)
 {
     student_pickup_point = p;
 }
+void Student::set_student_ticket(student_ticket ticket)
+{
+    st = ticket;
+}
 // ---- get ---- //
 int Student::get_id()
 {
@@ -1477,6 +1468,10 @@ pickup_point Student::get_student_pickupPoint()
 {
     return pickup_point();
 }
+void Student::get_student_ticket(student_ticket& t)
+{
+    t=st;
+}
 // ---- Other---- //
 void Student::class_print_Student()
 {
@@ -1484,6 +1479,10 @@ void Student::class_print_Student()
     cout << get_id() << endl;
     cout << get_mail() << endl;
     print_line_pickupPoint();
+}
+void Student::print_ticket()
+{
+    st.print_ticket();
 }
 // string getName();
 // double getGPA();
@@ -1583,9 +1582,9 @@ void company::set_address(string add)
 {
     address = add;
 }
-void company::set_lines(Line l)
+void company::set_lines(linked_list<Line> l)
 {
-    //lines.add_if_not_contained(l);
+    lines = l;
 }
 int company::set_phone_number(string num)
 {
@@ -2126,6 +2125,9 @@ company ticket::get_company()
 {
     return ticket_company;
 }
+void ticket::print_ticket()
+{
+}
 // ---- Other---- //
 
 
@@ -2233,6 +2235,14 @@ Line student_ticket::get_student_ticket_line()
 company student_ticket::get_student_ticket_company()
 {
     return student_ticket_company;
+}
+void student_ticket::print_ticket()
+{
+    cout << "\nstudent ticket\n";
+    cout << "ticket id: " << student_ticket_id << endl;
+    cout << "line : " << student_ticket_line.get_Line_point_Name() << endl;
+    cout <<  "pickup point : " << student_ticket_pickup_point.get_pickup_point_Name() << endl;
+    
 }
 // ---- Other---- //
 
@@ -3036,7 +3046,7 @@ void signup_company()
 
 
 // ############# LOGIN STUDENT IMPLEMENTATION ############# //
-int login_page()
+int login_page(Student& s)
 {
 
     Student st;
@@ -3055,6 +3065,7 @@ int login_page()
 
     if (st.get_password() == pass)
     {
+        s = st;
         return 1;
     }
     else
@@ -3102,26 +3113,33 @@ int login_company()
 
 
 // ############# booking IMPLEMENTATION ############# //
-void booking_ticket()
+void booking_ticket(Student* s)
 {
     int user_choice;
-    Student s1;
+   // Student s;
     student_ticket t1;
     pickup_point p1;
     Line l1;
     company c;
+    student_ticket t2;
+
     linked_list<Line> l;
 
-     select_company(c);
-    c.get_lines(l);
+    select_company(c);
+   
 
-    l1 = select_line();
+    c.set_lines(ALL_LINES);
+
+
+    c.select_line_company(l1);
+    
     t1.set_student_ticket_line(l1);
+    t1.set_student_ticket_company(c);
     l1.select_pickup_point(p1);
     t1.set_student_ticket_pickup_point(p1);
 
 
-    cout << "\nEnter your trip statues : (1-zahab     2- 3awda    3-zahab w 3awda) \n";
+    /*cout << "\nEnter your trip statues : (1-zahab     2- 3awda    3-zahab w 3awda) \n";
     cin >> user_choice;
     if (user_choice == 1)
     {
@@ -3134,24 +3152,30 @@ void booking_ticket()
     else if (user_choice == 3)
     {
         p1.set_count_both();
-    }
+    }*/
 
-    cout << "Enter your line : \n";
+   // cout << "Enter your line : \n";
 
+    s->set_student_ticket(t1);
 
+    t1.print_ticket();
 
+    s->get_student_ticket(t1);
+
+    t1.print_ticket();
+    
 
 
     //view date
     //select date
 
 
-company select_company()
-
+}
+    
 
 // ############# select company ############# //
 
-company select_company()
+void select_company(company& c1 )
 {
     string x;
     //company c;
@@ -3172,56 +3196,67 @@ company select_company()
     }
     cout << "\nchoose the company you want to go with: ";
     cin >> choise;
-        ALL_COMPANYS.Next(&x);
+        ALL_COMPANYS.go_head(&x);
     for (int i = 0; i < choise; i++)
     {
         ALL_COMPANYS.Next(&x);
     }
      c_t.Search_Item(x,c1);
-
+    
 }
 
 
 // ############# student menue ############# //
-void student_menue()
+void student_menue(Student* s)
 {
-    int x;
-    cout << "1-book ticket\n2-view ticket\n3-edit info\n4-delete account\n5-log out";
-    cin >> x;
+    student_ticket t;
 
- // ############# student menue ############# //
-
-    switch (x)
-    {
-    case 1:
+    while (true)
     {
 
-        break;
-    }
-    case 2:
-    {
 
-        break;
-    }
-    case 3:
-    {
+        int x;
+        cout << "\tstudent menue\n";
+        cout << "1-book ticket\n2-view ticket\n3-edit info\n4-delete account\n5-log out\n";
+        x= Select_from_to(1,5);
 
-        break;
-    }
-    case 4:
-    {
+        // ############# student menue ############# //
 
-        break;
-    }
-    case 5:
-    {
+        switch (x)
+        {
+        case 1:
+        {
+            booking_ticket(s);
+            break;
+        }
+        case 2:
+        {
+            s->print_ticket();
+            s->get_student_ticket(t);
+            t.print_ticket();
+            break;
+        }
+        case 3:
+        {
+            s->person_print();
+            s->print_line_pickupPoint();
+            break;
+        }
+        case 4:
+        {
 
-        break;
-    }
+            break;
+        }
+        case 5:
+        {
+            return;
+            break;
+        }
 
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
 }
 
