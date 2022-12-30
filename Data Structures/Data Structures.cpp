@@ -951,6 +951,8 @@ template<class T> void linked_list<T>::deleteNode(T key)
             prev = temp;
             temp = temp->next;
         }
+
+
         if (temp == NULL)
             return;
         prev->next = temp->next;
