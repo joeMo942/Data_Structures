@@ -667,14 +667,14 @@ int main()
     pickup_point p;
 
     
-    while (1)
-    {
-        company_menue();
-        university_menue();
-    }
+    signup_student();
+
+    s_t.Search_Item(221101573);
+
+
     
 
-    select_company(c);
+   // select_company(c);
 
     c.set_name("yousef");
 
