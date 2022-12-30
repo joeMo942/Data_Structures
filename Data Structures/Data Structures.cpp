@@ -344,8 +344,8 @@ public:
     void view_lines();
     void print_company();
     //new//
-    void view_all_lines();
-    Line select_line()
+    void view_company_lines();
+    Line select_company_line();
     //new//
 
 
@@ -630,7 +630,7 @@ void view_driver(string mail);
 void view_driver(string mail);
 
 
-void university_menue();
+
 
 // ---------- bus menue ---------- //
 
@@ -655,6 +655,13 @@ int login_page();
 void signup_company();
 int login_company();
 
+
+/////// all menus///////
+
+void university_menue();
+void student_menue();
+void company_menue();
+void driver_menue();
 
 
 
@@ -1618,8 +1625,12 @@ void company::print_company()
 {
     cout << name << endl;
 }
-void company::view_all_lines()
+void company::view_company_lines()
 {
+}
+Line company::select_company_line()
+{
+    return Line();
 }
 
 
@@ -2348,7 +2359,7 @@ Line select_line()
     return l;
 }
 
-void university_menue();
+
 
 // ############# campany menue IMPLEMENTATION ############# //
 void add_driver(string Name, string Age, string National_id, string Gender, string Password, string phone_number, string mail) {
@@ -2958,4 +2969,183 @@ void profit()
      c = c_t.Search_Item(x);
      return c;
 
+ }
+
+
+ // ############# student menue ############# //
+
+ void student_menue()
+ {
+     int x;
+     cout << "1-book ticket\n2-view ticket\n3-edit info\n4-delete account\n5-log out";
+     cin >> x;
+     
+
+     switch (x)
+     {
+     case 1:
+     {
+         
+         break;
+     }
+     case 2:
+     {
+
+         break;
+     }
+     case 3:
+     {
+
+         break;
+     }
+     case 4:
+     {
+
+         break;
+     }
+     case 5:
+     {
+
+         break;
+     }
+
+
+     default:
+         break;
+     }
+ }
+
+
+
+ // #############  company menue ############# //
+
+ void company_menue()
+ {
+     int x;
+     cout << "1-add driver\n2-(a5ly eldriver ya5od line\n3-see profit\n4-all tickets\n5-log out";//feh hagat msh mgm3ha
+     cin >> x;
+
+
+     switch (x)
+     { 
+     case 1:
+     {
+
+         break;
+     }
+     case 2:
+     {
+
+         break;
+     }
+     case 3:
+     {
+
+         break;
+     }
+     case 4:
+     {
+
+         break;
+     }
+     case 5:
+     {
+
+         break;
+     }
+
+
+     default:
+         break;
+     }
+ }
+
+
+
+ // ############# university menue ############# //
+
+
+ void university_menue()
+ {
+     int x;
+     cout << "1-add company\n2-edit student\n3-all students\n4-all companes\n5-add line\n6-add pickup point\n7-log out";//feh hagat msh mgm3ha
+     cin >> x;
+
+
+     switch (x)
+     {
+     case 1:
+     {
+
+         break;
+     }
+     case 2:
+     {
+
+         break;
+     }
+     case 3:
+     {
+
+         break;
+     }
+     case 4:
+     {
+
+         break;
+     }
+     case 5:
+     {
+
+         break;
+     }
+     case 6:
+     {
+
+         break;
+     }
+     case 7:
+     {
+
+         break;
+     }
+
+     default:
+         break;
+     }
+ }
+
+
+ // ############# driver menue ############# //
+
+
+ void driver_menue()
+ {
+     int x;
+     cout << "1-see line\n2-menue of students\n3-log out\n";//feh hagat msh mgm3ha
+     cin >> x;
+
+
+     switch (x)
+     {
+     case 1:
+     {
+
+         break;
+     }
+     case 2:
+     {
+
+         break;
+     }
+     case 3:
+     {
+
+         break;
+     }
+
+
+     default:
+         break;
+     }
  }
