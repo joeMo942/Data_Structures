@@ -7,6 +7,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+
 using namespace std;
 
 
@@ -3106,7 +3107,7 @@ void booking_ticket()
     linked_list<Line> l;
 
     c = select_company();
-    l = c.get_lines();
+    c.get_lines(l);
 
     l1 = select_line();
     t1.set_student_ticket_line(l1);
@@ -3265,15 +3266,11 @@ void company_menue()
 }
 
 
-     cout << "enter your id : ";
-     cin >> id;
-     cout << "enter your passward : ";
-     cin >> pass;
+   
 
 // ############# university menue ############# //
 
-         break;
-     }
+ 
 
 void university_menue()
 {
@@ -3327,10 +3324,7 @@ void university_menue()
 
 // ############# driver menue ############# //
 
-         break;
-     }
-     case 6:
-     {
+
 
 void driver_menue()
 {
@@ -3338,7 +3332,7 @@ void driver_menue()
     cout << "1-see line\n2-menue of students\n3-log out\n";//feh hagat msh mgm3ha
     cin >> x;
 
-     st = c_t.Search_Item(id);
+    // st = c_t.Search_Item(id);
 
     switch (x)
     {
