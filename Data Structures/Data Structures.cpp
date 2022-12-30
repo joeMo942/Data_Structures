@@ -665,7 +665,7 @@ void profit();
 
 
 void signup_student();
-int login_page();
+int login_Student();
 void signup_company();
 int login_company();
 
