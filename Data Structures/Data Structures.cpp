@@ -344,7 +344,8 @@ public:
     void view_lines();
     void print_company();
     //new//
-
+    void view_all_lines();
+    Line select_line()
     //new//
 
 
@@ -1452,7 +1453,7 @@ pickup_point Student::get_student_pickupPoint()
 {
     return pickup_point();
 }
-//new//
+
 // ---- Other---- //
 void Student::class_print_Student()
 {
@@ -1523,7 +1524,7 @@ string driver::get_mail() {
 company::company()
 {
     profit = 0;
-    //lines = *ALL_LINES;
+    lines = ALL_LINES;
 }
 // ---- set ---- //
 void company::set_name(string n)
@@ -1616,6 +1617,9 @@ void company::view_lines()
 void company::print_company()
 {
     cout << name << endl;
+}
+void company::view_all_lines()
+{
 }
 
 
@@ -2884,6 +2888,11 @@ void profit()
      student_ticket t1;
      pickup_point p1;
      Line l1;
+     company c;
+     linked_list<Line> l;
+
+     c = select_company();
+     l=c.get_lines();
 
      l1=select_line();
      t1.set_student_ticket_line(l1);
@@ -2909,9 +2918,8 @@ void profit()
      cout << "Enter your line : \n";
     
     
-
-     //view company
-     //select company
+     
+     
 
      //view date
      //select date
