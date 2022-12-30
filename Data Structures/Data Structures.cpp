@@ -345,7 +345,7 @@ public:
     void print_company();
     //new//
     void view_all_lines();
-    Line select_line()
+    Line select_line();
     //new//
 
 
@@ -651,7 +651,7 @@ void profit();
 
 
 void signup_student();
-int login_page();
+int login_Student();
 void signup_company();
 int login_company();
 
@@ -2814,70 +2814,6 @@ void profit()
 
  }
 
-// ############# LOGIN STUDENT IMPLEMENTATION ############# //
- int login_page()
- {
-
-     Student st;
-
-     int id;
-     string pass;
-
-     cout << "enter your id : ";
-     cin >> id;
-     cout << "enter your passward : ";
-     cin >> pass;
-
-
-
-     st = s_t.Search_Item(id);
-
-     if (st.get_password() == pass)
-     {
-         return 1;
-     }
-     else
-     {
-         return 0;
-     }
-
-
-
-
- }
-
-// ############# LOGIN COMPANY IMPLEMENTATION ############# //
- int login_company()
- {
-
-     company st;
-
-     string id;
-     string pass;
-
-     cout << "enter your id : ";
-     cin >> id;
-     cout << "enter your passward : ";
-     cin >> pass;
-
-
-
-     st = c_t.Search_Item(id);
-
-     if (st.get_pass() == pass)
-     {
-         return 1;
-     }
-     else
-     {
-         return 0;
-     }
-
-
-
-
- }
-
 
  // ############# booking IMPLEMENTATION ############# //
 
@@ -2959,3 +2895,180 @@ void profit()
      return c;
 
  }
+
+
+
+
+
+ //////   Under processing   /////
+
+ // ############# LOGIN STUDENT IMPLEMENTATION ############# //
+ int login_Student()
+ {
+
+     Student st;
+
+     int id;
+     string pass;
+
+     cout << "enter your id : ";
+     cin >> id;
+     cout << "enter your passward : ";
+     cin >> pass;
+
+
+
+     st = s_t.Search_Item(id);
+
+     if (st.get_password() == pass)
+     {
+         return 1;
+     }
+     else
+     {
+         return 0;
+     }
+
+
+
+
+ }
+ void After_login_STUDENT()
+ {
+     while (true)
+     {
+         int x;
+         cout << "1-add line\n2-sign up student\n3-view student\n4-book ticket\n5-creat line go\n6-view line go\n7-exit\n";
+         cin >> x;
+
+     }
+ }
+
+ // ############# LOGIN COMPANY IMPLEMENTATION ############# //
+ int login_company()
+ {
+
+     company st;
+
+     string id;
+     string pass;
+
+     cout << "enter your id : ";
+     cin >> id;
+     cout << "enter your passward : ";
+     cin >> pass;
+
+
+
+     st = c_t.Search_Item(id);
+
+     if (st.get_pass() == pass)
+     {
+         return 1;
+     }
+     else
+     {
+         return 0;
+     }
+
+
+
+
+ }
+ void After_login_company()
+ {
+     while (true)
+     {
+         int x;
+         cout << "1-add line\n2-sign up student\n3-view student\n4-book ticket\n5-creat line go\n6-view line go\n7-exit\n";
+         cin >> x;
+
+     }
+ }
+
+ // ############# LOGIN Driver IMPLEMENTATION ############# //
+ int login_driver()
+ {
+
+     company st;
+
+     string id;
+     string pass;
+
+     cout << "enter your id : ";
+     cin >> id;
+     cout << "enter your passward : ";
+     cin >> pass;
+
+
+
+     st = c_t.Search_Item(id);
+
+     if (st.get_pass() == pass)
+     {
+         return 1;
+     }
+     else
+     {
+         return 0;
+     }
+
+
+
+
+ }
+ void After_login_driver()
+ {
+     while (true)
+     {
+         int x;
+         cout << "1-add line\n2-sign up student\n3-view student\n4-book ticket\n5-creat line go\n6-view line go\n7-exit\n";
+         cin >> x;
+
+     }
+ }
+
+
+ // ############# LOGIN university IMPLEMENTATION ############# //
+ int login_university()
+ {
+
+     company st;
+
+     string id;
+     string pass;
+
+     cout << "enter your id : ";
+     cin >> id;
+     cout << "enter your passward : ";
+     cin >> pass;
+
+
+
+     st = c_t.Search_Item(id);
+
+     if (st.get_pass() == pass)
+     {
+         return 1;
+     }
+     else
+     {
+         return 0;
+     }
+
+
+
+
+ }
+ void After_login_university()
+ {
+     while (true)
+     {
+         int x;
+         cout << "1-add line\n2-sign up student\n3-view student\n4-book ticket\n5-creat line go\n6-view line go\n7-exit\n";
+         cin >> x;
+
+     }
+ }
+
+
