@@ -3300,15 +3300,11 @@ void company_menue()
 }
 
 
-     cout << "enter your id : ";
-     cin >> id;
-     cout << "enter your passward : ";
-     cin >> pass;
+     
 
 // ############# university menue ############# //
 
-         break;
-     }
+       
 
 void university_menue()
 {
@@ -3362,18 +3358,13 @@ void university_menue()
 
 // ############# driver menue ############# //
 
-         break;
-     }
-     case 6:
-     {
+     
 
 void driver_menue()
 {
     int x;
     cout << "1-see line\n2-menue of students\n3-log out\n";//feh hagat msh mgm3ha
     cin >> x;
-
-     st = c_t.Search_Item(id);
 
     switch (x)
     {
