@@ -596,7 +596,7 @@ public:
 Student_Table s_t(13);
 company_table c_t(13);
 driver_table d_t(13);
-linked_list<Line>* ALL_LINES;
+linked_list<Line> ALL_LINES;
 linked_list<string> ALL_COMPANYS;
 
 // ---------- university menue ---------- //
@@ -2284,7 +2284,7 @@ void add_line()
         cout << "press 0 to add";
         cin >> x;
     }
-    ALL_LINES->Push_Back(l);
+    ALL_LINES.Push_Back(l);
 
 }
 void add_pickup_point_interface()
@@ -2310,18 +2310,18 @@ void view_all_lines()
     Line l;
     int x = 0;
     int counter = 1;
-    ALL_LINES->go_head(&l);
+    ALL_LINES.go_head(&l);
 
     while (1)
     {
         cout << counter << "-";
         l.print_line();
 
-        if (!ALL_LINES->Next(&l))
+        if (!ALL_LINES.Next(&l))
         {
             return;
         }
-        ALL_LINES->Return_Data(&l);
+        ALL_LINES.Return_Data(&l);
 
         counter++;
         x++;
@@ -2333,10 +2333,10 @@ Line select_line()
     int n;
     view_all_lines();
     cin >> n;
-    ALL_LINES->go_head(&l);
+    ALL_LINES.go_head(&l);
     for (int i = 1; i <= n; i++)
     {
-        ALL_LINES->Next(&l);
+        ALL_LINES.Next(&l);
     }
     /*l.print_line();
     l.Display_pickup_point();*/
@@ -2504,7 +2504,7 @@ string bus_plus(int passengers_count, double* cost) {
 } 
 void add_bus() {
     Line l;
-    ALL_LINES->go_head(&l);
+    ALL_LINES.go_head(&l);
     double cost;
     int  passengers_count_go, passengers_count_come, passengers_count_both, passengers_count;
     while (true)
@@ -2532,7 +2532,7 @@ void add_bus() {
             l.set_car_type(max_bus(passengers_count, &cost));
             l.set_bus_cost(cost);
         }
-        if (ALL_LINES->go_head(&l) == 0) {
+        if (ALL_LINES.go_head(&l) == 0) {
             break;
         }
 
@@ -2544,7 +2544,7 @@ void create_line_go()
     pickup_point pickPoint;
     Line l;
     linked_list<pickup_point> p;
-    ALL_LINES->go_head(&l);
+    ALL_LINES.go_head(&l);
     while (true)
     {
         p = l.get_linkedlist_pickup_point();
@@ -2561,7 +2561,7 @@ void create_line_go()
             }
         }
         l.set_reserved_go(q);
-        if (ALL_LINES->Next(&l) == 0) {
+        if (ALL_LINES.Next(&l) == 0) {
             break;
         }
     }
@@ -2572,7 +2572,7 @@ void create_line_come()
     pickup_point pickPoint;
     Line l;
     linked_list<pickup_point> p;
-    ALL_LINES->go_head(&l);
+    ALL_LINES.go_head(&l);
     while (true)
     {
         p = l.get_linkedlist_pickup_point();
@@ -2589,7 +2589,7 @@ void create_line_come()
             }
         }
         l.set_reserved_come(s);
-        if (ALL_LINES->Next(&l) == 0) {
+        if (ALL_LINES.Next(&l) == 0) {
             break;
         }
     }
@@ -2620,7 +2620,7 @@ void profit()
     int total_both = 0;
     double total = 0, profit = 0, total_profit = 0;
     Line l;
-    ALL_LINES->go_head(&l);
+    ALL_LINES.go_head(&l);
     while (true)
     {
         total_go = l.get_count_go();
@@ -2628,7 +2628,7 @@ void profit()
         total_both = l.get_count_both();
         total = ((total_go + total_come) * 75) + (total_both * 120); // change the price
         profit = total - l.get_bus_cost();
-        if (ALL_LINES->Next(&l) == 0) {
+        if (ALL_LINES.Next(&l) == 0) {
             break;
         }
     }
