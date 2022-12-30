@@ -282,7 +282,7 @@ public:
     void print_line();
     void Display_pickup_point();
     pickup_point select_pickup_point();
-    linked_list<pickup_point> get_linkedlist_pickup_point();
+    void get_linkedlist_pickup_point(linked_list<pickup_point>& p );
 
 };
 
@@ -346,7 +346,7 @@ public:
     string get_pass();
     string get_address();
     int get_profit();
-    linked_list<Line> get_lines();
+    void get_lines(linked_list<Line>& l);
     // ---- Other---- //
     void delet_line(Line l);
     void view_lines();
@@ -354,6 +354,12 @@ public:
     //new//
     void view_company_lines();
     Line select_company_line();
+    void create_line_go();
+    void create_line_come();
+    void view_line_go(Line& l);
+    void view_line_come(Line& l);
+    void select_line_company(Line& l);
+ 
     //new//
 
 
@@ -722,8 +728,8 @@ int main()
         }
         case 6:
         {
-            s = s_t.Search_Item(221101573);
-
+           // s = s_t.Search_Item(221101573);
+            l = select_line();
             view_line_go(l);
 
             break;
@@ -1236,9 +1242,9 @@ pickup_point Line::select_pickup_point()
 
     return p;
 }
-linked_list<pickup_point> Line::get_linkedlist_pickup_point()
+void Line::get_linkedlist_pickup_point(linked_list<pickup_point>& p)
 {
-    return pickup_point_Names;
+    p = pickup_point_Names;
 }
 
 
@@ -1618,9 +1624,9 @@ int company::get_profit()
 {
     return profit;
 }
-linked_list<Line> company::get_lines()
+void company::get_lines(linked_list<Line>& l)
 {
-    return lines;
+    l=lines;
 }
 // ---- Other---- //
 void company::delet_line(Line l)
@@ -1642,6 +1648,120 @@ void company::view_company_lines()
 Line company::select_company_line()
 {
     return Line();
+}
+
+void company::create_line_go()
+{
+
+    Queue q;
+    pickup_point pickPoint;
+    Line l;
+    linked_list<pickup_point> p;
+    if (lines.go_head(&l))
+    {
+        while (true)
+        {
+             l.get_linkedlist_pickup_point(p);
+            if (p.go_head(&pickPoint))
+            {
+                while (true)
+                {
+                    if (pickPoint.get_count_go() != 0)
+                    {
+                        q.enQueue(pickPoint);
+                    }
+                    if (p.Next(&pickPoint) == 0)
+                    {
+                        break;
+                    }
+                }
+                l.set_reserved_go(q);
+                if (lines.Next(&l) == 0) {
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void company::create_line_come()
+{
+
+    Stack s;
+    pickup_point pickPoint;
+    Line l;
+    linked_list<pickup_point> p;
+    lines.go_head(&l);
+    while (true)
+    {
+         l.get_linkedlist_pickup_point(p);
+        p.go_head(&pickPoint);
+        while (true)
+        {
+            if (pickPoint.get_count_come() != 0)
+            {
+                s.push(pickPoint);
+            }
+            if (p.Next(&pickPoint) == 0)
+            {
+                break;
+            }
+        }
+        l.set_reserved_come(s);
+        if (lines.Next(&l) == 0) 
+        {
+            break;
+        }
+    }
+}
+
+void company::view_line_go(Line& l)
+{
+    linked_list<pickup_point> p;
+    pickup_point p1;
+    l.get_linkedlist_pickup_point(p);
+    Queue q = l.get_reserved_go();
+    while (true)
+    {
+        if (q.deQueue(&p1))
+        {
+            cout << p1.get_pickup_point_Name();
+        }
+        else
+        {
+            break;
+        }
+
+    }
+}
+
+void company::view_line_come(Line& l)//m7taga ta3del lesa
+{
+
+    linked_list<pickup_point> p;
+    l.get_linkedlist_pickup_point(p);
+    Stack s = l.get_reserved_come();
+    while (true)
+    {
+        s.pop();
+    }
+}
+
+void company::select_line_company(Line& l)
+{
+    Line l1;
+    int n;
+    view_all_lines();
+    cin >> n;
+    lines.go_head(&l1);
+    for (int i = 1; i <= n; i++)
+    {
+        lines.Next(&l1);
+    }
+    /*l.print_line();
+    l.Display_pickup_point();*/
+    l = l1;
+    
 }
 
 
@@ -2564,67 +2684,71 @@ void add_bus() {
 
     }
 }
-void create_line_go()
-{
-    Queue q;
-    pickup_point pickPoint;
-    Line l;
-    linked_list<pickup_point> p;
-    ALL_LINES.go_head(&l);
-    while (true)
-    {
-        p = l.get_linkedlist_pickup_point();
-        p.go_head(&pickPoint);
-        while (true)
-        {
-            if (pickPoint.get_count_go() != 0)
-            {
-                q.enQueue(pickPoint);
-            }
-            if (p.Next(&pickPoint) == 0)
-            {
-                break;
-            }
-        }
-        l.set_reserved_go(q);
-        if (ALL_LINES.Next(&l) == 0) {
-            break;
-        }
-    }
-}
-void create_line_come()
-{
-    Stack s;
-    pickup_point pickPoint;
-    Line l;
-    linked_list<pickup_point> p;
-    ALL_LINES.go_head(&l);
-    while (true)
-    {
-        p = l.get_linkedlist_pickup_point();
-        p.go_head(&pickPoint);
-        while (true)
-        {
-            if (pickPoint.get_count_come() != 0)
-            {
-                s.push(pickPoint);
-            }
-            if (p.Next(&pickPoint) == 0)
-            {
-                break;
-            }
-        }
-        l.set_reserved_come(s);
-        if (ALL_LINES.Next(&l) == 0) {
-            break;
-        }
-    }
-}
+//void create_line_go()
+//{
+//    Queue q;
+//    pickup_point pickPoint;
+//    Line l;
+//    linked_list<pickup_point> p;
+//    if (ALL_LINES.go_head(&l))
+//    {
+//        while (true)
+//        {
+//            p = l.get_linkedlist_pickup_point();
+//            if (p.go_head(&pickPoint))
+//            {
+//                while (true)
+//                {
+//                    if (pickPoint.get_count_go() != 0)
+//                    {
+//                        q.enQueue(pickPoint);
+//                    }
+//                    if (p.Next(&pickPoint) == 0)
+//                    {
+//                        break;
+//                    }
+//                }
+//                l.set_reserved_go(q);
+//                if (ALL_LINES.Next(&l) == 0) {
+//                    break;
+//                }
+//            }
+//        }
+//    }
+//}
+//void create_line_come()
+//{
+//    Stack s;
+//    pickup_point pickPoint;
+//    Line l;
+//    linked_list<pickup_point> p;
+//    ALL_LINES.go_head(&l);
+//    while (true)
+//    {
+//        p = l.get_linkedlist_pickup_point();
+//        p.go_head(&pickPoint);
+//        while (true)
+//        {
+//            if (pickPoint.get_count_come() != 0)
+//            {
+//                s.push(pickPoint);
+//            }
+//            if (p.Next(&pickPoint) == 0)
+//            {
+//                break;
+//            }
+//        }
+//        l.set_reserved_come(s);
+//        if (ALL_LINES.Next(&l) == 0) {
+//            break;
+//        }
+//    }
+//}
 void view_line_go(Line l)
 {
     linked_list<pickup_point> p;
     pickup_point p1;
-    p = l.get_linkedlist_pickup_point();
+     l.get_linkedlist_pickup_point(p);
     Queue q = l.get_reserved_go();
     while (true) 
     {
@@ -2642,7 +2766,7 @@ void view_line_go(Line l)
 void view_line_come(Line l)
 {
     linked_list<pickup_point> p;
-    p = l.get_linkedlist_pickup_point();
+     l.get_linkedlist_pickup_point(p);
     Stack s = l.get_reserved_come();
     while (true)
     {
@@ -2924,7 +3048,7 @@ void profit()
      linked_list<Line> l;
 
      c = select_company();
-     l=c.get_lines();
+     c.get_lines(l);
 
      l1=select_line();
      t1.set_student_ticket_line(l1);
