@@ -217,17 +217,25 @@ public:
         num_of_ele++;
     }
 
-    void deQueue()
+    int deQueue(pickup_point* p)
     {
         if (front == NULL)
-            return;
-
+        {
+            return 0 ;
+        }
         link temp = front;
+        
         front = front->next;
         if (front == NULL)
+        {
             rear = NULL;
-        delete (temp);
-        num_of_ele++;
+        }
+        rear = temp;
+        free(rear);
+        *p = temp->data;
+        num_of_ele--;
+        return 1;
+
     }
 };
 
@@ -2614,10 +2622,20 @@ void create_line_come()
 void view_line_go(Line l)
 {
     linked_list<pickup_point> p;
+    pickup_point p1;
     p = l.get_linkedlist_pickup_point();
     Queue q = l.get_reserved_go();
-    while (true) {
-        q.deQueue();
+    while (true) 
+    {
+        if (q.deQueue(&p1))
+        {
+            cout << p1.get_pickup_point_Name();
+        }
+        else
+        {
+            break;
+        }
+        
     }
 }
 void view_line_come(Line l)
