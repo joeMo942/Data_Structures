@@ -2902,13 +2902,14 @@ void profit()
 
  //////   Under processing   /////
 
- // ############# LOGIN STUDENT IMPLEMENTATION ############# //
- int login_Student()
+
+ // ############# LOGIN university IMPLEMENTATION ############# //
+ int login_university()
  {
 
-     Student st;
+     company st;
 
-     int id;
+     string id;
      string pass;
 
      cout << "enter your id : ";
@@ -2918,9 +2919,9 @@ void profit()
 
 
 
-     st = s_t.Search_Item(id);
+     st = c_t.Search_Item(id);
 
-     if (st.get_password() == pass)
+     if (st.get_pass() == pass)
      {
          return 1;
      }
@@ -2933,7 +2934,7 @@ void profit()
 
 
  }
- void After_login_STUDENT()
+ void After_login_university()
  {
      while (true)
      {
@@ -3029,13 +3030,13 @@ void profit()
  }
 
 
- // ############# LOGIN university IMPLEMENTATION ############# //
- int login_university()
+ // ############# LOGIN STUDENT IMPLEMENTATION ############# //
+ int login_Student()
  {
 
-     company st;
+     Student st;
 
-     string id;
+     int id;
      string pass;
 
      cout << "enter your id : ";
@@ -3045,9 +3046,9 @@ void profit()
 
 
 
-     st = c_t.Search_Item(id);
+     st = s_t.Search_Item(id);
 
-     if (st.get_pass() == pass)
+     if (st.get_password() == pass)
      {
          return 1;
      }
@@ -3060,7 +3061,7 @@ void profit()
 
 
  }
- void After_login_university()
+ void After_login_STUDENT()
  {
      while (true)
      {
@@ -3070,5 +3071,3 @@ void profit()
 
      }
  }
-
-
