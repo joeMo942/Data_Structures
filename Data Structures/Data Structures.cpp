@@ -1,7 +1,4 @@
-/// transportation services app 
-
-
-
+/// transportation services app
 #include <iostream>
 #include <cmath>
 #include <string>
@@ -9,8 +6,6 @@
 #include <sstream>
 
 using namespace std;
-
-
 
 static int company_ticket_counter = 0;
 static int student_ticket_counter = 0;
@@ -35,8 +30,6 @@ class student_ticket;
 
 
 enum type { high_s, super_jet, mini_bus };
-
-
 
 
 // ---------- TOOLS HEADER ---------- //
@@ -397,7 +390,6 @@ public:
     // ---- Other---- //
 };
 
-
 // ---------- PERSON HEADER ---------- //
 class Person
 {
@@ -493,7 +485,6 @@ public:
    // void class_print_driver();
 
 };
-
 
 // ---------- HASHING HEADER ---------- //
 template <class T> class Hash
@@ -607,8 +598,6 @@ public:
 };
 
 
-
-
 Student_Table s_t(13);
 company_table c_t(13);
 driver_table d_t(13);
@@ -625,15 +614,11 @@ void add_line();
 void add_pickup_point_interface();
 void view_all_lines();
 Line select_line();
-
 void booking_ticket();
-
 company select_company();
 
 
-
 // ---------- campany menue ---------- //
-
 //buses define
 #define high_s 14
 #define costar 21
@@ -645,10 +630,7 @@ void view_driver(string mail);
 void view_driver(string mail);
 
 
-
-
 // ---------- bus menue ---------- //
-
 //profit
 #define high_s_cost 500
 #define costar_cost 1000
@@ -661,10 +643,6 @@ void create_line_come();
 void view_line_go(Line l);
 void view_line_come(Line l);
 void profit();
-
-
-
-
 void signup_student();
 int login_Student();
 void signup_company();
@@ -672,29 +650,24 @@ int login_company();
 
 
 /////// all menus///////
-
 void university_menue();
 void student_menue();
 void company_menue();
 void driver_menue();
-
-
-
-
-
 int Select_from_to(int start, int end);
 int num_of_error(int error, int& counter, int limit_of_error);
+
+
 int main()
 {
     Student s;
-
     Line l;
     pickup_point p;
 
     
     while (1)
     {
-        university_menue();
+        company_menue();
     }
     
 
@@ -760,8 +733,6 @@ int main()
 
 
 }
-
-
 
 
 //############# LINKED LIST IMPLEMENTATION #############//
@@ -1065,7 +1036,6 @@ template<class T> void Hash<T>::Delete_Item(int key, T data)
 
 
 // ############# PICKUP POINT IMPLEMENTATION ############# // 
-
 pickup_point::pickup_point()
 {
     count_come = 0;
@@ -1261,7 +1231,6 @@ void Line::get_linkedlist_pickup_point(linked_list<pickup_point>& p)
 }
 
 
-
 // ############# PERSON IMPLEMENTATION ############# // 
 Person::Person()
 {
@@ -1300,7 +1269,7 @@ void Person::set_name(string name)
 }
 int Person::set_age(string age)
 {
-    if (age.length() > 17 && age.length() <= 100)
+    if (stoi(age) > 17 && stoi(age) <= 100)
     {
         this->age = age;
         return 1;
@@ -1381,9 +1350,7 @@ string Person::get_phone_number() const
 }*/
 
 
-
 // ############# STUDENT IMPLEMENTATION ############# // 
-
 Student::Student()
 {
 
@@ -1490,7 +1457,6 @@ pickup_point Student::get_student_pickupPoint()
 {
     return pickup_point();
 }
-
 // ---- Other---- //
 void Student::class_print_Student()
 {
@@ -1501,8 +1467,6 @@ void Student::class_print_Student()
 // string getName();
 // double getGPA();
 //  void print();
-
-
 
 
 // ############# DRIVER IMPLEMENTATION ############# //
@@ -1522,9 +1486,8 @@ driver::driver(string Name, string Age, string National_id, string Gender, strin
     driver::set_mail(mail);
 }
 // ---- set ---- //
-void driver::set_driver(string Name, string Age, string National_id, string Gender, string Password, string phone_number, string mail) {
-
-
+void driver::set_driver(string Name, string Age, string National_id, string Gender, string Password, string phone_number, string mail) 
+{
     Person::set_name(Name);
     Person::set_age(Age);
     Person::set_national_id(National_id);
@@ -1533,28 +1496,28 @@ void driver::set_driver(string Name, string Age, string National_id, string Gend
     Person::set_phone_number(phone_number);
     driver::set_mail(mail);
 
-
 }
-void driver::set_camany_name(string name) {
+void driver::set_camany_name(string name) 
+{
     Campany_name = name;
-
 }
-void driver::set_mail(string mail) {
-
+void driver::set_mail(string mail) 
+{
     Mail = mail;
 }
 // ---- get ---- //
-string driver::get_camany_name() {
+string driver::get_camany_name() 
+{
     return Campany_name;
 
 }
-string driver::get_mail() {
+string driver::get_mail() 
+{
     return Campany_name;
 
 }
 // ---- Other---- //
 // void class_print_driver();
-
 
 
 // ############# COMPANY IMPLEMENTATION ############# // 
@@ -1676,7 +1639,6 @@ Line company::select_company_line()
 {
     return Line();
 }
-
 void company::create_line_go()
 {
 
@@ -1710,7 +1672,6 @@ void company::create_line_go()
         }
     }
 }
-
 void company::create_line_come()
 {
 
@@ -1741,7 +1702,6 @@ void company::create_line_come()
         }
     }
 }
-
 void company::view_line_go(Line& l)
 {
     linked_list<pickup_point> p;
@@ -1761,7 +1721,6 @@ void company::view_line_go(Line& l)
 
     }
 }
-
 void company::view_line_come(Line& l)//m7taga ta3del lesa
 {
 
@@ -1773,7 +1732,6 @@ void company::view_line_come(Line& l)//m7taga ta3del lesa
         s.pop();
     }
 }
-
 void company::select_line_company(Line& l)
 {
     Line l1;
@@ -1792,8 +1750,8 @@ void company::select_line_company(Line& l)
 }
 
 
-
 // ############# TABLE IMPLEMENTATION ############# // 
+
 
 // ############# Student Table IMPLEMENTATION ############# // 
 Student_Table::Student_Table()
@@ -1955,6 +1913,7 @@ driver driver_table::Search_Item(string mail)
     return d1;
 }
 
+
 // ############# company table IMPLEMENTATION ############# // 
 company_table::company_table()
 {
@@ -2014,7 +1973,6 @@ company company_table::Search_Item(string mail)
 }
 
 
-
 // ############# CAR IMPLEMENTATION ############# // 
 car::car()
 {
@@ -2067,14 +2025,12 @@ string car::get_car_plate()
 // ---- Other---- //
 
 
-
 // ############# TICKET IMPLEMENTATION ############# //
 ticket::ticket()
 {
 
 }
 //ticket(car car,  string company, Line line);
-
 // ---- set ---- //
 void ticket::set_car(car car)
 {
@@ -2231,9 +2187,6 @@ company student_ticket::get_student_ticket_company()
     return student_ticket_company;
 }
 // ---- Other---- //
-
-
-
 
 
 // ############# university menue IMPLEMENTATION ############# //
@@ -2550,7 +2503,6 @@ Line select_line()
 }
 
 
-
 // ############# campany menue IMPLEMENTATION ############# //
 void add_driver(string Name, string Age, string National_id, string Gender, string Password, string phone_number, string mail) {
     driver d;
@@ -2661,6 +2613,7 @@ void view_driver(string mail) {
     cout << "the gender is" << d.get_gender() << endl;
     cout << "the password is" << d.get_password() << endl;
 }
+
 
 // ############# bus menue IMPLEMENTATION ############# //
 string max_bus(int passengers_count, double* cost) {
@@ -2854,6 +2807,7 @@ void profit()
     total_profit += profit;
 }
 
+
 // ############# SIGNUP STUDENT IMPLEMENTATION ############# // 
 void signup_student()
 {
@@ -2948,6 +2902,8 @@ void signup_student()
     s_t.Insert_Item(s1.get_id(), s1);
 
 }
+
+
 // ############# SIGNUP COMPANY IMPLEMENTATION ############# //
 void signup_company()
 {
@@ -3029,6 +2985,7 @@ void signup_company()
 
  }
 
+
 // ############# LOGIN STUDENT IMPLEMENTATION ############# //
 int login_page()
 {
@@ -3060,6 +3017,7 @@ int login_page()
 
 
 }
+
 
 // ############# LOGIN COMPANY IMPLEMENTATION ############# //
 int login_company()
@@ -3095,7 +3053,6 @@ int login_company()
 
 
 // ############# booking IMPLEMENTATION ############# //
-
 void booking_ticket()
 {
     int user_choice;
@@ -3142,8 +3099,8 @@ void booking_ticket()
   //  s1.se(t1);
 }
 
-// ############# select company ############# //
 
+// ############# select company ############# //
 company select_company()
 {
     string x;
@@ -3177,7 +3134,6 @@ company select_company()
 
 
 // ############# student menue ############# //
-
 void student_menue()
 {
     int x;
@@ -3221,22 +3177,117 @@ void student_menue()
 }
 
 
-
 // #############  company menue ############# //
-
 void company_menue()
 {
-    int x;
-    cout << "1-add driver\n2-(a5ly eldriver ya5od line\n3-see profit\n4-all tickets\n5-log out";//feh hagat msh mgm3ha
-    cin >> x;
+    int user_choice, num_error = 0, limit_of_error = 3;
+    string object_name, user_data;
+    cout << "\n.................. MAIN MENU ..................";
+    cout << "\n\n\t1) Add new driver\n" << "\t2) Add new trip\n" << "\t3) View all tickets\n" << "\t4) View profit\n" << "\t5) Log out\n\n" << "YOUR CHOICE ->   ";
+    user_choice = Select_from_to(1, 5);
 
 
-    switch (x)
+    switch (user_choice)
     {
     case 1:
     {
+        cin.ignore();// new page
+        system("cls");
 
+        cout << "\nEnter driver name: ";
+        cin >> object_name;
+        user_data = object_name;
+        driver object_name;
+        object_name.set_name(user_data);
+
+        
+        while (num_error < limit_of_error)
+        {
+            cout << "\nEnter phone number: ";
+            cin >> user_data;
+            if (object_name.set_phone_number(user_data) == 1)
+            {
+                num_error = 0;
+                break;
+            }
+            else if (num_of_error(0, num_error, limit_of_error) == -1)
+            {
+                num_error = 0;
+                return;
+            }
+
+        }
+
+
+        while (num_error < limit_of_error)
+        {
+            cout << "\nEnter Gender       (1- Male    2- Female)";
+            cin >> user_choice;
+            if (user_choice == 1)
+            {
+                object_name.set_gender("male");
+                num_error = 0;
+                break;
+            }
+            else if (user_choice == 2)
+            {
+                object_name.set_gender("female");
+                num_error = 0;
+                break;
+            }
+            else if (num_of_error(0, num_error, limit_of_error) == -1)
+            {
+                num_error = 0;
+                return;
+            }
+
+        }
+        
+
+        while (num_error < limit_of_error)
+        {
+            cout << "\nEnter Age: ";
+            cin >> user_data;
+            if (object_name.set_age(user_data) == 1)
+            {
+                num_error = 0;
+                break;
+            }
+            else if (num_of_error(0, num_error, limit_of_error) == -1)
+            {
+                num_error = 0;
+                return;
+            }
+
+        }
+
+
+        while (num_error < limit_of_error)
+        {
+            cout << "\nEnter National number: ";
+            cin >> user_data;
+            if (object_name.set_national_id(user_data) == 1)
+            {
+                num_error = 0;
+                break;
+            }
+            else if (num_of_error(0, num_error, limit_of_error) == -1)
+            {
+                num_error = 0;
+                return;
+            }
+
+        }
+
+        // add the compnay to the obj from the sign in return
+        object_name.set_password(object_name.get_phone_number());
+        object_name.set_mail(object_name.get_name() + "@" /* + company obj username */ + "gu.edu.eg");
+
+        cout << "\n\n ( Give this info to the driver! )";
+        cout << "\n\tEmail is: " << object_name.get_mail() << "\tPassword is: " << object_name.get_password() << "\n\n";
+        
         break;
+
     }
     case 2:
     {
@@ -3266,12 +3317,7 @@ void company_menue()
 }
 
 
-   
-
 // ############# university menue ############# //
-
- 
-
 void university_menue()
 {
     int x;
@@ -3323,9 +3369,6 @@ void university_menue()
 
 
 // ############# driver menue ############# //
-
-
-
 void driver_menue()
 {
     int x;
@@ -3359,14 +3402,11 @@ void driver_menue()
 }
 
 
-
-
-
 //----------7naka------//
 int Select_from_to(int start, int end)
 {
     int select, counter = 0;
-    cout << "Select one of them" << endl;
+    //cout << "Select one of them" << endl;
     while (counter != 3)
     {
         cin >> select;
