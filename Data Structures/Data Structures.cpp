@@ -217,17 +217,25 @@ public:
         num_of_ele++;
     }
 
-    void deQueue()
+    int deQueue(pickup_point* p)
     {
         if (front == NULL)
-            return;
-
+        {
+            return 0 ;
+        }
         link temp = front;
+        
         front = front->next;
         if (front == NULL)
+        {
             rear = NULL;
-        delete (temp);
-        num_of_ele++;
+        }
+        rear = temp;
+        free(rear);
+        *p = temp->data;
+        num_of_ele--;
+        return 1;
+
     }
 };
 
@@ -345,7 +353,7 @@ public:
     void print_company();
     //new//
     void view_all_lines();
-    Line select_line();
+    Line select_line()
     //new//
 
 
@@ -630,7 +638,7 @@ void view_driver(string mail);
 void view_driver(string mail);
 
 
-void university_menue();
+
 
 // ---------- bus menue ---------- //
 
@@ -656,6 +664,13 @@ void signup_company();
 int login_company();
 
 
+/////// all menus///////
+
+void university_menue();
+void student_menue();
+void company_menue();
+void driver_menue();
+
 
 
 int main()
@@ -663,6 +678,7 @@ int main()
     Student s;
 
     Line l;
+    pickup_point p;
 
     while (true)
     {
@@ -682,20 +698,21 @@ int main()
         case 2:
         {
              l=select_line();
-            cout << l.get_Line_point_Name();
-            l.set_Line_Name("yousef");
-            cout << l.get_Line_point_Name();
             break;
         }
         case 3:
         {
             l=select_line();
             l.Display_pickup_point();
+           p= l.select_pickup_point();
+           p.set_count_go();
             break;
         }
         case 4:
         {
             add_pickup_point_interface();
+
+            
         }
         case 5:
         {
@@ -706,7 +723,7 @@ int main()
         {
             s = s_t.Search_Item(221101573);
 
-            view_line_go(s.get_student_line());
+            view_line_go(l);
 
             break;
         }
@@ -1618,8 +1635,12 @@ void company::print_company()
 {
     cout << name << endl;
 }
-void company::view_all_lines()
+void company::view_company_lines()
 {
+}
+Line company::select_company_line()
+{
+    return Line();
 }
 
 
@@ -2348,7 +2369,7 @@ Line select_line()
     return l;
 }
 
-void university_menue();
+
 
 // ############# campany menue IMPLEMENTATION ############# //
 void add_driver(string Name, string Age, string National_id, string Gender, string Password, string phone_number, string mail) {
@@ -2601,10 +2622,20 @@ void create_line_come()
 void view_line_go(Line l)
 {
     linked_list<pickup_point> p;
+    pickup_point p1;
     p = l.get_linkedlist_pickup_point();
     Queue q = l.get_reserved_go();
-    while (true) {
-        q.deQueue();
+    while (true) 
+    {
+        if (q.deQueue(&p1))
+        {
+            cout << p1.get_pickup_point_Name();
+        }
+        else
+        {
+            break;
+        }
+        
     }
 }
 void view_line_come(Line l)
@@ -3070,4 +3101,7 @@ void profit()
          cin >> x;
 
      }
+     c = c_t.Search_Item(x);
+     return c;
+
  }
