@@ -9,7 +9,7 @@
 #include <sstream>
 using namespace std;
 
-
+ 
 
 static int company_ticket_counter = 0;
 static int student_ticket_counter = 0;
@@ -596,8 +596,8 @@ public:
 Student_Table s_t(13);
 company_table c_t(13);
 driver_table d_t(13);
-linked_list<Line> ALL_LINES;
-
+linked_list<Line>* ALL_LINES;
+linked_list<string> ALL_COMPANYS;
 
 // ---------- university menue ---------- //
 void view();
@@ -612,7 +612,7 @@ Line select_line();
 
 void booking_ticket();
 
-
+company select_company();
 
 
 
@@ -661,11 +661,12 @@ int main()
 {
     Student s;
 
+    Line l;
 
     while (true)
     {
 
-
+        
         int x;
         cout << "1-add line\n2-sign up student\n3-view student\n4-book ticket\n5-creat line go\n6-view line go\n7-exit\n";
         cin >> x;
@@ -679,17 +680,21 @@ int main()
         }
         case 2:
         {
-            signup_student();
+             l=select_line();
+            cout << l.get_Line_point_Name();
+            l.set_Line_Name("yousef");
+            cout << l.get_Line_point_Name();
             break;
         }
         case 3:
         {
-            s_t.Student_print();
+            l=select_line();
+            l.Display_pickup_point();
             break;
         }
         case 4:
         {
-            break;
+            add_pickup_point_interface();
         }
         case 5:
         {
@@ -1518,7 +1523,7 @@ string driver::get_mail() {
 company::company()
 {
     profit = 0;
-    lines = ALL_LINES;
+    //lines = *ALL_LINES;
 }
 // ---- set ---- //
 void company::set_name(string n)
@@ -2279,7 +2284,7 @@ void add_line()
         cout << "press 0 to add";
         cin >> x;
     }
-    ALL_LINES.Push_Back(l);
+    ALL_LINES->Push_Back(l);
 
 }
 void add_pickup_point_interface()
@@ -2291,7 +2296,7 @@ void add_pickup_point_interface()
 
     //l.
 
-    l = select_line();
+    l= select_line();
     cout << "\nname of pickuppoint : ";
     cin >> n;
     p.set_pickup_point_Name(n);
@@ -2305,18 +2310,18 @@ void view_all_lines()
     Line l;
     int x = 0;
     int counter = 1;
-    ALL_LINES.go_head(&l);
+    ALL_LINES->go_head(&l);
 
     while (1)
     {
         cout << counter << "-";
         l.print_line();
 
-        if (!ALL_LINES.Next(&l))
+        if (!ALL_LINES->Next(&l))
         {
             return;
         }
-        ALL_LINES.Return_Data(&l);
+        ALL_LINES->Return_Data(&l);
 
         counter++;
         x++;
@@ -2328,13 +2333,13 @@ Line select_line()
     int n;
     view_all_lines();
     cin >> n;
-    ALL_LINES.go_head(&l);
+    ALL_LINES->go_head(&l);
     for (int i = 1; i <= n; i++)
     {
-        ALL_LINES.Next(&l);
+        ALL_LINES->Next(&l);
     }
-    l.print_line();
-    l.Display_pickup_point();
+    /*l.print_line();
+    l.Display_pickup_point();*/
 
     return l;
 }
@@ -2499,7 +2504,7 @@ string bus_plus(int passengers_count, double* cost) {
 } 
 void add_bus() {
     Line l;
-    ALL_LINES.go_head(&l);
+    ALL_LINES->go_head(&l);
     double cost;
     int  passengers_count_go, passengers_count_come, passengers_count_both, passengers_count;
     while (true)
@@ -2527,7 +2532,7 @@ void add_bus() {
             l.set_car_type(max_bus(passengers_count, &cost));
             l.set_bus_cost(cost);
         }
-        if (ALL_LINES.go_head(&l) == 0) {
+        if (ALL_LINES->go_head(&l) == 0) {
             break;
         }
 
@@ -2539,7 +2544,7 @@ void create_line_go()
     pickup_point pickPoint;
     Line l;
     linked_list<pickup_point> p;
-    ALL_LINES.go_head(&l);
+    ALL_LINES->go_head(&l);
     while (true)
     {
         p = l.get_linkedlist_pickup_point();
@@ -2556,7 +2561,7 @@ void create_line_go()
             }
         }
         l.set_reserved_go(q);
-        if (ALL_LINES.Next(&l) == 0) {
+        if (ALL_LINES->Next(&l) == 0) {
             break;
         }
     }
@@ -2567,7 +2572,7 @@ void create_line_come()
     pickup_point pickPoint;
     Line l;
     linked_list<pickup_point> p;
-    ALL_LINES.go_head(&l);
+    ALL_LINES->go_head(&l);
     while (true)
     {
         p = l.get_linkedlist_pickup_point();
@@ -2584,7 +2589,7 @@ void create_line_come()
             }
         }
         l.set_reserved_come(s);
-        if (ALL_LINES.Next(&l) == 0) {
+        if (ALL_LINES->Next(&l) == 0) {
             break;
         }
     }
@@ -2615,7 +2620,7 @@ void profit()
     int total_both = 0;
     double total = 0, profit = 0, total_profit = 0;
     Line l;
-    ALL_LINES.go_head(&l);
+    ALL_LINES->go_head(&l);
     while (true)
     {
         total_go = l.get_count_go();
@@ -2623,7 +2628,7 @@ void profit()
         total_both = l.get_count_both();
         total = ((total_go + total_come) * 75) + (total_both * 120); // change the price
         profit = total - l.get_bus_cost();
-        if (ALL_LINES.Next(&l) == 0) {
+        if (ALL_LINES->Next(&l) == 0) {
             break;
         }
     }
@@ -2703,7 +2708,7 @@ void profit()
     }*/
 
     cout << "select your line";
-    l = select_line();
+    l=select_line();
     s1.set_student_line(l);
 
     s1.set_student_pickup_point(l.select_pickup_point());
@@ -2880,13 +2885,14 @@ void profit()
      pickup_point p1;
      Line l1;
 
-     l1 = select_line();
+     l1=select_line();
      t1.set_student_ticket_line(l1);
      p1 = l1.select_pickup_point();
      t1.set_student_ticket_pickup_point(p1);
 
 
      cout << "\nEnter your trip statues : (1-zahab     2- 3awda    3-zahab w 3awda) \n";
+     cin >> user_choice;
      if (user_choice == 1)
      {
          p1.set_count_go();
@@ -2913,5 +2919,35 @@ void profit()
    //  s1.se(t1);
  }
 
- // ############# select line ############# //
+ // ############# select company ############# //
 
+ company select_company()
+ {
+     string x;
+     company c;
+     int choise;
+
+     ALL_COMPANYS.go_head(&x);
+
+     while (true)
+     {
+         ALL_COMPANYS.Return_Data(&x);
+
+         c = c_t.Search_Item(x);
+         cout << c.get_name();
+         if (!ALL_COMPANYS.Next(&x))
+         {
+             break;
+         }
+     }
+     cout << "\nchoose the company you want to go with: ";
+     cin >> choise;
+     ALL_COMPANYS.go_head(&x);
+     for (int i = 0; i < choise; i++)
+     {
+         ALL_COMPANYS.Next(&x);
+     }
+     c = c_t.Search_Item(x);
+     return c;
+
+ }
