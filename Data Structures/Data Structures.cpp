@@ -2563,11 +2563,107 @@ Line select_line()
 
 
 // ############# campany menue IMPLEMENTATION ############# //
-void add_driver(string Name, string Age, string National_id, string Gender, string Password, string phone_number, string mail) {
-    driver d;
-    d.set_driver(Name, Age, National_id, Gender, Password, phone_number, mail);
-    int key = d_t.convert_to_key(d.get_mail());
-    d_t.Insert_Item(key, d);
+void add_driver(int user_choice) 
+{
+    int num_error = 0, limit_of_error = 3;
+    string object_name, user_data;
+    cin.ignore();// new page
+    system("cls");
+
+    cout << "\nEnter driver name: ";
+    cin >> object_name;
+    user_data = object_name;
+    driver object_name;
+    object_name.set_name(user_data);
+
+
+    while (num_error < limit_of_error)
+    {
+        cout << "\nEnter phone number: ";
+        cin >> user_data;
+        if (object_name.set_phone_number(user_data) == 1)
+        {
+            num_error = 0;
+            break;
+        }
+        else if (num_of_error(0, num_error, limit_of_error) == -1)
+        {
+            num_error = 0;
+            return;
+        }
+
+    }
+
+
+    while (num_error < limit_of_error)
+    {
+        cout << "\nEnter Gender       (1- Male    2- Female)";
+        cin >> user_choice;
+        if (user_choice == 1)
+        {
+            object_name.set_gender("male");
+            num_error = 0;
+            break;
+        }
+        else if (user_choice == 2)
+        {
+            object_name.set_gender("female");
+            num_error = 0;
+            break;
+        }
+        else if (num_of_error(0, num_error, limit_of_error) == -1)
+        {
+            num_error = 0;
+            return;
+        }
+
+    }
+
+
+    while (num_error < limit_of_error)
+    {
+        cout << "\nEnter Age: ";
+        cin >> user_data;
+        if (object_name.set_age(user_data) == 1)
+        {
+            num_error = 0;
+            break;
+        }
+        else if (num_of_error(0, num_error, limit_of_error) == -1)
+        {
+            num_error = 0;
+            return;
+        }
+
+    }
+
+
+    while (num_error < limit_of_error)
+    {
+        cout << "\nEnter National number: ";
+        cin >> user_data;
+        if (object_name.set_national_id(user_data) == 1)
+        {
+            num_error = 0;
+            break;
+        }
+        else if (num_of_error(0, num_error, limit_of_error) == -1)
+        {
+            num_error = 0;
+            return;
+        }
+
+    }
+
+    // add the compnay to the obj from the sign in return
+    object_name.set_password(object_name.get_phone_number());
+    object_name.set_mail(object_name.get_name() + "@" /* + company obj username */ + "gu.edu.eg");
+
+    cout << "\n\n ( Give this info to the driver! )";
+    cout << "\n\tEmail is: " << object_name.get_mail() << "\tPassword is: " << object_name.get_password() << "\n\n";
+
+    int key = d_t.convert_to_key(object_name.get_mail());
+    d_t.Insert_Item(key, object_name);
 
 }
 void delete_driver(string mail) {
@@ -3178,7 +3274,7 @@ void booking_ticket(Student* s)
 void select_company(company& c1 )
 {
     string x;
-    //company c;
+    company c;
     int choise;
 
     ALL_COMPANYS.go_head(&x);
@@ -3264,8 +3360,7 @@ void student_menue(Student* s)
 // #############  company menue ############# //
 void company_menue()
 {
-    int user_choice, num_error = 0, limit_of_error = 3;
-    string object_name, user_data;
+    int user_choice;
     cout << "\n.................. MAIN MENU ..................";
     cout << "\n\n\t1) Add new driver\n" << "\t2) Add new trip\n" << "\t3) View all tickets\n" << "\t4) View profit\n" << "\t5) Log out\n\n" << "YOUR CHOICE ->   ";
     user_choice = Select_from_to(1, 5);
@@ -3275,101 +3370,7 @@ void company_menue()
     {
     case 1:
     {
-        cin.ignore();// new page
-        system("cls");
-
-        cout << "\nEnter driver name: ";
-        cin >> object_name;
-        user_data = object_name;
-        driver object_name;
-        object_name.set_name(user_data);
-
-        
-        while (num_error < limit_of_error)
-        {
-            cout << "\nEnter phone number: ";
-            cin >> user_data;
-            if (object_name.set_phone_number(user_data) == 1)
-            {
-                num_error = 0;
-                break;
-            }
-            else if (num_of_error(0, num_error, limit_of_error) == -1)
-            {
-                num_error = 0;
-                return;
-            }
-
-        }
-
-
-        while (num_error < limit_of_error)
-        {
-            cout << "\nEnter Gender       (1- Male    2- Female)";
-            cin >> user_choice;
-            if (user_choice == 1)
-            {
-                object_name.set_gender("male");
-                num_error = 0;
-                break;
-            }
-            else if (user_choice == 2)
-            {
-                object_name.set_gender("female");
-                num_error = 0;
-                break;
-            }
-            else if (num_of_error(0, num_error, limit_of_error) == -1)
-            {
-                num_error = 0;
-                return;
-            }
-
-        }
-        
-
-        while (num_error < limit_of_error)
-        {
-            cout << "\nEnter Age: ";
-            cin >> user_data;
-            if (object_name.set_age(user_data) == 1)
-            {
-                num_error = 0;
-                break;
-            }
-            else if (num_of_error(0, num_error, limit_of_error) == -1)
-            {
-                num_error = 0;
-                return;
-            }
-
-        }
-
-
-        while (num_error < limit_of_error)
-        {
-            cout << "\nEnter National number: ";
-            cin >> user_data;
-            if (object_name.set_national_id(user_data) == 1)
-            {
-                num_error = 0;
-                break;
-            }
-            else if (num_of_error(0, num_error, limit_of_error) == -1)
-            {
-                num_error = 0;
-                return;
-            }
-
-        }
-
-        // add the compnay to the obj from the sign in return
-        object_name.set_password(object_name.get_phone_number());
-        object_name.set_mail(object_name.get_name() + "@" /* + company obj username */ + "gu.edu.eg");
-
-        cout << "\n\n ( Give this info to the driver! )";
-        cout << "\n\tEmail is: " << object_name.get_mail() << "\tPassword is: " << object_name.get_password() << "\n\n";
-        
+        add_driver(user_choice);
         break;
 
     }
