@@ -3337,7 +3337,7 @@ void student_menue(Student* s)
         }
         case 5:
         {
-            return;
+            main_menue();
             break;
         }
 
