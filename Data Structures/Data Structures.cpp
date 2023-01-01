@@ -2550,7 +2550,7 @@ void edit_student()
     string e_mail;
     string national_id;
 
-    //Student* s1;
+    Student* s1=0;
 
     int user_choice;
     int key;
@@ -2925,7 +2925,7 @@ Line select_line()
     view_all_lines();
     cin >> n;
     ALL_LINES.go_head(&l);
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i < n; i++)
     {
         ALL_LINES.Next(&l);
     }
@@ -3705,7 +3705,7 @@ void student_menue(Student* s)
         }
         case 4:
         {
-            edit_student(s);
+            edit_student();
             break;
         }
         case 5:
