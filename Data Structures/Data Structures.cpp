@@ -1095,7 +1095,7 @@ int pickup_point::get_count_come()
 // ---- Other ---- //
 void pickup_point::print_pikup_poin()
 {
-    cout << pickup_point_Name << endl;
+    cout << "\t"<<pickup_point_Name << endl;
 }
 
 
@@ -1202,10 +1202,14 @@ void Line::delete_pickup_point(pickup_point point)
 }
 void Line::print_line()
 {
-    cout << Line_Name << endl;
+    cout <<"\t"<< Line_Name << endl;
+    cout << "\tcount both" << count_both << endl;
+    cout << "\tcount go" << count_go << endl;
+    cout << "\tcount come" << count_come << endl;
 }
 void Line::Display_pickup_point()
 {
+    cout << "\t" << Line_Name << endl;
     pickup_point p;
     pickup_point_Names.go_head(&p);
     while (true)
@@ -1224,10 +1228,10 @@ void Line::select_pickup_point(pickup_point* p)
     int x;
 
    // pickup_point p;
-
-    cout << "chosse the pickupoint :";
-    cin >> x;
     Display_pickup_point();
+    cout << "\tChosse the pickupoint : ";
+    cin >> x;
+   
 
 
     pickup_point_Names.go_head(p);
@@ -1661,10 +1665,23 @@ void company::view_lines()
 }
 void company::print_company()
 {
-    cout << name << endl;
+    cout <<"\tCompany name: "<< name << endl;
 }
 void company::view_company_lines()
 {
+    Line l;
+    if (lines.go_head(&l))
+    {
+        while (true)
+        {
+            l.print_line();
+            if (!lines.Next(&l))
+            {
+                break;
+            }
+        }
+    }
+    
 }
 Line company::select_company_line()
 {
@@ -2249,10 +2266,10 @@ company student_ticket::get_student_ticket_company()
 }
 void student_ticket::print_ticket()
 {
-    cout << "\nstudent ticket\n";
-    cout << "ticket id: " << student_ticket_id << endl;
-    cout << "line : " << student_ticket_line.get_Line_point_Name() << endl;
-    cout <<  "pickup point : " << student_ticket_pickup_point.get_pickup_point_Name() << endl;
+    cout << "\tStudent ticket\n";
+   // cout << "\tTicket id: " << student_ticket_id << endl;
+    cout << "\tLine : " << student_ticket_line.get_Line_point_Name() << endl;
+    cout <<  "\tPickup point : " << student_ticket_pickup_point.get_pickup_point_Name() << endl;
     
 }
 // ---- Other---- //
@@ -3155,9 +3172,9 @@ int login_student(Student* s)
     int id;
     string pass;
 
-    cout << "\tenter your id : \n\n";
+    cout << "\tenter your id : ";
     cin >> id;
-    cout << "\tenter your passward : \n\n";
+    cout << "\tenter your passward : ";
     cin >> pass;
 
 
@@ -3231,7 +3248,7 @@ void booking_ticket(Student* s)
 
 
     c.select_line_company(&l1);
-    
+    l1.get_count_both();
     t1.set_student_ticket_line(l1);
 
     t1.set_student_ticket_company(c);
@@ -3352,45 +3369,49 @@ void student_menue(Student* s)
 // #############  company menue ############# //
 void company_menue(company* c)
 {
-    
-    int user_choice;
-    cout << "\n.................. MAIN MENU ..................";
-    cout << "\n\n\t1) Add new driver\n" << "\t2) Add new trip\n" << "\t3) View all tickets\n" << "\t4) View profit\n" << "\t5) Log out\n\n" << "YOUR CHOICE ->   ";
-    user_choice = Select_from_to(1, 5);
-
-
-    switch (user_choice)
-    {
-    case 1:
-    {
-        add_driver(user_choice);
-        break;
-
-    }
-    case 2:
+    while (true)
     {
 
-        break;
-    }
-    case 3:
-    {
 
-        break;
-    }
-    case 4:
-    {
-        c->print_company();
-        break;
-    }
-    case 5:
-    {
-        return;
-        break;
-    }
+        int user_choice;
+        cout << "\n.................. COMPANY MENU ..................";
+        cout << "\n\n\t1) View all tickets\n" << "\t2) count of students  \n" << "\t3) view lines trips\n" << "\t4) View profit\n" << "\t5) Log out\n\n" << "YOUR CHOICE ->   ";
+        user_choice = Select_from_to(1, 5);
 
 
-    default:
-        break;
+        switch (user_choice)
+        {
+        case 1:
+        {
+            c->view_company_lines();
+            break;
+
+        }
+        case 2:
+        {
+
+            break;
+        }
+        case 3:
+        {
+
+            break;
+        }
+        case 4:
+        {
+            c->print_company();
+            break;
+        }
+        case 5:
+        {
+            main_menue();
+            break;
+        }
+
+
+        default:
+            break;
+        }
     }
 }
 
@@ -3403,51 +3424,56 @@ void company_menue(company* c)
 
 void university_menue()
 {
-    int user_choice;
-    cout << "\n.................. ADMIN MENU ..................";
-    cout << "\n\n\t1) Add company\n" << "\t2) Edit studet\n" << "\t3) View all student\n" << "\t4) View all companys\n" << "\t5) Add Line\n"<<"\t6) add pickup point\n"<<"\t7)back\n\n" << "YOUR CHOICE ->   ";
-    user_choice = Select_from_to(1, 7);
+    while (true)
+    {
 
-    switch (user_choice)
-    {
-    case 1:
-    {
-        add_company();
-        break;
-    }
-    case 2:
-    {
-       // edit_student();
-        break;
-    }
-    case 3:
-    {
-        view_all_students();
-        break;
-    }
-    case 4:
-    {
-        view_companys();
-        break;
-    }
-    case 5:
-    {
-        add_line();
-        break;
-    }
-    case 6:
-    {
-        add_pickup_point_interface();
-        break;
-    }
-    case 7:
-    {
-        return;
-        break;
-    }
 
-    default:
-        break;
+        int user_choice;
+        cout << "\n.................. ADMIN MENU ..................";
+        cout << "\n\n\t1) Add company\n" << "\t2) Edit studet\n" << "\t3) View all student\n" << "\t4) View all companys\n" << "\t5) Add Line\n" << "\t6) add pickup point\n" << "\t7)back\n\n" << "YOUR CHOICE ->   ";
+        user_choice = Select_from_to(1, 7);
+
+        switch (user_choice)
+        {
+        case 1:
+        {
+            add_company();
+            break;
+        }
+        case 2:
+        {
+            // edit_student();
+            break;
+        }
+        case 3:
+        {
+            view_all_students();
+            break;
+        }
+        case 4:
+        {
+            view_companys();
+            break;
+        }
+        case 5:
+        {
+            add_line();
+            break;
+        }
+        case 6:
+        {
+            add_pickup_point_interface();
+            break;
+        }
+        case 7:
+        {
+            return;
+            break;
+        }
+
+        default:
+            break;
+        }
     }
 }
 
@@ -3540,18 +3566,22 @@ void main_menue()
 {
     int user_choice;
     cout << "\n.................. MAIN MENU ..................";
-    cout << "\n\n\t1) log in\n" << "\t2) sign up\n\n" << "YOUR CHOICE ->   ";
+    cout << "\n\n\t1) Login\n" << "\t2) Signup\n\n" << "YOUR CHOICE ->   ";
     user_choice = Select_from_to(1, 2);
 
     switch (user_choice)
     {
     case 1:
     {
+        system("pause");
+        system("cls");
         log_menue();
         break;
     }
     case 2:
     {
+        system("pause");
+        system("cls");
         signup_student();
         break;
     }
@@ -3570,9 +3600,9 @@ int login_uni()
     string pass_admin = "admin";
     string u, p;
 
-    cout << "\tenter user : ";
+    cout << "\tEnter user : ";
     cin >> u;
-    cout << "\tenter your passward : ";
+    cout << "\tEnter your passward : ";
     cin >> p;
 
 
@@ -3599,21 +3629,23 @@ void log_menue()
 
 
     int user_choice;
-    cout << "\n.................. log in MENU ..................";
-    cout << "\n\n\t1) log in as student\n" << "\t2) log in as company\n" << "\t3) log in as driver\n" << "\t4) log in as admin\n" << "\t5) back\n\n" << "YOUR CHOICE ->   ";
+    cout << "\n.................. Login MENU ..................";
+    cout << "\n\n\t1) Login as student\n" << "\t2) Login as company\n" << "\t3) Login as driver\n" << "\t4) Login as admin\n" << "\t5) Back\n\n" << "YOUR CHOICE ->   ";
     user_choice = Select_from_to(1, 5);
 
     switch (user_choice)
     {
     case 1:
     {
-        if (login_student(&s))
+        if (login_student(&s))//law da5lt cahr mkan int yedrab error
         {
+            system("pause");
+            system("cls");
             student_menue(&s);
         }
         else
         {
-            cout << "\t\nwrong pass or user\n";
+            cout << "\t\nWrong pass or user\n";
             system("pause");
             system("cls");
             break;
@@ -3624,11 +3656,13 @@ void log_menue()
     {
         if (login_company(&c))
         {
+            system("pause");
+            system("cls");
             company_menue(&c);
         }
         else
         {
-            cout << "\t\nwrong pass or user\n";
+            cout << "\t\nWrong pass or user\n";
             system("pause");
             system("cls");
             break;
@@ -3642,11 +3676,14 @@ void log_menue()
     {
         if (login_uni())
         {
+            system("pause");
+            system("cls");
             university_menue();
+            break;
         }
         else
         {
-            cout << "\t\nwrong pass or user\n";
+            cout << "\t\nWrong pass or user\n";
             system("pause");
             system("cls");
             break;
