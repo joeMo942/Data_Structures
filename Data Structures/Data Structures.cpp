@@ -2441,7 +2441,7 @@ void view_all_students()
 
     s_t.Student_print();
 }
-void edit_student()
+void edit_student(Student* s1)
 {
     string phone_number;
     string name;
@@ -2485,7 +2485,7 @@ void edit_student()
         cin >> name;
 
         s1->set_name(name);
-        cout << "Name : " << s1->get_name() << "\n ";
+        cout << "Name : " << s1->get_name() << "\n";
     }
 
 
@@ -3255,7 +3255,7 @@ int login_student(Student* s)
 
 
 
-   // s_t.Search_Item(id,s);
+    s=s_t.Search_Item(id);
 
     if (s->get_password() == pass)
     {
