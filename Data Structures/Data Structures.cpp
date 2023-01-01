@@ -702,6 +702,7 @@ int main()
         main_menue();
     }*/
     
+    
    
     /*Student s;
     student_ticket ss;
@@ -1875,7 +1876,7 @@ Student* Student_Table::Search_Item(int key)
 }
 void Student_Table::Student_Delete_Item(int key)
 {
-
+   // Student* s;
     int index = Hash_Function(key);
     Table[index].go_head(&s1);
     Table[index].Return_Data(&s1);
@@ -3342,15 +3343,15 @@ void booking_ticket(Student* s)
     Line l1;
     company c;
 
-
+    cout << &c <<endl;
     select_company(&c);
-   
+    cout << &c << endl;
 
     c.set_lines(ALL_LINES);
 
 
     c.select_line_company(&l1);
-    l1.get_count_both();
+    l1.set_count_both();
     t1.set_student_ticket_line(l1);
 
     t1.set_student_ticket_company(c);
