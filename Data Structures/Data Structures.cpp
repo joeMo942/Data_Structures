@@ -68,7 +68,10 @@ public:
     void deleteNode(T key);
     //ex
     bool Return_Data(T* data);
+    bool Return_Data_ad(T* data);
     bool go_head(T* data);
+    bool go_head_ad(T* data,T& ad);
+
     bool Next(T* data);
     void delete_Data(T* data);
 };
@@ -350,12 +353,12 @@ public:
     void print_company();
     //new//
     void view_company_lines();
-    Line select_company_line();
+    //Line select_company_line();
     void create_line_go();
     void create_line_come();
     void view_line_go(Line& l);
     void view_line_come(Line& l);
-    Line select_line_company();
+    Line* select_line_company();
  
     //new//
 
@@ -630,7 +633,7 @@ void view();
 void add_company();
 void view_companys();
 void view_all_students();
-void edit_student();
+void edit_student(Student* s1);
 void edit_company();
 void add_line();
 void add_pickup_point_interface();
@@ -693,6 +696,26 @@ int main()
     Student s, * s1, s2 ,s3;
     student_ticket ss;
     company* c;
+    Line l;
+    Line l1;
+    Line l2;
+    pickup_point p;
+    p.set_pickup_point_Name("Sss");
+    l1.set_Line_Name("yousef");
+    l1.add_pickup_point(p);
+
+   
+    ALL_LINES.Push_Back(l1);
+    ALL_LINES.Push_Back(l1);
+    view_all_lines();
+
+    cout << &l2<<endl;
+    ALL_LINES.go_head_ad(&l, l2);
+    //ALL_LINES.go_head(&l);
+    cout << &l2<<endl;
+    l2.set_Line_Name("ahmed");
+
+    view_all_lines();
    
 
 
@@ -712,10 +735,10 @@ int main()
 
    //// cout << "the new name is" << s1->get_name() << endl;
    // s_t.Student_print();
-    while (true)
+    /*while (true)
     {
         main_menue();
-    }
+    }*/
     
     
    
@@ -1044,7 +1067,13 @@ template<class T> bool linked_list<T>::Return_Data(T* data)
         return 1;
     }
 }
-template<class T> bool linked_list<T>::go_head(T* data)
+template<class T>
+bool linked_list<T>::Return_Data_ad(T* data)
+{
+    data = &current->data;
+
+}
+template<class T> bool linked_list<T>::go_head(T* data )
 {
     current = head;
     prev = NULL;
@@ -1054,11 +1083,33 @@ template<class T> bool linked_list<T>::go_head(T* data)
     }
     else
     {
+
         *data = current->data;
+        
         return 1;
 
     }
 
+}
+template<class T>
+bool linked_list<T>::go_head_ad(T* data, T& ad)
+{
+    current = head;
+    prev = NULL;
+    Line* l=&current->data;
+    if (head == 0)
+    {
+        return 0;
+    }
+    else
+    {
+
+        *data = current->data;
+        cout << &current->data;
+        *ad = *current->data;
+        return 1;
+
+    }
 }
 template<class T> bool linked_list<T>::Next(T* data)
 {
@@ -1754,10 +1805,10 @@ void company::view_company_lines()
     }
     
 }
-Line company::select_company_line()
-{
-    return Line();
-}
+//Line company::select_company_line()
+//{
+//    return Line();
+//}
 void company::create_line_go()
 {
 
@@ -1851,7 +1902,7 @@ void company::view_line_come(Line& l)//m7taga ta3del lesa
         s.pop();
     }
 }
-Line company::select_line_company()
+Line* company::select_line_company()
 {
     Line l1;
     int n;
@@ -1864,7 +1915,7 @@ Line company::select_line_company()
     }
     /*l.print_line();
     l.Display_pickup_point();*/
-    return l1;
+    return &l1;
     
 }
 
@@ -2540,7 +2591,7 @@ void view_all_students()
 
     s_t.Student_print();
 }
-void edit_student()
+void edit_student(Student* s1)
 {
     string phone_number;
     string name;
@@ -3512,7 +3563,7 @@ void booking_ticket(Student* s)
    // Student s;
     student_ticket t1;
     pickup_point p1;
-    Line l1;
+    Line* l1;
     company c;
 
     cout << &c <<endl;
@@ -3522,9 +3573,9 @@ void booking_ticket(Student* s)
     c.set_lines(ALL_LINES);
 
 
-   // c.select_line_company(&l1);
-    l1.set_count_both();
-    t1.set_student_ticket_line(l1);
+   l1= c.select_line_company();
+   l1->set_Line_Name("yousef");
+    //t1.set_student_ticket_line(l1);
 
     t1.set_student_ticket_company(c);
    // l1.select_pickup_point(&p1);
@@ -3630,7 +3681,7 @@ void student_menue(Student* s)
         }
         case 3:
         {
-            edit_student();
+            //edit_student();
             break;
         }
         case 4:
