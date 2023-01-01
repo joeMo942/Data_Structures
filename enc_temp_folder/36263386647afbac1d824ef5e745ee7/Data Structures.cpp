@@ -2854,8 +2854,7 @@ void edit_line()
         }
         else if (select == 2)
         {
-            delete_line(l.get_Line_point_Name());
-            return;
+
         }
         else if (select == 3)
         {
@@ -3586,7 +3585,7 @@ int login_company(company* c)
 void booking_ticket(Student* s)
 {
     int user_choice;
-    // Student s1=*s;
+     Student s1=*s;
     student_ticket t1;
     pickup_point p1;
     Line l1;
@@ -3655,7 +3654,7 @@ void booking_ticket(Student* s)
 
     
 
-    s->set_student_ticket(t1);
+    s1.set_student_ticket(t1);
 
     t1.print_ticket();
 
@@ -3663,8 +3662,8 @@ void booking_ticket(Student* s)
     c_t.Insert_Item(key, c);
     c_t.company_Delete_Item(c.get_email());
 
-    s_t.Insert_Item(s->get_id(), *s);
-    s_t.Student_Delete_Item(s->get_id());
+    s_t.Insert_Item(s1.get_id(), *s);
+    s_t.Student_Delete_Item(s1.get_id());
 
 
 }
