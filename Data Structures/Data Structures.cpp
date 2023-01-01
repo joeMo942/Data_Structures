@@ -48,6 +48,7 @@ private:
     link head;
     link tail;
     link current;
+    link prev;
     int num_of_ele;
 public:
 
@@ -69,7 +70,7 @@ public:
     bool Return_Data(T* data);
     bool go_head(T* data);
     bool Next(T* data);
-
+    void delete_Data(T* data);
 };
 
 // ---------- PICKUP POINT HEADER ---------- //
@@ -547,7 +548,8 @@ private:
 public:
     Student_Table();
     Student_Table(int Bucket);
-    void Search_Item(int key,Student* s);
+    Student* Search_Item(int key);
+    void Student_Delete_Item(int key);
     void Student_print();
     void Table_Student_save();
     void Table_Student_load();
@@ -618,7 +620,7 @@ void view();
 void add_company();
 void view_companys();
 void view_all_students();
-void edit_student(Student* s);
+void edit_student();
 void add_line();
 void add_pickup_point_interface();
 void view_all_lines();
@@ -675,10 +677,26 @@ int num_of_error(int error, int& counter, int limit_of_error);
 
 int main()
 {
-    while (true)
+    Student s, * s1, s2 ,s3;
+    student_ticket ss;
+    s.set_student(123, "hhh", "mahy", "19", "11111111111111", "female", "0000", "01020395448", "mahy@gu.edu.eg");
+    s2.set_student(136, "hhh", "Shiref", "19", "11111111111111", "female", "0001", "01020395448", "shiref@gu.edu.eg");
+    s3.set_student(111, "hhh", "karim", "19", "11111111111111", "female", "0001", "01020395448", "karim@gu.edu.eg");
+    s_t.Insert_Item(123, s);
+    s_t.Insert_Item(136, s2);
+    s_t.Insert_Item(111, s3);
+   // s1 = s_t.Search_Item(123);
+   // cout << "the new name is" << s1->get_name() << endl;
+
+    s_t.Student_print();
+    edit_student();
+
+   // cout << "the new name is" << s1->get_name() << endl;
+    s_t.Student_print();
+    /*while (true)
     {
         main_menue();
-    }
+    }*/
     
     
    
@@ -968,6 +986,32 @@ template<class T> void linked_list<T>::deleteNode(T key)
         delete temp;
     }
 }
+template<class T> void linked_list<T>::delete_Data(T* data)
+{
+    if (current == 0)
+    {
+
+        return;
+    }
+    else if (current->next == 0)
+    {
+        prev = 0;
+        delete current;
+    }
+    else if(head == current)
+    {
+        head = current->next;
+        delete current;
+    }
+    else
+    {
+          prev->next = current->next;
+         delete current;
+
+    }
+
+
+}
 template<class T> bool linked_list<T>::Return_Data(T* data)
 {
     //current = head;
@@ -984,6 +1028,7 @@ template<class T> bool linked_list<T>::Return_Data(T* data)
 template<class T> bool linked_list<T>::go_head(T* data)
 {
     current = head;
+    prev = NULL;
     if (head == 0)
     {
         return 0;
@@ -1011,6 +1056,7 @@ template<class T> bool linked_list<T>::Next(T* data)
     }
     else
     {
+        prev = current;
         current = current->next;
         *data = current->data;
         return 1;
@@ -1809,18 +1855,42 @@ Student_Table::Student_Table()
 }
 Student_Table::Student_Table(int Bucket) :Hash(Bucket)
 {}
-void Student_Table::Search_Item(int key,Student* s)
+Student* Student_Table::Search_Item(int key)
 {
-   // Student* s;
+
     int index = Hash_Function(key);
-    Table[index].go_head(s);
-    while (key != s->get_id() && Table[index].Next(s) != 0)
+    Table[index].go_head(&s1);
+    Table[index].Return_Data(&s1);
+    while (key != s1.get_id() && Table[index].Next(&s1) != 0)
     {
         //Table[index].Next(&s1);
 
-        Table[index].Return_Data(s);
+        Table[index].Return_Data(&s1);
     }
-    return ;
+    return &s1;
+
+}
+void Student_Table::Student_Delete_Item(int key)
+{
+   // Student* s;
+    int index = Hash_Function(key);
+    Table[index].go_head(&s1);
+    Table[index].Return_Data(&s1);
+    while (key != s1.get_id() && Table[index].Next(&s1) != 0)
+    {
+        //Table[index].Next(&s1);
+
+        Table[index].Return_Data(&s1);
+    }
+    if (key == s1.get_id())
+    {
+        Table[index].delete_Data(&s1);
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+
 
 }
 void Student_Table::Student_print()
@@ -2371,7 +2441,7 @@ void view_all_students()
 
     s_t.Student_print();
 }
-void edit_student(Student* s)
+void edit_student()
 {
     string phone_number;
     string name;
@@ -2380,7 +2450,7 @@ void edit_student(Student* s)
     string e_mail;
     string national_id;
 
-    Student s1;
+    Student* s1;
 
     int user_choice;
     int key;
@@ -2390,13 +2460,13 @@ void edit_student(Student* s)
 
     cout << "enter your password to edit";
     cin >> key;
-     s_t.Search_Item(key,s);
+    s1 = s_t.Search_Item(key);
 
-    cout << "Address : " << s->get_address() << "\n ";
-    cout << "Mail : " << s->get_mail() << "\n";
-    cout << "Name : " << s->get_name() << "\n ";
-    cout << "National ID : " << s->get_national_id() << "\n";
-    cout << "Phone number : " << s->get_phone_number() << "\n";
+    cout << "Address : " << s1->get_address() << "\n ";
+    cout << "Mail : " << s1->get_mail() << "\n";
+    cout << "Name : " << s1->get_name() << "\n ";
+    cout << "National ID : " << s1->get_national_id() << "\n";
+    cout << "Phone number : " << s1->get_phone_number() << "\n";
     cout << "\n" << "\n" << "\n" << "\n";
 
     cout << "choose the part you want to edited :\n";
@@ -2413,7 +2483,9 @@ void edit_student(Student* s)
     {
         cout << "user name : ";
         cin >> name;
-        s->set_name(name);
+
+        s1->set_name(name);
+        cout << "Name : " << s1->get_name() << "\n ";
     }
 
 
@@ -2428,7 +2500,7 @@ void edit_student(Student* s)
 
             if (pass == cpass)
             {
-                s->set_password(pass);
+                s1->set_password(pass);
                 break;
             }
 
@@ -2446,7 +2518,7 @@ void edit_student(Student* s)
         {
             cout << "mail : ";
             cin >> e_mail;
-            if (s->set_mail(e_mail))
+            if (s1->set_mail(e_mail))
             {
                 break;
             }
@@ -2462,7 +2534,7 @@ void edit_student(Student* s)
             cout << "national id : ";
             cin >> national_id;
 
-            if (s->set_national_id(national_id))
+            if (s1->set_national_id(national_id))
             {
                 break;
             }
@@ -2476,7 +2548,7 @@ void edit_student(Student* s)
         {
             cout << "phone number : ";
             cin >> phone_number;
-            if (s->set_phone_number(phone_number))
+            if (s1->set_phone_number(phone_number))
             {
                 break;
             }
@@ -2491,13 +2563,16 @@ void edit_student(Student* s)
 
             cout << "phone number : ";
             cin >> phone_number;
-            if (s->set_phone_number(phone_number))
+            if (s1->set_phone_number(phone_number))
             {
                 break;
             }
         }
 
     }
+    s_t.Insert_Item(s1->get_id(), *s1);
+    s_t.Student_Delete_Item(s1->get_id());
+
 
 
 
@@ -3180,7 +3255,7 @@ int login_student(Student* s)
 
 
 
-    s_t.Search_Item(id,s);
+   // s_t.Search_Item(id,s);
 
     if (s->get_password() == pass)
     {
@@ -3344,8 +3419,7 @@ void student_menue(Student* s)
         }
         case 3:
         {
-            s->set_name("yousef");
-            view_all_students();
+            //edit_student(s);
             break;
         }
         case 4:
