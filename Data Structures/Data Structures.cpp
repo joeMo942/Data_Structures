@@ -694,30 +694,10 @@ int num_of_error(int error, int& counter, int limit_of_error);
 
 int main()
 {
-    Student s, * s1, s2 ,s3;
-    student_ticket ss;
-    company* c;
-    Line l;
-    Line l1;
-    Line l2;
-    pickup_point p;
-    p.set_pickup_point_Name("Sss");
-    l1.set_Line_Name("yousef");
-    l1.add_pickup_point(p);
-
    
-    ALL_LINES.Push_Back(l1);
-    ALL_LINES.Push_Back(l1);
-    view_all_lines();
-
-    cout << &l2<<endl;
-    ALL_LINES.go_head_ad(&l, l2);
-    //ALL_LINES.go_head(&l);
-    cout << &l2<<endl;
-    l2.set_Line_Name("ahmed");
-
-    view_all_lines();
-   
+    
+    
+    
 
 
 
@@ -736,10 +716,10 @@ int main()
 
    //// cout << "the new name is" << s1->get_name() << endl;
    // s_t.Student_print();
-    /*while (true)
+    while (true)
     {
         main_menue();
-    }*/
+    }
     
     
    
@@ -1043,6 +1023,7 @@ template<class T> void linked_list<T>::delete_Data(T* data)
     }
     else if(head == current)
     {
+      
         head = current->next;
         delete current;
     }
