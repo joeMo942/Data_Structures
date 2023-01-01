@@ -569,8 +569,8 @@ public:
     void all_companys_print();
     company* Search_Item(string mail);
     void company_Delete_Item(string mail);
-    //void Table_Student_save();
-   // void Table_Student_load();
+    //void Table_company_save();
+   // void Table_company_load();
     
 
 };
@@ -586,7 +586,10 @@ public:
     int convert_to_key(string mail);
     driver_table();
     driver_table(int Bucket);
-    driver Search_Item(string mail);
+    driver* Search_Item(string mail);
+    void driver_Delete_Item(string mail);
+    //void Table_Student_save();
+   // void Table_Student_load();
 };
 
 // ---------- COMAPNY TICKET HEADER ---------- //
@@ -2050,7 +2053,7 @@ int driver_table::convert_to_key(string mail)
     return answer;
 
 }
-driver driver_table::Search_Item(string mail)
+driver* driver_table::Search_Item(string mail)
 {
     int key = convert_to_key(mail);
     int index = Hash_Function(key);
@@ -2060,9 +2063,30 @@ driver driver_table::Search_Item(string mail)
         //Table[index].Next(&c1);
         Table[index].Return_Data(&d1);
     }
-    return d1;
+    return &d1;
 }
+void driver_table::driver_Delete_Item(string mail)
+{
+    int key = convert_to_key(mail);
+    int index = Hash_Function(key);
+    Table[index].go_head(&d1);
+    Table[index].Return_Data(&d1);
+    while (mail != d1.get_mail() && Table[index].Next(&d1) != 0)
+    {
+        //Table[index].Next(&s1);
 
+        Table[index].Return_Data(&d1);
+    }
+    if (mail == d1.get_mail())
+    {
+        Table[index].delete_Data(&d1);
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+
+}
 
 // ############# company table IMPLEMENTATION ############# // 
 company_table::company_table()
