@@ -680,6 +680,7 @@ int main()
         main_menue();
     }
     
+    
    
     /*Student s;
     student_ticket ss;
@@ -1810,10 +1811,10 @@ Student_Table::Student_Table(int Bucket) :Hash(Bucket)
 {}
 void Student_Table::Search_Item(int key,Student* s)
 {
-
+   // Student* s;
     int index = Hash_Function(key);
-    Table[index].Return_Data(s);
-    while (key != s1.get_id() && Table[index].Next(s) != 0)
+    Table[index].go_head(s);
+    while (key != s->get_id() && Table[index].Next(s) != 0)
     {
         //Table[index].Next(&s1);
 
@@ -3240,15 +3241,15 @@ void booking_ticket(Student* s)
     Line l1;
     company c;
 
-
+    cout << &c <<endl;
     select_company(&c);
-   
+    cout << &c << endl;
 
     c.set_lines(ALL_LINES);
 
 
     c.select_line_company(&l1);
-    l1.get_count_both();
+    l1.set_count_both();
     t1.set_student_ticket_line(l1);
 
     t1.set_student_ticket_company(c);
@@ -3343,7 +3344,8 @@ void student_menue(Student* s)
         }
         case 3:
         {
-            edit_student(s);
+            s->set_name("yousef");
+            view_all_students();
             break;
         }
         case 4:
