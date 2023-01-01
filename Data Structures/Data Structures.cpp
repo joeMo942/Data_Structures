@@ -548,9 +548,9 @@ private:
 public:
     Student_Table();
     Student_Table(int Bucket);
+    void Student_print();
     Student* Search_Item(int key);
     void Student_Delete_Item(int key);
-    void Student_print();
     void Table_Student_save();
     void Table_Student_load();
 };
@@ -567,7 +567,11 @@ public:
     company_table();
     company_table(int Bucket);
     void all_companys_print();
-    void Search_Item(string mail,company* c);
+    company* Search_Item(string mail);
+    void company_Delete_Item(string mail);
+    //void Table_Student_save();
+   // void Table_Student_load();
+    
 
 };
 
@@ -2104,19 +2108,42 @@ void company_table::all_companys_print()
     }
 
 }
-void company_table::Search_Item(string mail,company* c)
+
+company* company_table::Search_Item(string mail)
 {
     int key = convert_to_key(mail);
     int index = Hash_Function(key);
-    Table[index].Return_Data(c);
-    while (mail != c->get_email() && Table[index].Next(c) != 0)
+    Table[index].go_head(&c1);
+    Table[index].Return_Data(&c1);
+    while (mail != c1.get_email() && Table[index].Next(&c1) != 0)
     {
         //Table[index].Next(&c1);
-        Table[index].Return_Data(c);
+        Table[index].Return_Data(&c1);
     }
-    
+    return &c1;
 }
+void company_table::company_Delete_Item(string mail)
+{
+    int key = convert_to_key(mail);
+    int index = Hash_Function(key);
+    Table[index].go_head(&c1);
+    Table[index].Return_Data(&c1);
+    while (mail != c1.get_email() && Table[index].Next(&c1) != 0)
+    {
+        //Table[index].Next(&s1);
 
+        Table[index].Return_Data(&c1);
+    }
+    if (mail == c1.get_email())
+    {
+        Table[index].delete_Data(&c1);
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+
+}
 
 // ############# CAR IMPLEMENTATION ############# // 
 car::car()
