@@ -277,7 +277,7 @@ public:
     void delete_pickup_point(pickup_point point);
     void print_line();
     void Display_pickup_point();
-    void select_pickup_point(pickup_point* p);
+    pickup_point select_pickup_point();
     void get_linkedlist_pickup_point(linked_list<pickup_point>* p );
 
 };
@@ -343,7 +343,7 @@ public:
     string get_address();
     string get_phone_number();
     int get_profit();
-    void get_lines(linked_list<Line>& l);
+    linked_list<Line> get_lines();
     // ---- Other---- //
     void delet_line(Line l);
     void view_lines();
@@ -355,7 +355,7 @@ public:
     void create_line_come();
     void view_line_go(Line& l);
     void view_line_come(Line& l);
-    void select_line_company(Line* l);
+    Line select_line_company();
  
     //new//
 
@@ -637,7 +637,7 @@ void add_pickup_point_interface();
 void view_all_lines();
 void delete_line( string name );
 Line select_line();
-void booking_ticket(Student& s );
+void booking_ticket(Student* s );
 
 void select_company(company* c1);
 
@@ -1290,25 +1290,25 @@ void Line::Display_pickup_point()
         }
     }
 }
-void Line::select_pickup_point(pickup_point* p)
+pickup_point Line::select_pickup_point()
 {
     int counter = 0;
     int x;
 
-   // pickup_point p;
+    pickup_point p;
     Display_pickup_point();
     cout << "\tChosse the pickupoint : ";
     cin >> x;
    
 
 
-    pickup_point_Names.go_head(p);
+    pickup_point_Names.go_head(&p);
 
     for (int i = 1; i < x; i++)
     {
-        pickup_point_Names.Next(p);
+        pickup_point_Names.Next(&p);
     }
-
+    return p;
    
 }
 void Line::get_linkedlist_pickup_point(linked_list<pickup_point>* p)
@@ -1721,9 +1721,9 @@ int company::get_profit()
 {
     return profit;
 }
-void company::get_lines(linked_list<Line>& l)
+linked_list<Line> company::get_lines()
 {
-    l=lines;
+    return lines;
 }
 // ---- Other---- //
 void company::delet_line(Line l)
@@ -1852,20 +1852,20 @@ void company::view_line_come(Line& l)//m7taga ta3del lesa
         s.pop();
     }
 }
-void company::select_line_company(Line* l)
+Line company::select_line_company()
 {
-   // Line l1;
+    Line l1;
     int n;
     view_all_lines();
     cin >> n;
-    lines.go_head(l);
+    lines.go_head(&l1);
     for (int i = 1; i <= n; i++)
     {
-        lines.Next(l);
+        lines.Next(&l1);
     }
     /*l.print_line();
     l.Display_pickup_point();*/
-    return;
+    return l1;
     
 }
 
@@ -2550,7 +2550,7 @@ void edit_student()
     string e_mail;
     string national_id;
 
-    Student* s1;
+    //Student* s1;
 
     int user_choice;
     int key;
@@ -2559,8 +2559,8 @@ void edit_student()
 
 
     cout << "enter your password to edit";
-    cin >> key;
-    s1 = s_t.Search_Item(key);
+    cin >> pass;
+    //
 
     cout << "Address : " << s1->get_address() << "\n ";
     cout << "Mail : " << s1->get_mail() << "\n";
@@ -3409,7 +3409,7 @@ void signup_student()
     cout << "select your line\n";
     l = select_line();
     s1.set_student_line(l);
-    l.select_pickup_point(&p);
+   // l.select_pickup_point(&p);
     s1.set_student_pickup_point(p);
 
 
@@ -3592,12 +3592,14 @@ void booking_ticket(Student* s)
     c.set_lines(ALL_LINES);
 
 
-    c.select_line_company(&l1);
+   // c.select_line_company(&l1);
     l1.set_count_both();
     t1.set_student_ticket_line(l1);
 
     t1.set_student_ticket_company(c);
-    l1.select_pickup_point(&p1);
+   // l1.select_pickup_point(&p1);
+
+    
 
     
 
@@ -3622,6 +3624,11 @@ void booking_ticket(Student* s)
     s->set_student_ticket(t1);
 
     t1.print_ticket();
+
+    int key = c_t.convert_to_key(c.get_email());
+    c_t.Insert_Item(key, c);
+    c_t.company_Delete_Item(c.get_email());
+
 
 }
     
@@ -3698,8 +3705,7 @@ void student_menue(Student* s)
         }
         case 4:
         {
-            s->person_print();
-            s->print_line_pickupPoint();
+            edit_student(s);
             break;
         }
         case 5:
