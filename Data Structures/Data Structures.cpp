@@ -2848,7 +2848,8 @@ void edit_line()
         }
         else if (select == 2)
         {
-
+            delete_line(l.get_Line_point_Name());
+            return;
         }
         else if (select == 3)
         {
