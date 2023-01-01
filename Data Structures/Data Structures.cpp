@@ -635,6 +635,7 @@ void edit_company();
 void add_line();
 void add_pickup_point_interface();
 void view_all_lines();
+void delete_line( string name );
 Line select_line();
 void booking_ticket(Student& s );
 
@@ -2574,7 +2575,7 @@ void edit_student()
     cout << "3- Mail \n"; // critical
     cout << "4- National ID \n"; // critical
     cout << "5- Phone number \n";
-    cout << "6- ID \n"; // critical
+    
 
     cin >> user_choice;
 
@@ -2654,21 +2655,7 @@ void edit_student()
         }
     }
 
-    else if (user_choice == 6)
-    {
-
-        while (true)
-        {
-
-            cout << "phone number : ";
-            cin >> phone_number;
-            if (s1->set_phone_number(phone_number))
-            {
-                break;
-            }
-        }
-
-    }
+   
     s_t.Insert_Item(s1->get_id(), *s1);
     s_t.Student_Delete_Item(s1->get_id());
 
@@ -2826,6 +2813,66 @@ void add_pickup_point_interface()
 
 
 }
+void edit_line()
+{
+    pickup_point p;
+    Line l;
+    string n , prev;
+
+    int select;
+    cout << "choose the line you want to add in :\n";
+    l = select_line();
+    cout << "1 edit line  \n";
+    cout << "2 edit pickup point\n";
+    cout << " 3 back \n";
+        select = Select_from_to(1, 3);
+    if (select == 1)
+    {
+        cout << "1 edit line name \n";
+        cout << "2 delet line  \n";
+        cout << "3 back ";
+        select = Select_from_to(1, 3);
+        if (select == 1)
+        {
+            prev = l.get_Line_point_Name();
+            cout << "enter the new name \n";
+            cin >> n;
+           l.set_Line_Name(n);
+           
+           ALL_LINES.Push_Back(l);
+            delete_line( prev);
+            
+            
+            
+            return;
+        }
+        else if (select == 2)
+        {
+
+        }
+        else if (select == 3)
+        {
+            return;
+        }
+    }
+    else if (select ==2)
+    {
+        cout << "1 edit pickup point \n";
+        cout << "2 delet pickup point  \n";
+        cout << "3 add pickup point\n";
+        cout << " 4 back";
+        select = Select_from_to(1, 4);
+        if (select ==1)
+        {
+
+        }
+    }
+    else if (select == 3)
+    {
+        return;
+    }
+
+}
 void view_all_lines()
 {
     Line l;
@@ -2847,7 +2894,30 @@ void view_all_lines()
         counter++;
         x++;
     }
+
 }
+void delete_line(string name )
+{
+    Line l;
+    ALL_LINES.go_head(&l);
+
+    while (name != l.get_Line_point_Name() && ALL_LINES.Next(&l) != 0)
+    {
+        //Table[index].Next(&s1);
+
+        ALL_LINES.Return_Data(&l);
+    }
+    if (name == l.get_Line_point_Name())
+    {
+        ALL_LINES.delete_Data(&l);
+        
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
+}
+
 Line select_line()
 {
     Line l;
@@ -3819,7 +3889,8 @@ void Admin_Line()
         }
         case 2:
         {
-            add_pickup_point_interface();
+            edit_line();
+           // add_pickup_point_interface();
             break;
         }
         case 3:
