@@ -628,7 +628,6 @@ Student_Table s_t(13);
 company_table c_t(13);
 driver_table d_t(13);
 linked_list<Line> ALL_LINES;
-linked_list<Line>* ALL_LINES_PTR;
 linked_list<string> ALL_COMPANYS;
 
 // ---------- university menue ---------- //
@@ -698,80 +697,10 @@ int num_of_error(int error, int& counter, int limit_of_error);
 int main()
 {
 
-
-
-
     while (true)
     {
         main_menue();
     }
-
-
-
-    /*Student s;
-    student_ticket ss;
-
-    while (true)
-    {
-
-
-        int x;
-        cout << "1-signup student\n2-login student\n3-add line\n4-add company\n5-view student\n6-view tcket\n7-exit\n";
-        cin >> x;
-
-        switch (x)
-        {
-        case 1:
-        {
-            signup_student();
-            break;
-        }
-        case 2:
-        {
-            if (login_student(&s))
-            {
-                student_menue(&s);
-            }
-            else
-            {
-                cout << "wrong user or pass\n";
-                break;
-            }
-            break;
-        }
-        case 3:
-        {
-            add_line();
-            break;
-        }
-        case 4:
-        {
-            add_company();
-            break;
-
-        }
-        case 5:
-        {
-            view_all_students();
-            break;
-        }
-        case 6:
-        {
-
-
-            break;
-        }
-        case 7:
-        {
-            return 0;
-        }
-        default:
-            break;
-        }
-    }*/
-
-
-
 
 }
 
@@ -898,20 +827,7 @@ template<class T> void linked_list<T>::makeEmpty()
         num_of_ele--;
     }
 }
-/*
-template<class T>
-linked_list<T> linked_list<T>::copy()
-{
-    linked_list<T> new_list;
-    current = head;
-    while (current != 0)
-    {
-        new_list.Push_Back(current->data);
-        current = current->next;
-    }
-    return new_list;
-}
-*/
+
 template<class T> void linked_list<T>::print()
 {
 
@@ -1137,15 +1053,7 @@ template<class T> void Hash<T>::Delete_Item(int key, T data)
     int index = Hash_Function(key);
     Table[index].deleteNode(data);
 }
-//template<class T> void Hash<T>::Display_Hash()
-//{
-//    for (int i = 0; i < Bucket; i++)
-//    {
-//        cout << "Bucket Number : " << i << endl;
-//        Table[i].print();
-//        cout << endl;
-//    }
-//}
+
 
 
 // ############# PICKUP POINT IMPLEMENTATION ############# // 
@@ -1630,9 +1538,7 @@ void Student::print_ticket()
 {
    // st.print_ticket();
 }
-// string getName();
-// double getGPA();
-//  void print();
+
 
 
 // ############# DRIVER IMPLEMENTATION ############# //
@@ -1683,7 +1589,7 @@ string driver::get_mail()
 
 }
 // ---- Other---- //
-// void class_print_driver();
+
 
 
 // ############# COMPANY IMPLEMENTATION ############# // 
@@ -3550,20 +3456,6 @@ void signup_company()
 
 
 
-    /*while (true)
-    {
-        cout << "national id : ";
-        cin >> national_id;
-
-        if (s1.set_national_id(national_id))
-        {
-            break;
-        }
-    }*/
-
-
-
-
 
     // while (true)
      //{
@@ -3618,9 +3510,6 @@ int login_student(Student* s)
         return 0;
     }
 
-
-
-
 }
 
 
@@ -3670,15 +3559,8 @@ void booking_ticket(Student* s)
     int x;
 
     company c;
-    //linked_list<Line> all;
+
     linked_list<pickup_point> allp;
-
-
-    
-    //c=select_company();
-    
-
-    //c.set_lines(ALL_LINES);
 
     l1 = select_line();
     temp_l = l1;
@@ -3712,9 +3594,7 @@ void booking_ticket(Student* s)
 
     cout << p1.get_count_go() << endl << l1.get_count_go() << endl;
 
-    //allp.push(x,p1)
-    /*allp.delete_Data(&temp_p);
-    allp.Push_Back(p1);*/
+
 
    allp.Push_between_B(x, p1);
 
@@ -3734,7 +3614,7 @@ void booking_ticket(Student* s)
 
     t1.print_ticket();
 
-   // s1->print_student_ticket();
+
 
     s_t.Insert_Item(s1->get_id(), *s1);
     s_t.Student_Delete_Item(s1->get_id());
