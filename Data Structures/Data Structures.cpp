@@ -4,8 +4,18 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <chrono>
+#include <thread>
+#include "LIBRARY/tabulate-master/include/tabulate/table.hpp"
+#include "LIBRARY/color-console-master/include/color.hpp"
+
 
 using namespace std;
+using namespace tabulate;
+using namespace dye;
+using namespace this_thread;     // sleep_for, sleep_until
+using namespace chrono_literals; // ns, us, ms, s, h, etc.
+using chrono::system_clock;
 
 static int company_ticket_counter = 0;
 static int student_ticket_counter = 0;
@@ -34,6 +44,18 @@ enum type { high_s, super_jet, mini_bus };
 
 
 // ---------- TOOLS HEADER ---------- //
+void delay(int n)
+{
+    sleep_for(1s);
+    while (n)
+    {
+        system("cls");
+        cout << "Returning at " << n << " ...";
+        --n;
+        sleep_for(1s);
+    }
+
+}
 
 // ---------- LINKED LIST HEADER ---------- //
 template <class T> class linked_list
@@ -639,8 +661,6 @@ public:
     string get_company_ticket_price();
     Line get_company_ticket_line();
 };
-
-
 
 
 Student_Table s_t(13);
@@ -1278,15 +1298,15 @@ void Line::delete_pickup_point(pickup_point point)
 }
 void Line::print_line()
 {
-    cout << "\t" << Line_Name << endl;
-    cout << "\tcount both" << count_both << endl;
-    cout << "\tcount go" << count_go << endl;
-    cout << "\tcount come" << count_come << endl;
+    cout <<"\t"<< Line_Name << endl;
+    cout << "Round trip: " << count_both << endl;
+    cout << "One way (From town): " << count_go << endl;
+    cout << "One way (From university): " << count_come << endl;
 }
 void Line::Display_pickup_point()
 {
-    cout << "\t" << Line_Name << endl;
-    cout << "  pickup points  " << endl;
+    cout << "\n\n\n\t Line name: " << Line_Name << endl;
+    cout << "(Pickup points) =>";
     pickup_point p;
     pickup_point_Names.go_head(&p);
     while (true)
@@ -1306,8 +1326,10 @@ pickup_point Line::select_pickup_point(int* y)
 
     pickup_point p;
     Display_pickup_point();
-    cout << "\tChosse the pickupoint : ";
+    cout << "\n\tChosse your Pickup point: ";
     cin >> x;
+   
+    pickup_point_Names.go_head(p);
 
 
 
@@ -1382,7 +1404,7 @@ int Person::set_national_id(string National_id)
         return 1;
     }
     else {
-        cout << "Invalid National ID";
+        cout << red("Invalid National ID..!");
         return 0;
     }
 }
@@ -1407,7 +1429,7 @@ int Person::set_phone_number(string phone_number)
         return 1;
     }
     else {
-        cout << "Invalid phone number";
+        cout << red("Invalid phone number..!");
         return 0;
     }
 
@@ -1510,7 +1532,7 @@ int Student::set_mail(string mail)
         return 1;
     }
     else {
-        cout << "Invalid Email address " << endl;
+        cout << red("Invalid Email address..!") << endl;
         //system("pause");
         return 0;
     }
@@ -1686,7 +1708,7 @@ int company::set_email(string mail)
         return 1;
     }
     else {
-        cout << "Invalid Email address " << endl;
+        cout << red("Invalid Email address..!") << endl;
         //system("pause");
         return 0;
     }
@@ -1714,7 +1736,7 @@ int company::set_phone_number(string num)
         return 1;
     }
     else {
-        cout << "Invalid phone number\n";
+        cout << red("Invalid phone number\n");
         return 0;
     }
 
@@ -1767,7 +1789,6 @@ void company::view_lines()
 
 }
 void company::print_company()
-{
     cout << "\tCompany name: " << name << endl;
 }
 void company::view_company_lines()
@@ -1944,7 +1965,7 @@ void Student_Table::Student_Delete_Item(int key)
     }
     else
     {
-        cout << "not found" << endl;
+        cout << yellow("NOT FOUND") << endl;
     }
 
 
@@ -2059,7 +2080,7 @@ void Student_Table::Table_Student_load()
     if (!csv_file.is_open())
     {
         // CSV file doesn't exist, so create it
-        cout << "no file" << endl;
+        cout << "No file" << endl;
     }
     else
     {
@@ -2157,7 +2178,7 @@ void driver_table::driver_Delete_Item(string mail)
     }
     else
     {
-        cout << "not found" << endl;
+        cout << yellow("NOT FOUND") << endl;
     }
 
 }
@@ -2245,7 +2266,7 @@ void company_table::company_Delete_Item(string mail)
     }
     else
     {
-        cout << "not found" << endl;
+        cout << yellow("NOT FOUND") << endl;
     }
 
 }
@@ -2476,10 +2497,11 @@ int student_ticket::get_student_ticket_price()
 }
 void student_ticket::print_ticket()
 {
-    cout << "\tStudent ticket\n";
-    //cout << "\tTicket id: " << student_ticket_id << endl;
-    cout << "\tLine : " << student_ticket_line.get_Line_point_Name() << endl;
-    cout << "\tPickup point : " << student_ticket_pickup_point.get_pickup_point_Name() << endl;
+    cout << "\n\t(Your ticket infos)\n";
+   // cout << "\tTicket id: " << student_ticket_id << endl;
+    cout << "Your Line is =>      " << student_ticket_line.get_Line_point_Name() << endl;
+    cout <<  "Your Pickup point is =>     " << student_ticket_pickup_point.get_pickup_point_Name() << endl;
+    
     cout << "\tcompany : " << student_ticket_company.get_name() << endl;
     cout << "\tprice : " << price << endl;
 
@@ -2513,23 +2535,25 @@ void add_company()
     int num_error = 0;
     int limit_of_error = 3;
 
+    
+    cout << "\nName: ";
 
     cout << "name: ";
     cin >> cin_str;
     c1.set_name(cin_str);
 
-    cout << "pass: ";
+    cout << "\nPassword: ";
     cin >> cin_str;
     c1.set_pass(cin_str);
 
-    cout << "address: ";
+    cout << "\nAddress: ";
     cin >> cin_str;
     c1.set_address(cin_str);
 
 
     while (num_error < limit_of_error)
     {
-        cout << "phone number: ";
+        cout << "\nPhone number: ";
         cin >> cin_str;
         if (c1.set_phone_number(cin_str) == 1)
         {
@@ -2545,14 +2569,14 @@ void add_company()
     }
 
 
-    cout << "user name: ";
+    cout << "\nUsername: ";
     cin >> cin_str;
     c1.set_user_name(cin_str);
 
 
     while (num_error < limit_of_error)
     {
-        cout << "email: ";
+        cout << "\nEmail: ";
         cin >> cin_str;
         if (c1.set_email(cin_str) == 1)
         {
@@ -2599,8 +2623,10 @@ void edit_student(Student* s)
 
 
 
-    cout << "enter your password to edit";
-    cin >> pass;
+    cout << "Enter your password to edit: ";
+    cin >> key;
+    s1 = s_t.Search_Item(key);
+
     if (s1->get_password() != pass)
     {
         cout << "Wrong passward" << endl;
@@ -2614,9 +2640,9 @@ void edit_student(Student* s)
     cout << "Name : " << s1->get_name() << "\n ";
     cout << "National ID : " << s1->get_national_id() << "\n";
     cout << "Phone number : " << s1->get_phone_number() << "\n";
-    cout << "\n" << "\n" << "\n" << "\n";
+    cout << "\n" << "\n";
 
-    cout << "choose the part you want to edited :\n";
+    cout << "\t(Choose the part you want to edit)\n";
     cout << "1- Username \n";
     cout << "2- Password \n";
     cout << "3- Mail \n"; // critical
@@ -2624,15 +2650,15 @@ void edit_student(Student* s)
     cout << "5- Phone number \n";
 
 
-    cin >> user_choice;
+    user_choice = Select_from_to(1, 6);
 
     if (user_choice == 1)
     {
-        cout << "user name : ";
+        cout << "User name: ";
         cin >> name;
 
         s1->set_name(name);
-        cout << "Name : " << s1->get_name() << "\n";
+        cout << "Name: " << s1->get_name() << "\n";
     }
 
 
@@ -2640,9 +2666,9 @@ void edit_student(Student* s)
     {
         while (1)
         {
-            cout << "passward : ";
+            cout << "Passward: ";
             cin >> pass;
-            cout << "confirm passward : ";
+            cout << "Confirm passward: ";
             cin >> cpass;
 
             if (pass == cpass)
@@ -2663,7 +2689,7 @@ void edit_student(Student* s)
 
         while (true)
         {
-            cout << "mail : ";
+            cout << "Email: ";
             cin >> e_mail;
             if (s1->set_mail(e_mail))
             {
@@ -2678,7 +2704,7 @@ void edit_student(Student* s)
 
         while (true)
         {
-            cout << "national id : ";
+            cout << "National number: ";
             cin >> national_id;
 
             if (s1->set_national_id(national_id))
@@ -2693,7 +2719,7 @@ void edit_student(Student* s)
     {
         while (true)
         {
-            cout << "phone number : ";
+            cout << "Phone number: ";
             cin >> phone_number;
             if (s1->set_phone_number(phone_number))
             {
@@ -2725,42 +2751,46 @@ void edit_company()
     string key;
 
 
-    cout << "enter your E-mail to edit: ";
+    cout << "Enter your E-mail to edit: ";
     cin >> key;
     c1 = c_t.Search_Item(key);
-    cout << "enter your password to edit: ";
+    cout << "Enter your password to edit: ";
     cin >> key;
     if (c1->get_pass() == key)
     {
-        cout << "\n Mail : " << c1->get_email() << "\n";
-        cout << " Name : " << c1->get_name() << "\n ";
-        cout << "Address : " << c1->get_address() << "\n ";
-        cout << "Phone number : " << c1->get_phone_number() << "\n";
-        cout << "\n" << "\n" << "\n" << "\n";
 
-        cout << "choose the part you want to edited :\n";
+        cout <<  "\n Email: " << c1->get_email() << "\n";
+        cout << "Name: " << c1->get_name() << "\n ";
+        cout << "Address: " << c1->get_address() << "\n ";
+        cout << "Phone number: " << c1->get_phone_number() << "\n";
+        cout << "\n" << "\n";
+
+
+        cout << "\t(Choose the part you want to edit)\n";
         cout << "1- Name \n";
         cout << "2- Address \n";
-        cout << "3- Phone number \n";
-        cout << "4- Password \n";
-        cout << "5 back\n";
+
+        cout << "3- Phone number \n"; 
+        cout << "4- Password \n"; 
+        cout << "5- Back\n";
+
         user_choice = Select_from_to(1, 5);
 
 
 
         if (user_choice == 1)
         {
-            cout << "Name : ";
+            cout << "\n\nName: ";
             cin >> name;
 
             c1->set_name(name);
-            cout << "Name : " << c1->get_name() << "\n";
+            cout << "\tNew Name: " << c1->get_name() << "\n";
         }
         else if (user_choice == 2)
         {
             while (true)
             {
-                cout << "Address : ";
+                cout << "\n\nAddress: ";
                 cin >> Address;
                 c1->set_address(Address);
                 break;
@@ -2771,7 +2801,7 @@ void edit_company()
         {
             while (true)
             {
-                cout << "phone number : ";
+                cout << "\n\nPhone number: ";
                 cin >> phone_number;
                 if (c1->set_phone_number(phone_number))
                 {
@@ -2783,9 +2813,9 @@ void edit_company()
         {
             while (1)
             {
-                cout << "passward : ";
+                cout << "Passward: ";
                 cin >> pass;
-                cout << "confirm passward : ";
+                cout << "Confirm passward: ";
                 cin >> cpass;
 
                 if (pass == cpass)
@@ -2793,6 +2823,7 @@ void edit_company()
                     c1->set_pass(pass);
                     break;
                 }
+                else cout << red("The passwords doesn't match..!");
 
             }
         }
@@ -2803,7 +2834,7 @@ void edit_company()
     }
     else
     {
-        cout << "Wrong password or wrong E-mail\n";
+        cout << red("Wrong password or wrong E-mail\n");
     }
 
 
@@ -2816,27 +2847,27 @@ void add_line()
     string pickupPoint_name;
     pickup_point p;
     Line l;
-    int x = 0;
+    int x = 1;
 
 
-    cout << "enter the line name: ";
+    cout << "\nEnter line name: ";
     cin >> line_name;
 
     l.set_Line_Name(line_name);
 
 
 
-    cout << "add pickup points to this line \n press 0 to add \n";
+    cout << "\tAdd pickup points to this line   " << yellow( "( Press 1 to add another )\n" );
 
-    while (x == 0)
+    while (x == 1)
     {
-        cout << "enter the picup point name: ";
+        cout << "Enter picup point name: ";
         cin >> pickupPoint_name;
 
         p.set_pickup_point_Name(pickupPoint_name);
 
         l.add_pickup_point(p);
-        cout << "press 0 to add";
+        cout << yellow("\n\t Press 1 to add another ");
         cin >> x;
     }
     ALL_LINES.Push_Back(l);
@@ -2847,12 +2878,12 @@ void add_pickup_point_interface()
     pickup_point p;
     Line l;
     string n;
-    cout << "choose the line you want to add in :\n";
+    cout << "\n\tChoose the line you want to add in \n";
 
     //l.
 
     l = select_line();
-    cout << "\nname of pickuppoint : ";
+    cout << "\nName of pickup point: ";
     cin >> n;
     p.set_pickup_point_Name(n);
 
@@ -2860,6 +2891,7 @@ void add_pickup_point_interface()
 
 
 }
+
 void edit_line()
 {
     pickup_point p;
@@ -2929,7 +2961,7 @@ void view_all_lines()
 
     while (1)
     {
-        cout << counter << "-";
+        cout << counter << " - ";
         l.Display_pickup_point();
         
         if (!ALL_LINES.Next(&l))
@@ -3019,7 +3051,7 @@ void add_driver(int user_choice)
     while (num_error < limit_of_error)
     {
         cout << "\nEnter Gender       (1- Male    2- Female)";
-        cin >> user_choice;
+        user_choice = Select_from_to(1, 2);
         if (user_choice == 1)
         {
             d.set_gender("male");
@@ -3100,27 +3132,27 @@ void edit_driver(string mail) {
     driver d;
     // d = d_t.Search_Item(mail);
     view_driver(mail);
-    cout << "for editing 1. name" << endl << "2.age" << endl << "3.National_id" << endl << "4.Password"
-        << "5.phone_number";
+    cout << "\n\tChoose one to edit\n" << "1. Name\n" << endl << "2. Age\n" << endl << "3. National number\n" << "4. Password\n"
+        << "5. Phone number";
 
-    cin >> choice;
+    choice = Select_from_to(1, 5);
     switch (choice) {
     case 1:
     {
         string new_name;
-        cout << d.get_mail() << " name is" << d.get_name() << endl;
+        cout << d.get_mail() << "The Name is: " << d.get_name() << endl;
         cin >> new_name;
         d.set_name(new_name);
-        cout << "done successfully the new name is :" << d.get_name();
+        cout << green("\n\nDone successfully\t") << "The new name is: " << d.get_name();
         break;
     }
 
     case 2: {
         string new_age;
-        cout << d.get_mail() << " age is " << d.get_age() << endl;
+        cout << d.get_mail() << "The Age is: " << d.get_age() << endl;
         cin >> new_age;
         d.set_age(new_age);
-        cout << "done successfully the new age is :" << d.get_age();
+        cout << green("\n\nDone successfully\t") << "The new age is: " << d.get_age();
         break;
     }
 
@@ -3129,13 +3161,13 @@ void edit_driver(string mail) {
         if (counter1 == 0)
         {
             string new_National_id;
-            cout << d.get_mail() << "National_id is " << d.get_national_id();
+            cout << d.get_mail() << "The National number is: " << d.get_national_id();
             cin >> new_National_id;
             d.set_national_id(new_National_id);
-            cout << "done successfully the new national is :" << d.get_national_id();
+            cout << green("\n\nDone successfully\t") << "the new National numer is: " << d.get_national_id();
             break;
         }
-        else cout << "Go to the uni" << endl;
+        else cout << "Go to the university" << endl;
     }
 
     case 4:
@@ -3144,10 +3176,10 @@ void edit_driver(string mail) {
         {
             string cpass;
             string new_password;
-            cout << d.get_mail() << "Enter the new password : " << endl;
+            cout << d.get_mail() << "Enter the new password: " << endl;
             cin >> new_password;
 
-            cout << "confirm passward : ";
+            cout << "Confirm passward : ";
             cin >> cpass;
 
             if (new_password == cpass)
@@ -3155,23 +3187,23 @@ void edit_driver(string mail) {
                 d.set_password(new_password);
                 break;
             }
-            cout << "done successfully the new password is :" << d.get_password();
+            cout << green("Done successfully") << "the new password is: " << d.get_password();
 
             break;
 
         }
-        else cout << "Go to the uni";
+        else cout << "Go to the university";
     }
     case 5: {
         string new_phone_number;
-        cout << d.get_mail() << " phone number is " << d.get_phone_number() << endl;
+        cout << d.get_mail() << "The Phone number is " << d.get_phone_number() << endl;
         cin >> new_phone_number;
         d.set_phone_number(new_phone_number);
-        cout << "done successfully the new phone number is :" << d.get_phone_number();
+        cout << green("\n\nDone successfully\t") << "The new phone number is: " << d.get_phone_number();
         break;
     }
     default: {
-        cout << "you choose a wrong number";
+        cout << red("You choosed a wrong number..!");
         edit_driver(mail);
 
     }
@@ -3182,12 +3214,13 @@ void edit_driver(string mail) {
 }
 void view_driver(string mail) {
     driver d;
-    // d = d_t.Search_Item(mail);
-    cout << "the name is" << d.get_name() << endl;
-    cout << "the age is" << d.get_age() << endl;
-    cout << "the National_id is" << d.get_national_id() << endl;
-    cout << "the gender is" << d.get_gender() << endl;
-    cout << "the password is" << d.get_password() << endl;
+   // d = d_t.Search_Item(mail);
+    cout << "Name: " << d.get_name() << endl;
+    cout << "Age: " << d.get_age() << endl;
+    cout << "National number: " << d.get_national_id() << endl;
+    cout << "Gender: " << d.get_gender() << endl;
+    cout << "Password: " << d.get_password() << endl;
+
 }
 
 
@@ -3415,21 +3448,25 @@ void signup_student()
     Student s1;
 
 
-    cout << "user name : ";
+    cout << "User name: ";
     cin >> name;
     s1.set_name(name);
 
     while (1)
     {
-        cout << "passward : ";
+        cout << "\nPassward : ";
         cin >> pass;
-        cout << "confirm passward : ";
+        cout << "\nConfirm passward : ";
         cin >> cpass;
 
         if (pass == cpass)
         {
             s1.set_password(pass);
             break;
+        }
+        else
+        {
+            cout << red("\n\tPasswords is not matched..!");
         }
 
     }
@@ -3467,7 +3504,7 @@ void signup_student()
         }
     }
 
-    cout << "ID : ";
+    cout << "ID: ";
     cin >> id;
     s1.set_id(id);
 
@@ -3491,15 +3528,15 @@ void signup_company()
     company s1;
 
 
-    cout << "user name : ";
+    cout << "Username: ";
     cin >> name;
     s1.set_name(name);
 
     while (1)
     {
-        cout << "passward : ";
+        cout << "Passward : ";
         cin >> pass;
-        cout << "confirm passward : ";
+        cout << "Confirm passward : ";
         cin >> cpass;
 
         if (pass == cpass)
@@ -3511,7 +3548,7 @@ void signup_company()
     }
 
 
-    cout << "mail : ";
+    cout << "Email: ";
     cin >> e_mail;
     s1.set_email(e_mail);
 
@@ -3522,7 +3559,7 @@ void signup_company()
 
     // while (true)
      //{
-    cout << "phone number : ";
+    cout << "Phone number: ";
     cin >> phone_number;
     s1.set_phone_number(phone_number);
     /*if (s1.set_phone_number(phone_number))
@@ -3554,9 +3591,9 @@ int login_student(Student* s)
     int id;
     string pass;
 
-    cout << "\tenter your id : ";
+    cout << "\n\tEnter your id: ";
     cin >> id;
-    cout << "\tenter your passward : ";
+    cout << "\n\tEnter your password: ";
     cin >> pass;
 
 
@@ -3585,9 +3622,9 @@ int login_company(company* c)
     string id;
     string pass;
 
-    cout << "\tenter your Email : ";
+    cout << "\tEnter the id: ";
     cin >> id;
-    cout << "\tenter your passward : ";
+    cout << "\t\nEnter the password: ";
     cin >> pass;
 
 
@@ -3602,9 +3639,6 @@ int login_company(company* c)
     {
         return 0;
     }
-
-
-
 
 }
 
@@ -3695,7 +3729,7 @@ company select_company()
     int choise;
 
     ALL_COMPANYS.go_head(&x);
-    cout << "\nchoose the company you want to go with: ";
+    cout << "\nChoose the company you want to go with: ";
     while (true)
     {
         ALL_COMPANYS.Return_Data(&x);
@@ -3729,12 +3763,13 @@ void student_menue(Student* s)
        
         int user_choice;
         cout << "\n.................. MAIN MENU ..................";
-        cout << "\n\n\t1) Book ticket\n"
-            << "\t2) view ticket\n"
-            << "\t3) Edit Info\n"
-            << "\t4) View profile\n"
-            << "\t5) Log out\n\n"
-            << "YOUR CHOICE ->   ";
+        cout << "\n\n\t1) Book a ticket\n"
+             << "\t2) View your ticket\n"
+             << "\t3) Edit your Info\n"
+             << "\t4) View profile\n" 
+             << "\t5) Log out\n\n" 
+             << "YOUR CHOICE ->   ";
+
         user_choice = Select_from_to(1, 5);
         Student* s1 = s_t.Search_Item(s->get_id());
         switch (user_choice)
@@ -3785,11 +3820,12 @@ void company_menue(company* c)
         int user_choice;
         cout << "\n.................. COMPANY MENU ..................";
         cout << "\n\n\t1) View all tickets\n"
-            << "\t2) count of students  \n"
-            << "\t3) view lines trips\n"
-            << "\t4) View profit\n"
-            << "\t5) Log out\n\n"
-            << "YOUR CHOICE ->   ";
+             << "\t2) Students counter  \n"
+             << "\t3) View lines trips\n" 
+             << "\t4) View profile\n" 
+             << "\t5) Log out\n\n" 
+             << "YOUR CHOICE ->   ";
+
         user_choice = Select_from_to(1, 5);
 
 
@@ -3845,16 +3881,14 @@ void university_menue()
     while (true)
     {
 
-
         int user_choice;
         cout << "\n.................. ADMIN MENU ..................";
-        cout << "\n\n\t1) company\n"
-            << "\t2) Line\n"
-            << "\t3) student\n"
-            << "\t2) Edit studet\n"
-            << "\t3) View all student\n"
-            << "\t4)back\n\n"
-            << "YOUR CHOICE ->   ";
+        cout << "\n\n\t1) Company menu\n"
+             << "\t2) Line menu\n" 
+             << "\t3) View student\n"
+             << "\t4) Back\n\n" 
+             << "YOUR CHOICE ->   ";
+
         user_choice = Select_from_to(1, 4);
 
         switch (user_choice)
@@ -3895,10 +3929,11 @@ void Admin_company()
         int user_choice;
         cout << "\n.................. COMPANY MENU ..................";
         cout << "\n\n\t1) Add company\n"
-            << "\t2) Edit company\n"
-            << "\t3) View all companys\n"
-            << "\t4)back\n\n"
-            << "YOUR CHOICE ->   ";
+             << "\t2) Edit company\n"
+             << "\t3) View all companys\n"
+             << "\t4) Back\n\n"
+             << "YOUR CHOICE ->   ";
+
         user_choice = Select_from_to(1, 4);
 
         switch (user_choice)
@@ -3940,7 +3975,7 @@ void Admin_Line()
         cout << "\n\n\t1) Add Line\n"
             << "\t2) Edit Line\n"
             << "\t3) View all Line\n"
-            << "\t4)back\n\n"
+            << "\t4) Back\n\n"
             << "YOUR CHOICE ->   ";
         user_choice = Select_from_to(1, 4);
 
@@ -3980,7 +4015,11 @@ void Admin_Line()
 void driver_menue()
 {
     int x;
-    cout << "1-see line\n2-menue of students\n3-log out\n";//feh hagat msh mgm3ha
+    cout << "\n.................. Line MENU ..................";
+    cout << "\n\n\t1) See line\n"
+        << "\t2) Menu of students\n"
+        << "\t3) Log out\n"
+        << "YOUR CHOICE ->   ";
     cin >> x;
 
     switch (x)
@@ -4025,12 +4064,12 @@ int Select_from_to(int start, int end)
         }
         if (counter != 2)
         {
-            cout << "Wrong Selection" << endl;
-            cout << "Please Select Number from ( " << start << " ) To " << "( " << end << " )" << endl;
+            cout << red("\n\nWrong Selection..!") << endl;
+            cout << "\nPlease Select Number from ( " << start << " ) To " << "( " << end << " )" << endl;
         }
         else
         {
-            cout << "Wrong Selection" << endl;
+            cout << red("\n\nWrong Selection..!") << endl;
         }
         counter++;
     }
@@ -4050,13 +4089,11 @@ int num_of_error(int error, int& counter, int limit_of_error)
     }
     if (counter == limit_of_error)
     {
-        cout << " kteer kda \n" << endl;
+        cout << red("\n\tToo much wrong entries...!") << endl;
         return -1;
     }
 
 }
-
-
 void main_menue()
 {
     int user_choice;
@@ -4070,14 +4107,12 @@ void main_menue()
     {
     case 1:
     {
-        system("pause");
         system("cls");
         log_menue();
         break;
     }
     case 2:
     {
-        system("pause");
         system("cls");
         signup_student();
         break;
@@ -4090,16 +4125,15 @@ void main_menue()
 
 }
 
-
 int login_uni()
 {
     string admin_user = "admin";
     string pass_admin = "admin";
     string u, p;
 
-    cout << "\tEnter user : ";
+    cout << "\tEnter username: ";
     cin >> u;
-    cout << "\tEnter your passward : ";
+    cout << "\tEnter your passward: ";
     cin >> p;
 
 
@@ -4117,7 +4151,6 @@ int login_uni()
 
 
 }
-
 void log_menue()
 {
     Student s;
@@ -4140,14 +4173,13 @@ void log_menue()
     {
         if (login_student(&s))//law da5lt cahr mkan int yedrab error
         {
-            system("pause");
             system("cls");
             student_menue(&s);
         }
         else
         {
-            cout << "\t\nWrong Pass or User\n";
-            system("pause");
+            cout << red("\t\nWrong password or username..!\n");
+            delay(3);
             system("cls");
             break;
         }
@@ -4157,15 +4189,14 @@ void log_menue()
     {
         if (!login_company(&c))
         {
-            system("pause");
             system("cls");
             company_menue(&c);
             break;
         }
         else
         {
-            cout << "\t\nWrong pass or user\n";
-            system("pause");
+            cout << red("\t\nWrong password or username..!\n");
+            delay(3);
             system("cls");
             break;
         }
@@ -4175,15 +4206,14 @@ void log_menue()
     {
         if (login_uni())
         {
-            system("pause");
             system("cls");
             university_menue();
             break;
         }
         else
         {
-            cout << "\t\nWrong pass or user\n";
-            system("pause");
+            cout << red("\t\nWrong password or username..!\n");
+            delay(3);
             system("cls");
             break;
         }
