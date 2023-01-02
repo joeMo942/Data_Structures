@@ -161,18 +161,20 @@ public:
 
     void display()
     {
+        int counter=1;
         link temp;
         if (top == NULL) {
-            std::cout << "\nStack Underflow";
-            exit(1);
+            cout << "\nno rservation in this point ";
+            return;
         }
         else {
             temp = top;
             while (temp != NULL) {
-                std::cout << temp->data.get_pickup_point_Name();
+                cout <<"\t" << counter << "-" << temp->data.get_pickup_point_Name();
                 temp = temp->next;
                 if (temp != NULL)
-                    std::cout << " -> ";
+                    cout << "\n";
+                counter++;
             }
         }
     }
@@ -218,7 +220,7 @@ public:
     {
         if (front == NULL)
         {
-            return 0;
+            cout << "no resrvation in this line"<<endl;
         }
         link temp = front;
 
@@ -234,6 +236,23 @@ public:
         return 1;
 
     }
+    void display() 
+    {
+        link temp;
+        if ((front == NULL) && (rear == NULL)) {
+            printf("\nQueue is Empty\n");
+        }
+        else {
+            printf("The queue is \n");
+            temp = front;
+            while (temp) {
+                cout << temp -> data.get_pickup_point_Name() <<endl;
+                temp = temp -> next;
+            }
+           cout<<"\n";
+        }
+    }
+
 };
 
 // ---------- LINE HEADER ---------- //
@@ -696,12 +715,54 @@ int num_of_error(int error, int& counter, int limit_of_error);
 
 int main()
 {
+    
+    Line l;
+    //ALL_LINES.go_head(&l);
+    double cost;
+    int  passengers_count_go, passengers_count_come, passengers_count_both, passengers_count;
 
-    while (true)
+        //passengers_count_go = l.get_count_go();
+        //passengers_count_come = l.get_count_come();
+        //passengers_count_both = l.get_count_both();
+        passengers_count_go =90 ;
+        passengers_count_come =20;
+        passengers_count_both = 5;
+        if ((passengers_count_both + passengers_count_go) >= (passengers_count_both + passengers_count_come))
+        {
+            passengers_count = passengers_count_both + passengers_count_go;
+        }
+        else if ((passengers_count_both + passengers_count_go) < (passengers_count_both + passengers_count_come))
+        {
+            passengers_count = passengers_count_both + passengers_count_come;
+        }
+        if (passengers_count == 0) {
+            l.set_car_type("null");
+           
+        }
+        else if (passengers_count > bus) {
+            l.set_car_type(bus_plus(passengers_count, &cost));
+            cout << bus_plus(passengers_count, &cost);
+            l.set_bus_cost(cost);
+        }
+        else if (passengers_count <= bus)
+        {
+            l.set_car_type(max_bus(passengers_count, &cost));
+            cout << max_bus(passengers_count, &cost);
+            l.set_bus_cost(cost);
+        }
+        
+
+    
+    
+
+
+
+
+
+    /*while (true)
     {
         main_menue();
-    }
-
+    }*/
 }
 
 
@@ -3131,37 +3192,50 @@ void view_driver(string mail) {
 
 
 // ############# bus menue IMPLEMENTATION ############# //
-string max_bus(int passengers_count, double* cost) {
-    string car;
-    if (passengers_count <= high_s) {
+string max_bus(int passengers_count, double* cost) 
+{
+    string car="";
+    if (passengers_count <= high_s) 
+    {
         car = "high s";
         *cost = high_s_cost;
+        return car;
     }
-    else if (passengers_count == costar || (passengers_count > high_s && passengers_count < costar)) {
+    else if (passengers_count == costar || (passengers_count > high_s && passengers_count < costar))
+    {
         car = "coaster";
         *cost = costar_cost;
+        return car;
     }
-    else if (passengers_count == 2 * high_s || (passengers_count > costar && passengers_count < 2 * high_s)) {
+    else if (passengers_count == 2 * high_s || (passengers_count > costar && passengers_count < 2 * high_s))
+    {
         car = " 2 high s";
         *cost = 2 * high_s_cost;
+        return car;
     }
 
-    else if (passengers_count == 2 * costar || (passengers_count > 2 * high_s && passengers_count < 2 * costar)) {
+    else if (passengers_count == 2 * costar || (passengers_count > 2 * high_s && passengers_count < 2 * costar)) 
+    {
         car = " 2 costar";
         *cost = 2 * costar_cost;
+        return car;
     }
-    else if (passengers_count == bus) {
+    else if (passengers_count <= bus)
+    {
         car = "bus";
         *cost = bus_cost;
+        return car;
     }
     return car;
+    
 }
 string bus_plus(int passengers_count, double* cost) {
     int count = 0;
     double car2_cost = 0;
     string  car;
-    while (passengers_count >= bus) {
-        passengers_count - bus;
+    while (passengers_count >= bus) 
+    {
+        passengers_count -= bus;
         count++;
     }
     if (passengers_count != 0) {
@@ -3238,17 +3312,18 @@ void create_line_go()
                     {
                         break;
                     }
+
                 }
                 l.set_reserved_go(q);
+                ALL_LINES.delete_Data(&temp_l);
+                ALL_LINES.Push_Back(l);
                 if (ALL_LINES.Next(&l) == 0) {
                     break;
                 }
             }
         }
     }
-    ALL_LINES.delete_Data(&temp_l);
-
-    ALL_LINES.Push_Back(l);
+   
 
 }
 
@@ -3259,6 +3334,7 @@ void create_line_come()
     Stack s;
     pickup_point pickPoint;
     Line l;
+    Line temp_l;
     linked_list<pickup_point> p;
     ALL_LINES.go_head(&l);
     while (true)
@@ -3277,6 +3353,8 @@ void create_line_come()
             }
         }
         l.set_reserved_come(s);
+        ALL_LINES.delete_Data(&temp_l);
+        ALL_LINES.Push_Back(l);
         if (ALL_LINES.Next(&l) == 0) {
             break;
         }
@@ -3284,32 +3362,17 @@ void create_line_come()
 }
 void view_line_go(Line l)
 {
-    linked_list<pickup_point> p;
-    pickup_point p1;
-    p=l.get_linkedlist_pickup_point();
     Queue q = l.get_reserved_go();
-    while (true)
-    {
-        if (q.deQueue(&p1))
-        {
-            cout << p1.get_pickup_point_Name();
-        }
-        else
-        {
-            break;
-        }
-
-    }
+    q.display();
+    
 }
 void view_line_come(Line l)
 {
     linked_list<pickup_point> p;
     //l.get_linkedlist_pickup_point(&p);
     Stack s = l.get_reserved_come();
-    while (true)
-    {
-        s.pop();
-    }
+    cout << "The trip road: " <<endl;
+    s.display();
 }
 
 
@@ -3734,8 +3797,9 @@ void company_menue(company* c)
         {
         case 1:
         {
-            s_t.student_ticket_print();
-            c->view_company_lines();
+            create_line_go();
+            l = select_line();
+            view_line_go(l);
             break;
 
         }
@@ -3746,9 +3810,9 @@ void company_menue(company* c)
         }
         case 3:
         {
-            create_line_go();
+            create_line_come();
             l = select_line();
-            view_line_go(l);
+            view_line_come(l);
             break;
         }
         case 4:
