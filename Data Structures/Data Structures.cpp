@@ -88,6 +88,7 @@ public:
     bool is_contained(T x);
     void add_if_not_contained(T x);
     void deleteNode(T key);
+    void Push_between_B(int x, T y);
     //ex
     bool Return_Data(T* data);
     bool go_head(T* data);
@@ -284,6 +285,7 @@ public:
     void set_bus_cost(double cost);
     void set_reserved_go(Queue q);
     void set_reserved_come(Stack s);
+    void set_linked_list_points(linked_list<pickup_point> p);
     // ---- get ---- //
     string get_Line_point_Name();
     int  get_count();
@@ -299,8 +301,8 @@ public:
     void delete_pickup_point(pickup_point point);
     void print_line();
     void Display_pickup_point();
-    pickup_point select_pickup_point();
-    void get_linkedlist_pickup_point(linked_list<pickup_point>* p);
+    pickup_point select_pickup_point(int* x);
+    linked_list<pickup_point> get_linkedlist_pickup_point();
 
 };
 
@@ -425,6 +427,7 @@ private:
     pickup_point student_ticket_pickup_point;
     Line student_ticket_line;
     company student_ticket_company;
+    int price;
 
 public:
     student_ticket();
@@ -434,11 +437,13 @@ public:
     void set_student_ticket_pickup_point(pickup_point point);
     void set_student_ticket_line(Line t_line);
     void set_student_ticket_company(company t_company);
+    void set_stident_ticket_price(int x);
     int get_student_ticket_id();
     string get_student_ticket_date();
     pickup_point get_student_ticket_pickup_point();
     Line get_student_ticket_line();
     company get_student_ticket_company();
+    int get_student_ticket_price();
     void print_ticket();
 };
 
@@ -484,7 +489,7 @@ private:
     string mail;
     Line student_line;
     pickup_point student_pickup_point;
-    student_ticket st;
+    linked_list<student_ticket> all_student_tickets;
     //string name;
     //double GPA;
     //linked_list <> p1;
@@ -499,7 +504,7 @@ public:
     void set_address(string address);
     void set_student_line(Line l);
     void set_student_pickup_point(pickup_point p);
-    void set_student_ticket(student_ticket ticket);
+    void add_student_ticket(student_ticket ticket);
 
     // ---- get ---- //
     int get_id();
@@ -513,7 +518,7 @@ public:
     //new//
     void print_line_pickupPoint();
     pickup_point get_student_pickupPoint();
-    void get_student_ticket(student_ticket* st);
+    void print_student_ticket();
     //new//
     // string getName();
     // double getGPA();
@@ -546,7 +551,7 @@ public:
 template <class T> class Hash
 {
 protected:
-    linked_list<T>* newTable;
+    linked_list<T>* Table;
     int Bucket;
     int Hash_Function(int x)
     {
@@ -650,7 +655,7 @@ void view();
 void add_company();
 void view_companys();
 void view_all_students();
-void edit_student();
+void edit_student(Student* s);
 void edit_company();
 void add_line();
 void add_pickup_point_interface();
@@ -659,7 +664,7 @@ void delete_line(string name);
 Line select_line();
 void booking_ticket(Student* s);
 
-void select_company(company* c1);
+company select_company();
 
 
 // ---------- campany menue ---------- //
@@ -711,99 +716,11 @@ int num_of_error(int error, int& counter, int limit_of_error);
 
 int main()
 {
-    Student s, * s1, s2, s3;
-    student_ticket ss;
-    company* c;
 
-
-
-
-
-    // s.set_student(123, "hhh", "mahy", "19", "11111111111111", "female", "0000", "01020395448", "mahy@gu.edu.eg");
-    // s2.set_student(136, "hhh", "Shiref", "19", "11111111111111", "female", "0001", "01020395448", "shiref@gu.edu.eg");
-    // s3.set_student(111, "hhh", "karim", "19", "11111111111111", "female", "0001", "01020395448", "karim@gu.edu.eg");
-    // s_t.Insert_Item(123, s);
-    // s_t.Insert_Item(136, s2);
-    // s_t.Insert_Item(111, s3);
-    //// s1 = s_t.Search_Item(123);
-    //// cout << "the new name is" << s1->get_name() << endl;
-
-    // s_t.Student_print();
-    // edit_student();
-
-    //// cout << "the new name is" << s1->get_name() << endl;
-    // s_t.Student_print();
     while (true)
     {
         main_menue();
     }
-
-
-
-    /*Student s;
-    student_ticket ss;
-
-    while (true)
-    {
-
-
-        int x;
-        cout << "1-signup student\n2-login student\n3-add line\n4-add company\n5-view student\n6-view tcket\n7-exit\n";
-        cin >> x;
-
-        switch (x)
-        {
-        case 1:
-        {
-            signup_student();
-            break;
-        }
-        case 2:
-        {
-            if (login_student(&s))
-            {
-                student_menue(&s);
-            }
-            else
-            {
-                cout << "wrong user or pass\n";
-                break;
-            }
-            break;
-        }
-        case 3:
-        {
-            add_line();
-            break;
-        }
-        case 4:
-        {
-            add_company();
-            break;
-
-        }
-        case 5:
-        {
-            view_all_students();
-            break;
-        }
-        case 6:
-        {
-
-
-            break;
-        }
-        case 7:
-        {
-            return 0;
-        }
-        default:
-            break;
-        }
-    }*/
-
-
-
 
 }
 
@@ -930,20 +847,7 @@ template<class T> void linked_list<T>::makeEmpty()
         num_of_ele--;
     }
 }
-/*
-template<class T>
-linked_list<T> linked_list<T>::copy()
-{
-    linked_list<T> new_list;
-    current = head;
-    while (current != 0)
-    {
-        new_list.Push_Back(current->data);
-        current = current->next;
-    }
-    return new_list;
-}
-*/
+
 template<class T> void linked_list<T>::print()
 {
 
@@ -969,6 +873,49 @@ template<class T> bool linked_list<T>::linear_search(T x)
         current = current->next;
     }
     return false;
+}
+template<class T> void linked_list<T>::Push_between_B(int x, T y)
+{
+    link new_node = new node;
+    link prev = NULL;
+    new_node->data = y;
+    current = head;
+    x = x - 1;
+    if (head == 0)
+    {
+        Push_Back(y);
+        return;
+    }
+    else if (x == 0)
+    {
+        head = head->next;
+        delete current;
+        Push_Front(y);
+        return;
+    }
+
+    for (int i = 0; i < x; i++)
+    {
+        if (head == 0)
+        {
+            Push_Back(y);
+            return;
+        }
+        else
+        {
+            prev = current;
+            current = current->next;
+        }
+
+
+    }
+
+    new_node->next = current->next;
+    prev->next = new_node;
+    delete current;
+
+
+
 }
 template<class T> int linked_list<T>::size()
 {
@@ -1114,27 +1061,19 @@ template<class T> Hash<T>::Hash()
 template<class T> Hash<T>::Hash(int Bucket)
 {
     this->Bucket = Bucket;
-    newTable = new linked_list<T>[Bucket];
+    Table = new linked_list<T>[Bucket];
 }
 template<class T> void Hash<T>::Insert_Item(int key, T data)
 {
     int index = Hash_Function(key);
-    newTable[index].Push_Back(data);
+    Table[index].Push_Back(data);
 }
 template<class T> void Hash<T>::Delete_Item(int key, T data)
 {
     int index = Hash_Function(key);
-    newTable[index].deleteNode(data);
+    Table[index].deleteNode(data);
 }
-//template<class T> void Hash<T>::Display_Hash()
-//{
-//    for (int i = 0; i < Bucket; i++)
-//    {
-//        cout << "Bucket Number : " << i << endl;
-//        Table[i].print();
-//        cout << endl;
-//    }
-//}
+
 
 
 // ############# PICKUP POINT IMPLEMENTATION ############# // 
@@ -1183,11 +1122,11 @@ int pickup_point::get_count_come()
 // ---- Other ---- //
 void pickup_point::print_pikup_poin()
 {
-<<<<<<< HEAD
-    cout << "\t" << pickup_point_Name;
-=======
     cout << "\t" << pickup_point_Name << endl;
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
+    cout << "\t" << count_go<<endl;
+    cout << "\t" << count_come << endl;
+    
+
 }
 
 
@@ -1245,6 +1184,10 @@ void Line::set_reserved_come(Stack s)
 {
     S = s;
 }
+void Line::set_linked_list_points(linked_list<pickup_point> p)
+{
+    pickup_point_Names = p;
+}
 // ---- get ---- //
 string Line::get_Line_point_Name()
 {
@@ -1294,17 +1237,10 @@ void Line::delete_pickup_point(pickup_point point)
 }
 void Line::print_line()
 {
-<<<<<<< HEAD
     cout <<"\t"<< Line_Name << endl;
     cout << "Round trip: " << count_both << endl;
     cout << "One way (From town): " << count_go << endl;
     cout << "One way (From university): " << count_come << endl;
-=======
-    cout << "\t" << Line_Name << endl;
-    cout << "\tcount both" << count_both << endl;
-    cout << "\tcount go" << count_go << endl;
-    cout << "\tcount come" << count_come << endl;
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
 }
 void Line::Display_pickup_point()
 {
@@ -1322,10 +1258,10 @@ void Line::Display_pickup_point()
         }
     }
 }
-pickup_point Line::select_pickup_point()
+pickup_point Line::select_pickup_point(int* y)
 {
     int counter = 0;
-    int x;
+    int x=0;
 
     pickup_point p;
     Display_pickup_point();
@@ -1342,12 +1278,13 @@ pickup_point Line::select_pickup_point()
     {
         pickup_point_Names.Next(&p);
     }
+    *y = x;
     return p;
-
+    
 }
-void Line::get_linkedlist_pickup_point(linked_list<pickup_point>* p)
+linked_list<pickup_point> Line::get_linkedlist_pickup_point()
 {
-    p = &pickup_point_Names;
+    return pickup_point_Names;
 }
 
 
@@ -1549,9 +1486,9 @@ void Student::set_student_pickup_point(pickup_point p)
 {
     student_pickup_point = p;
 }
-void Student::set_student_ticket(student_ticket ticket)
+void Student::add_student_ticket(student_ticket ticket)
 {
-    st = ticket;
+    all_student_tickets.Push_Back(ticket);
 }
 // ---- get ---- //
 int Student::get_id()
@@ -1584,25 +1521,46 @@ pickup_point Student::get_student_pickupPoint()
 {
     return pickup_point();
 }
-void Student::get_student_ticket(student_ticket* t)
+void Student::print_student_ticket()
 {
-    t = &st;
+
+    student_ticket st;
+    int x = 0;
+    int counter = 1;
+    all_student_tickets.go_head(&st);
+    if (all_student_tickets.go_head(&st))
+    {
+        
+        while (1)
+        {
+            cout <<"\t" << counter << "-";
+            st.print_ticket();
+
+            if (!all_student_tickets.Next(&st))
+            {
+                return;
+            }
+            all_student_tickets.Return_Data(&st);
+            counter++;
+            x++;
+        }
+    }
+   
 }
 // ---- Other---- //
 void Student::class_print_Student()
 {
-    person_print();
-    cout << get_id() << endl;
-    cout << get_mail() << endl;
-    print_line_pickupPoint();
+    cout << "Name : " << Person::get_name()<<endl;
+    cout << "Email : " << get_mail() <<endl;
+    cout << "ID : " << get_id() << endl;
+    cout <<"National ID : " << get_national_id() << endl;
+    //print_line_pickupPoint();
 }
 void Student::print_ticket()
 {
-    st.print_ticket();
+   // st.print_ticket();
 }
-// string getName();
-// double getGPA();
-//  void print();
+
 
 
 // ############# DRIVER IMPLEMENTATION ############# //
@@ -1653,7 +1611,7 @@ string driver::get_mail()
 
 }
 // ---- Other---- //
-// void class_print_driver();
+
 
 
 // ############# COMPANY IMPLEMENTATION ############# // 
@@ -1766,16 +1724,11 @@ void company::delet_line(Line l)
 }
 void company::view_lines()
 {
-    //lines.print();
+   // lines.print();
 
 }
 void company::print_company()
-{
-<<<<<<< HEAD
-    cout <<"\n\tCompany name: "<< name << endl;
-=======
     cout << "\tCompany name: " << name << endl;
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
 }
 void company::view_company_lines()
 {
@@ -1808,7 +1761,7 @@ void company::create_line_go()
     {
         while (true)
         {
-            l.get_linkedlist_pickup_point(&p);
+            //l.get_linkedlist_pickup_point(&p);
             if (p.go_head(&pickPoint))
             {
                 while (true)
@@ -1840,7 +1793,7 @@ void company::create_line_come()
     lines.go_head(&l);
     while (true)
     {
-        l.get_linkedlist_pickup_point(&p);
+        //l.get_linkedlist_pickup_point(&p);
         p.go_head(&pickPoint);
         while (true)
         {
@@ -1864,7 +1817,7 @@ void company::view_line_go(Line& l)
 {
     linked_list<pickup_point> p;
     pickup_point p1;
-    l.get_linkedlist_pickup_point(&p);
+    //l.get_linkedlist_pickup_point(&p);
     Queue q = l.get_reserved_go();
     while (true)
     {
@@ -1883,7 +1836,7 @@ void company::view_line_come(Line& l)//m7taga ta3del lesa
 {
 
     linked_list<pickup_point> p;
-    l.get_linkedlist_pickup_point(&p);
+    //l.get_linkedlist_pickup_point(&p);
     Stack s = l.get_reserved_come();
     while (true)
     {
@@ -1922,13 +1875,13 @@ Student* Student_Table::Search_Item(int key)
 {
 
     int index = Hash_Function(key);
-    newTable[index].go_head(&s1);
-    newTable[index].Return_Data(&s1);
-    while (key != s1.get_id() && newTable[index].Next(&s1) != 0)
+    Table[index].go_head(&s1);
+    Table[index].Return_Data(&s1);
+    while (key != s1.get_id() && Table[index].Next(&s1) != 0)
     {
         //Table[index].Next(&s1);
 
-        newTable[index].Return_Data(&s1);
+        Table[index].Return_Data(&s1);
     }
     return &s1;
 
@@ -1937,17 +1890,17 @@ void Student_Table::Student_Delete_Item(int key)
 {
     // Student* s;
     int index = Hash_Function(key);
-    newTable[index].go_head(&s1);
-    newTable[index].Return_Data(&s1);
-    while (key != s1.get_id() && newTable[index].Next(&s1) != 0)
+    Table[index].go_head(&s1);
+    Table[index].Return_Data(&s1);
+    while (key != s1.get_id() && Table[index].Next(&s1) != 0)
     {
         //Table[index].Next(&s1);
 
-        newTable[index].Return_Data(&s1);
+        Table[index].Return_Data(&s1);
     }
     if (key == s1.get_id())
     {
-        newTable[index].delete_Data(&s1);
+        Table[index].delete_Data(&s1);
     }
     else
     {
@@ -1961,23 +1914,23 @@ void Student_Table::Student_print()
 
     for (int i = 0; i < Bucket; i++)
     {
-        //cout << "Bucket Number : " << i << endl;
-        //if (newTable[i].go_head(&s1) == 0)
-        //{
-        //    cout << "NOthing" << endl;
-        //}
-        //else
-        //{
-            while (newTable[i].Return_Data(&s1))
+        cout << "Bucket Number : " << i << endl;
+        if (Table[i].go_head(&s1) == 0)
+        {
+            cout << "NOthing" << endl;
+        }
+        else
+        {
+            while (Table[i].Return_Data(&s1))
             {
                 s1.class_print_Student();
-                if (newTable[i].Next(&s1) == 0)
+                if (Table[i].Next(&s1) == 0)
                 {
                     break;
                 }
 
             }
-       // }
+        }
 
         cout << endl;
     }
@@ -1986,15 +1939,23 @@ void Student_Table::student_ticket_print()
 {
     for (int i = 0; i < Bucket; i++)
     {
-            while (newTable[i].Return_Data(&s1))
+        cout << "Bucket Number : " << i << endl;
+        if (Table[i].go_head(&s1) == 0)
+        {
+            cout << "NOthing" << endl;
+        }
+        else
+        {
+            while (Table[i].Return_Data(&s1))
             {
                 s1.print_ticket();
-                if (newTable[i].Next(&s1) == 0)
+                if (Table[i].Next(&s1) == 0)
                 {
                     break;
                 }
 
             }
+        }
 
         cout << endl;
     }
@@ -2018,19 +1979,14 @@ void Student_Table::Table_Student_save()
         for (int i = 0; i < Bucket; i++)
         {
             cout << "Bucket Number : " << i << endl;
-            if (newTable[i].go_head(&s1) == 0)
+            if (Table[i].go_head(&s1) == 0)
             {
                 cout << "NOthing" << endl;
             }
             else
             {
-<<<<<<< HEAD
-                
-                while (newTable[i].Return_Data(&s1))
-=======
 
                 while (Table[i].Return_Data(&s1))
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
                 {
                     csv_file << s1.get_id() << ","
                         << s1.get_name() << ","
@@ -2043,7 +1999,7 @@ void Student_Table::Table_Student_save()
                         << s1.get_mail() << endl;
 
 
-                    if (newTable[i].Next(&s1) == 0)
+                    if (Table[i].Next(&s1) == 0)
                     {
                         break;
                     }
@@ -2135,11 +2091,11 @@ driver* driver_table::Search_Item(string mail)
 {
     int key = convert_to_key(mail);
     int index = Hash_Function(key);
-    newTable[index].Return_Data(&d1);
-    while (mail != d1.get_mail() && newTable[index].Next(&d1) != 0)
+    Table[index].Return_Data(&d1);
+    while (mail != d1.get_mail() && Table[index].Next(&d1) != 0)
     {
         //Table[index].Next(&c1);
-        newTable[index].Return_Data(&d1);
+        Table[index].Return_Data(&d1);
     }
     return &d1;
 }
@@ -2147,17 +2103,17 @@ void driver_table::driver_Delete_Item(string mail)
 {
     int key = convert_to_key(mail);
     int index = Hash_Function(key);
-    newTable[index].go_head(&d1);
-    newTable[index].Return_Data(&d1);
-    while (mail != d1.get_mail() && newTable[index].Next(&d1) != 0)
+    Table[index].go_head(&d1);
+    Table[index].Return_Data(&d1);
+    while (mail != d1.get_mail() && Table[index].Next(&d1) != 0)
     {
         //Table[index].Next(&s1);
 
-        newTable[index].Return_Data(&d1);
+        Table[index].Return_Data(&d1);
     }
     if (mail == d1.get_mail())
     {
-        newTable[index].delete_Data(&d1);
+        Table[index].delete_Data(&d1);
     }
     else
     {
@@ -2194,25 +2150,24 @@ void company_table::all_companys_print()
     int counter = 0;
     for (int i = 0; i < Bucket; i++)
     {
-        //cout << "Bucket Number : " << i << endl;
-        //if (Table[i].go_head(&c1) == 0)
-        //{
-        //    cout << "NOthing" << endl;
-        //}
-        //else
-        //{
-            while (newTable[i].Return_Data(&c1))
+        cout << "Bucket Number : " << i << endl;
+        if (Table[i].go_head(&c1) == 0)
+        {
+            cout << "NOthing" << endl;
+        }
+        else
+        {
+            while (Table[i].Return_Data(&c1))
             {
-                cout << counter << " - ";
+                cout << counter << "-";
                 c1.print_company();
-                if (newTable[i].Next(&c1) == 0)
+                if (Table[i].Next(&c1) == 0)
                 {
                     break;
                 }
                 counter++;
-
             }
-        //}
+        }
 
         cout << endl;
     }
@@ -2223,12 +2178,12 @@ company* company_table::Search_Item(string mail)
 {
     int key = convert_to_key(mail);
     int index = Hash_Function(key);
-    newTable[index].go_head(&c1);
-    newTable[index].Return_Data(&c1);
-    while (mail != c1.get_email() && newTable[index].Next(&c1) != 0)
+    Table[index].go_head(&c1);
+    Table[index].Return_Data(&c1);
+    while (mail != c1.get_email() && Table[index].Next(&c1) != 0)
     {
         //Table[index].Next(&c1);
-        newTable[index].Return_Data(&c1);
+        Table[index].Return_Data(&c1);
     }
     return &c1;
 }
@@ -2236,17 +2191,17 @@ void company_table::company_Delete_Item(string mail)
 {
     int key = convert_to_key(mail);
     int index = Hash_Function(key);
-    newTable[index].go_head(&c1);
-    newTable[index].Return_Data(&c1);
-    while (mail != c1.get_email() && newTable[index].Next(&c1) != 0)
+    Table[index].go_head(&c1);
+    Table[index].Return_Data(&c1);
+    while (mail != c1.get_email() && Table[index].Next(&c1) != 0)
     {
         //Table[index].Next(&s1);
 
-        newTable[index].Return_Data(&c1);
+        Table[index].Return_Data(&c1);
     }
     if (mail == c1.get_email())
     {
-        newTable[index].delete_Data(&c1);
+        Table[index].delete_Data(&c1);
     }
     else
     {
@@ -2450,6 +2405,10 @@ void student_ticket::set_student_ticket_company(company t_company)
 {
     student_ticket_company = t_company;
 }
+void student_ticket::set_stident_ticket_price(int x)
+{
+    price = x;
+}
 // ---- get ---- //
 int student_ticket::get_student_ticket_id()
 {
@@ -2471,6 +2430,10 @@ company student_ticket::get_student_ticket_company()
 {
     return student_ticket_company;
 }
+int student_ticket::get_student_ticket_price()
+{
+    return price;
+}
 void student_ticket::print_ticket()
 {
     cout << "\n\t(Your ticket infos)\n";
@@ -2478,11 +2441,8 @@ void student_ticket::print_ticket()
     cout << "Your Line is =>      " << student_ticket_line.get_Line_point_Name() << endl;
     cout <<  "Your Pickup point is =>     " << student_ticket_pickup_point.get_pickup_point_Name() << endl;
     
-    cout << "\tStudent ticket\n";
-    // cout << "\tTicket id: " << student_ticket_id << endl;
-    cout << "\tLine : " << student_ticket_line.get_Line_point_Name() << endl;
-    cout << "\tPickup point : " << student_ticket_pickup_point.get_pickup_point_Name() << endl;
-
+    cout << "\tcompany : " << student_ticket_company.get_name() << endl;
+    cout << "\tprice : " << price << endl;
 
 }
 // ---- Other---- //
@@ -2514,13 +2474,10 @@ void add_company()
     int num_error = 0;
     int limit_of_error = 3;
 
-<<<<<<< HEAD
     
     cout << "\nName: ";
-=======
 
     cout << "name: ";
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
     cin >> cin_str;
     c1.set_name(cin_str);
 
@@ -2588,7 +2545,7 @@ void view_all_students()
 
     s_t.Student_print();
 }
-void edit_student()
+void edit_student(Student* s)
 {
     string phone_number;
     string name;
@@ -2597,7 +2554,7 @@ void edit_student()
     string e_mail;
     string national_id;
 
-    Student* s1 = 0;
+    Student* s1 = s_t.Search_Item(s->get_id());
 
     int user_choice;
     int key;
@@ -2605,15 +2562,17 @@ void edit_student()
 
 
 
-<<<<<<< HEAD
     cout << "Enter your password to edit: ";
     cin >> key;
     s1 = s_t.Search_Item(key);
-=======
-    cout << "enter your password to edit";
-    cin >> pass;
-    //
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
+
+    if (s1->get_password() != pass)
+    {
+        cout << "Wrong passward" << endl;
+        system("pause");
+        system("cls");
+        return;
+    }
 
     cout << "Address : " << s1->get_address() << "\n ";
     cout << "Mail : " << s1->get_mail() << "\n";
@@ -2708,22 +2667,6 @@ void edit_student()
         }
     }
 
-<<<<<<< HEAD
-    else if (user_choice == 6)
-    {
-
-        while (true)
-        {
-
-            cout << "Phone number: ";
-            cin >> phone_number;
-            if (s1->set_phone_number(phone_number))
-            {
-                break;
-            }
-        }
-=======
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
 
     s_t.Insert_Item(s1->get_id(), *s1);
     s_t.Student_Delete_Item(s1->get_id());
@@ -2754,32 +2697,22 @@ void edit_company()
     cin >> key;
     if (c1->get_pass() == key)
     {
-<<<<<<< HEAD
+
         cout <<  "\n Email: " << c1->get_email() << "\n";
         cout << "Name: " << c1->get_name() << "\n ";
         cout << "Address: " << c1->get_address() << "\n ";
         cout << "Phone number: " << c1->get_phone_number() << "\n";
         cout << "\n" << "\n";
-=======
-        cout << "\n Mail : " << c1->get_email() << "\n";
-        cout << " Name : " << c1->get_name() << "\n ";
-        cout << "Address : " << c1->get_address() << "\n ";
-        cout << "Phone number : " << c1->get_phone_number() << "\n";
-        cout << "\n" << "\n" << "\n" << "\n";
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
+
 
         cout << "\t(Choose the part you want to edit)\n";
         cout << "1- Name \n";
         cout << "2- Address \n";
-<<<<<<< HEAD
+
         cout << "3- Phone number \n"; 
         cout << "4- Password \n"; 
         cout << "5- Back\n";
-=======
-        cout << "3- Phone number \n";
-        cout << "4- Password \n";
-        cout << "5 back\n";
->>>>>>> 5739eae1b39aed66c9452770698f48d3b2f351e4
+
         user_choice = Select_from_to(1, 5);
 
 
@@ -2969,7 +2902,7 @@ void view_all_lines()
     {
         cout << counter << " - ";
         l.Display_pickup_point();
-
+        
         if (!ALL_LINES.Next(&l))
         {
             return;
@@ -3226,12 +3159,7 @@ void view_driver(string mail) {
     cout << "National number: " << d.get_national_id() << endl;
     cout << "Gender: " << d.get_gender() << endl;
     cout << "Password: " << d.get_password() << endl;
-    // d = d_t.Search_Item(mail);
-    cout << "the name is" << d.get_name() << endl;
-    cout << "the age is" << d.get_age() << endl;
-    cout << "the National_id is" << d.get_national_id() << endl;
-    cout << "the gender is" << d.get_gender() << endl;
-    cout << "the password is" << d.get_password() << endl;
+
 }
 
 
@@ -3316,71 +3244,82 @@ void add_bus() {
 
     }
 }
-//void create_line_go()
-//{
-//    Queue q;
-//    pickup_point pickPoint;
-//    Line l;
-//    linked_list<pickup_point> p;
-//    if (ALL_LINES.go_head(&l))
-//    {
-//        while (true)
-//        {
-//            p = l.get_linkedlist_pickup_point();
-//            if (p.go_head(&pickPoint))
-//            {
-//                while (true)
-//                {
-//                    if (pickPoint.get_count_go() != 0)
-//                    {
-//                        q.enQueue(pickPoint);
-//                    }
-//                    if (p.Next(&pickPoint) == 0)
-//                    {
-//                        break;
-//                    }
-//                }
-//                l.set_reserved_go(q);
-//                if (ALL_LINES.Next(&l) == 0) {
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//}
-//void create_line_come()
-//{
-//    Stack s;
-//    pickup_point pickPoint;
-//    Line l;
-//    linked_list<pickup_point> p;
-//    ALL_LINES.go_head(&l);
-//    while (true)
-//    {
-//        p = l.get_linkedlist_pickup_point();
-//        p.go_head(&pickPoint);
-//        while (true)
-//        {
-//            if (pickPoint.get_count_come() != 0)
-//            {
-//                s.push(pickPoint);
-//            }
-//            if (p.Next(&pickPoint) == 0)
-//            {
-//                break;
-//            }
-//        }
-//        l.set_reserved_come(s);
-//        if (ALL_LINES.Next(&l) == 0) {
-//            break;
-//        }
-//    }
-//}
+
+
+void create_line_go()
+{
+    Queue q;
+    pickup_point pickPoint;
+    Line l;
+    Line temp_l;
+    linked_list<pickup_point> p;
+    if (ALL_LINES.go_head(&l))
+    {
+        while (true)
+        {
+            p = l.get_linkedlist_pickup_point();
+            if (p.go_head(&pickPoint))
+            {
+                while (true)
+                {
+                    if (pickPoint.get_count_go() != 0)
+                    {
+                        q.enQueue(pickPoint);
+                        cout << pickPoint.get_pickup_point_Name()<<endl;
+                    }
+                    if (p.Next(&pickPoint) == 0)
+                    {
+                        break;
+                    }
+                }
+                l.set_reserved_go(q);
+                if (ALL_LINES.Next(&l) == 0) {
+                    break;
+                }
+            }
+        }
+    }
+    ALL_LINES.delete_Data(&temp_l);
+
+    ALL_LINES.Push_Back(l);
+
+}
+
+
+
+void create_line_come()
+{
+    Stack s;
+    pickup_point pickPoint;
+    Line l;
+    linked_list<pickup_point> p;
+    ALL_LINES.go_head(&l);
+    while (true)
+    {
+        p = l.get_linkedlist_pickup_point();
+        p.go_head(&pickPoint);
+        while (true)
+        {
+            if (pickPoint.get_count_come() != 0)
+            {
+                s.push(pickPoint);
+            }
+            if (p.Next(&pickPoint) == 0)
+            {
+                break;
+            }
+        }
+        l.set_reserved_come(s);
+        if (ALL_LINES.Next(&l) == 0) {
+            break;
+        }
+    }
+}
 void view_line_go(Line l)
 {
     linked_list<pickup_point> p;
     pickup_point p1;
-    l.get_linkedlist_pickup_point(&p);
+    p=l.get_linkedlist_pickup_point();
     Queue q = l.get_reserved_go();
     while (true)
     {
@@ -3398,13 +3337,15 @@ void view_line_go(Line l)
 void view_line_come(Line l)
 {
     linked_list<pickup_point> p;
-    l.get_linkedlist_pickup_point(&p);
+    //l.get_linkedlist_pickup_point(&p);
     Stack s = l.get_reserved_come();
     while (true)
     {
         s.pop();
     }
 }
+
+
 void profit()
 {
     int total_go = 0;
@@ -3438,8 +3379,7 @@ void signup_student()
     string cpass;
     string e_mail;
     string national_id;
-    Line l;
-    pickup_point p;
+    
 
 
     Student s1;
@@ -3467,19 +3407,19 @@ void signup_student()
         }
 
     }
-    //while (true)
-    //{
-    //    cout << "mail : ";
-    //    cin >> e_mail;
-    //    if (s1.set_mail(e_mail))
-    //    {
-    //        break;
-    //    }
-    //}
+    while (true)
+    {
+        cout << "mail : ";
+        cin >> e_mail;
+        if (s1.set_mail(e_mail))
+        {
+            break;
+        }
+    }
 
 
 
-   /* while (true)
+    while (true)
     {
         cout << "national id : ";
         cin >> national_id;
@@ -3488,10 +3428,10 @@ void signup_student()
         {
             break;
         }
-    }*/
+    }
 
 
-    /*while (true)
+    while (true)
     {
         cout << "phone number : ";
         cin >> phone_number;
@@ -3499,17 +3439,7 @@ void signup_student()
         {
             break;
         }
-    }*/
-
-    cout << "\n\tSelect your line\n";
-    l = select_line();
-    s1.set_student_line(l);
-    // l.select_pickup_point(&p);
-    s1.set_student_pickup_point(p);
-
-
-
-    // cout << "select pickup point ";
+    }
 
     cout << "ID: ";
     cin >> id;
@@ -3559,17 +3489,6 @@ void signup_company()
     cin >> e_mail;
     s1.set_email(e_mail);
 
-
-    /*while (true)
-    {
-        cout << "national id : ";
-        cin >> national_id;
-
-        if (s1.set_national_id(national_id))
-        {
-            break;
-        }
-    }*/
 
 
 
@@ -3665,51 +3584,74 @@ int login_company(company* c)
 void booking_ticket(Student* s)
 {
     int user_choice;
-    // Student s;
+    Student* s1 = s_t.Search_Item(s->get_id());
     student_ticket t1;
     pickup_point p1;
     Line l1;
+    pickup_point temp_p;
+    Line temp_l;
+    int x;
+
     company c;
 
-    cout << &c << endl;
-    select_company(&c);
-    cout << &c << endl;
+    linked_list<pickup_point> allp;
 
-    c.set_lines(ALL_LINES);
+    l1 = select_line();
+    temp_l = l1;
+    allp = l1.get_linkedlist_pickup_point();
+    p1= l1.select_pickup_point(&x);
+    cout << x;
+    temp_p = p1;
+    
 
-
-    // c.select_line_company(&l1);
-    l1.set_count_both();
-    t1.set_student_ticket_line(l1);
-
-    t1.set_student_ticket_company(c);
-    // l1.select_pickup_point(&p1);
-
-
-    cout << "\nEnter your trip statues:     (1- One way (From town)     2- One way (From University)    3- Round trip) \n";
-    user_choice = Select_from_to(1, 3);
+    cout << "\nEnter your trip statues : (1-zahab     2- 3awda    3-zahab w 3awda) \n";
+    cin >> user_choice;
     if (user_choice == 1)
     {
         p1.set_count_go();
+        l1.set_count_go();
+        t1.set_stident_ticket_price(75);
     }
     else if (user_choice == 2)
     {
         p1.set_count_come();
+        l1.set_count_come();
+        t1.set_stident_ticket_price(75);
+
     }
     else if (user_choice == 3)
     {
         p1.set_count_both();
+        l1.set_count_both();
+        t1.set_stident_ticket_price(120);
     }
 
-    t1.set_student_ticket_pickup_point(p1);
+    cout << p1.get_count_go() << endl << l1.get_count_go() << endl;
 
-    s->set_student_ticket(t1);
+
+
+   allp.Push_between_B(x, p1);
+
+    l1.set_linked_list_points(allp);
+
+    ALL_LINES.delete_Data(&temp_l);
+
+    ALL_LINES.Push_Back(l1);
+
+    t1.set_student_ticket_line(l1);
+    t1.set_student_ticket_company(c);
+    t1.set_student_ticket_pickup_point(p1);
+    
+    s1->add_student_ticket(t1);
+
+
 
     t1.print_ticket();
 
-    int key = c_t.convert_to_key(c.get_email());
-    c_t.Insert_Item(key, c);
-    c_t.company_Delete_Item(c.get_email());
+
+
+    s_t.Insert_Item(s1->get_id(), *s1);
+    s_t.Student_Delete_Item(s1->get_id());
 
 
 }
@@ -3717,10 +3659,10 @@ void booking_ticket(Student* s)
 
 // ############# select company ############# //
 
-void select_company(company* c1)
+company select_company()
 {
     string x;
-    /* company c;*/
+     company* c1;
     int choise;
 
     ALL_COMPANYS.go_head(&x);
@@ -3744,6 +3686,7 @@ void select_company(company* c1)
     }
     c1 = c_t.Search_Item(x);
 
+    return *c1;
 }
 
 
@@ -3754,8 +3697,7 @@ void student_menue(Student* s)
 
     while (true)
     {
-
-
+       
         int user_choice;
         cout << "\n.................. MAIN MENU ..................";
         cout << "\n\n\t1) Book a ticket\n"
@@ -3764,36 +3706,31 @@ void student_menue(Student* s)
              << "\t4) View profile\n" 
              << "\t5) Log out\n\n" 
              << "YOUR CHOICE ->   ";
-        cout << "\n\n\t1) Book ticket\n"
-            << "\t2) view ticket\n"
-            << "\t3) Edit Info\n"
-            << "\t4) View profit\n"
-            << "\t5) Log out\n\n"
-            << "YOUR CHOICE ->   ";
-        user_choice = Select_from_to(1, 5);
 
+        user_choice = Select_from_to(1, 5);
+        Student* s1 = s_t.Search_Item(s->get_id());
         switch (user_choice)
         {
         case 1:
         {
-            booking_ticket(s);
+            booking_ticket(s1);
             break;
         }
         case 2:
         {
-            s->print_ticket();
-            s->get_student_ticket(&t);
-            t.print_ticket();
+            
+            s1->print_student_ticket();
+           
             break;
         }
         case 3:
         {
-            edit_student();
+            edit_student(s1);
             break;
         }
         case 4:
         {
-            edit_student();
+            s1->class_print_Student();
             break;
         }
         case 5:
@@ -3815,7 +3752,7 @@ void company_menue(company* c)
 {
     while (true)
     {
-
+        Line l;
 
         int user_choice;
         cout << "\n.................. COMPANY MENU ..................";
@@ -3825,11 +3762,7 @@ void company_menue(company* c)
              << "\t4) View profile\n" 
              << "\t5) Log out\n\n" 
              << "YOUR CHOICE ->   ";
-            << "\t2) count of students  \n"
-            << "\t3) view lines trips\n"
-            << "\t4) View profit\n"
-            << "\t5) Log out\n\n"
-            << "YOUR CHOICE ->   ";
+
         user_choice = Select_from_to(1, 5);
 
 
@@ -3838,17 +3771,20 @@ void company_menue(company* c)
         case 1:
         {
             s_t.student_ticket_print();
+            c->view_company_lines();
             break;
 
         }
         case 2:
         {
-
+            view_all_lines();
             break;
         }
         case 3:
         {
-
+            create_line_go();
+            l = select_line();
+            view_line_go(l);
             break;
         }
         case 4:
@@ -3888,13 +3824,7 @@ void university_menue()
              << "\t3) View student\n"
              << "\t4) Back\n\n" 
              << "YOUR CHOICE ->   ";
-        cout << "\n\n\t1) company\n"
-            << "\t2) Line\n"
-            << "\t3) student\n"
-            << "\t2) Edit studet\n"
-            << "\t3) View all student\n"
-            << "\t4)back\n\n"
-            << "YOUR CHOICE ->   ";
+
         user_choice = Select_from_to(1, 4);
 
         switch (user_choice)
@@ -3939,10 +3869,7 @@ void Admin_company()
              << "\t3) View all companys\n"
              << "\t4) Back\n\n"
              << "YOUR CHOICE ->   ";
-            << "\t2) Edit company\n"
-            << "\t3) View all companys\n"
-            << "\t4)back\n\n"
-            << "YOUR CHOICE ->   ";
+
         user_choice = Select_from_to(1, 4);
 
         switch (user_choice)
@@ -3972,6 +3899,7 @@ void Admin_company()
         }
     }
 }
+
 void Admin_Line()
 {
     while (true)
@@ -4055,7 +3983,7 @@ void driver_menue()
 }
 
 
-//----------7naka------//
+//----------------//
 int Select_from_to(int start, int end)
 {
     int select, counter = 0;
@@ -4170,11 +4098,10 @@ void log_menue()
     cout << "\n.................. Login MENU ..................";
     cout << "\n\n\t1) Login as student\n"
         << "\t2) Login as company\n"
-        << "\t3) Login as driver\n"
-        << "\t4) Login as admin\n"
-        << "\t5) Back\n\n"
+        << "\t3) Login as admin\n"
+        << "\t4) Back\n\n"
         << "YOUR CHOICE ->   ";
-    user_choice = Select_from_to(1, 5);
+    user_choice = Select_from_to(1, 4);
 
     switch (user_choice)
     {
@@ -4196,10 +4123,11 @@ void log_menue()
     }
     case 2:
     {
-        if (login_company(&c))
+        if (!login_company(&c))
         {
             system("cls");
             company_menue(&c);
+            break;
         }
         else
         {
@@ -4209,11 +4137,8 @@ void log_menue()
             break;
         }
     }
+   
     case 3:
-    {
-        //login driver
-    }
-    case 4:
     {
         if (login_uni())
         {
@@ -4229,7 +4154,7 @@ void log_menue()
             break;
         }
     }
-    case 5:
+    case 4:
     {
         main_menue();
         break;
