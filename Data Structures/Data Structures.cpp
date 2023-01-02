@@ -56,6 +56,7 @@ public:
     bool Push_Front(T x);
     bool Push_Back(T x);
     void Push_between(link pre, link new_node);
+    void Push_between_B(int x, T data);
     bool sort_insert(int x);
     bool isEmpty();
     void makeEmpty();
@@ -275,7 +276,7 @@ public:
     string get_carType();
     // ---- Other---- //
     void add_pickup_point(pickup_point point);
-    void delete_pickup_point(pickup_point point);
+    void delete_pickup_point(string point);
     void print_line();
     void Display_pickup_point();
     pickup_point select_pickup_point();
@@ -697,7 +698,17 @@ int main()
     company* c;
 
 
-
+    Line l, l1, l2, l3;
+    l.set_Line_Name("shiref");
+    l1.set_Line_Name("Karim");
+    l2.set_Line_Name("mahyyyyy");
+    l3.set_Line_Name("youssef");
+    ALL_LINES.Push_Back(l);
+   ALL_LINES.Push_Back(l1);
+   ALL_LINES.Push_Back(l2);
+    view_all_lines();
+    ALL_LINES.Push_between_B(1, l3);
+   view_all_lines();
 
 
     // s.set_student(123, "hhh", "mahy", "19", "11111111111111", "female", "0000", "01020395448", "mahy@gu.edu.eg");
@@ -716,7 +727,9 @@ int main()
     // s_t.Student_print();
     while (true)
     {
-        main_menue();
+       
+
+        //main_menue();
     }
 
 
@@ -858,6 +871,49 @@ template<class T> void linked_list<T>::Push_between(link pre, link new_node)
     new_node->next = pre->next;
     pre->next = new_node;
     num_of_ele++;
+}
+template<class T> void linked_list<T>::Push_between_B(int x, T y)
+{
+    link new_node = new node;
+    link prev = NULL;
+    new_node->data = y;
+    current = head;
+    x = x - 1;
+    if ( head ==0)
+    {
+        Push_Back(y);
+        return;
+    }
+    else if (x == 0)
+    {
+        head = head->next;
+        delete current;
+        Push_Front(y);
+        return;
+    }
+    
+    for (int i = 0 ; i < x; i++)
+    {
+        if (head == 0)
+        {
+            Push_Back(y);
+            return;
+        }
+        else
+        {
+            prev = current;
+            current = current->next;
+        }
+        
+
+    }
+   
+    new_node->next = current->next;
+    prev->next = new_node;
+    delete current;
+   
+    
+
 }
 template<class T> bool linked_list<T>::sort_insert(int x)
 {
@@ -1016,7 +1072,7 @@ template<class T> void linked_list<T>::delete_Data(T* data)
     }
     else if (current->next == 0)
     {
-        prev = 0;
+        prev ->next = 0;
         delete current;
     }
     else if (head == current)
@@ -1269,9 +1325,26 @@ void Line::add_pickup_point(pickup_point point)
 {
     pickup_point_Names.Push_Back(point);
 }
-void Line::delete_pickup_point(pickup_point point)
+void Line::delete_pickup_point(string point)
 {
-    //pickup_point_Names.deleteNode(point);
+    pickup_point p;
+    pickup_point_Names.go_head(&p);
+
+    while (point != p.get_pickup_point_Name() && pickup_point_Names.Next(&p) != 0)
+    {
+        //Table[index].Next(&s1);
+
+        pickup_point_Names.Return_Data(&p);
+    }
+    if (point == p.get_pickup_point_Name())
+    {
+        pickup_point_Names.delete_Data(&p);
+
+    }
+    else
+    {
+        cout << "not found" << endl;
+    }
 }
 void Line::print_line()
 {
@@ -2864,15 +2937,28 @@ void edit_line()
     }
     else if (select == 2)
     {
-        cout << "1 edit pickup point \n";
-        cout << "2 delet pickup point  \n";
-        cout << "3 add pickup point\n";
-        cout << " 4 back";
+        cout << "1  delet pickup point \n";
+        cout << "2 add pickup point \n";
+        cout << " 3 back";
         select = Select_from_to(1, 4);
         if (select == 1)
         {
+           p = l.select_pickup_point();
+          prev = p.get_pickup_point_Name();
+           
+           l.delete_pickup_point(prev);
+           
 
         }
+        else if (select == 2)
+        {
+
+        }
+        else if (select == 3)
+        {
+            return;
+        }
+       
     }
     else if (select == 3)
     {
@@ -3639,7 +3725,7 @@ void booking_ticket(Student* s)
 
 
     // l1.select_pickup_point(&p1);
-    allp.delete_Data(&temp_p);
+    /*allp.delete_Data(&temp_p);
     allp.Push_Back(p1);
 
     l1.set_linked_list_points(allp);
@@ -3647,7 +3733,7 @@ void booking_ticket(Student* s)
     all.delete_Data(&temp_l);
     all.Push_Back(l1);
 
-    c.set_lines(all);
+    c.set_lines(all);*/
 
 
 
@@ -4111,8 +4197,8 @@ void log_menue()
     int user_choice;
     cout << "\n.................. Login MENU ..................";
     cout << "\n\n\t1) Login as student\n"
-        << "\t2) Login as company\n"
-        << "\t3) Login as driver\n"
+       // << "\t2) Login as company\n"
+       // << "\t3) Login as driver\n"
         << "\t4) Login as admin\n"
         << "\t5) Back\n\n"
         << "YOUR CHOICE ->   ";
@@ -4137,26 +4223,26 @@ void log_menue()
         }
 
     }
-    case 2:
-    {
-        if (login_company(&c))
-        {
-            system("pause");
-            system("cls");
-            company_menue(&c);
-        }
-        else
-        {
-            cout << "\t\nWrong pass or user\n";
-            system("pause");
-            system("cls");
-            break;
-        }
-    }
-    case 3:
-    {
-        //login driver
-    }
+    //case 2:
+    //{
+    //    if (login_company(&c))
+    //    {
+    //        system("pause");
+    //        system("cls");
+    //        company_menue(&c);
+    //    }
+    //    else
+    //    {
+    //        cout << "\t\nWrong pass or user\n";
+    //        system("pause");
+    //        system("cls");
+    //        break;
+    //    }
+    //}
+    //case 3:
+    //{
+    //    //login driver
+    //}
     case 4:
     {
         if (login_uni())
