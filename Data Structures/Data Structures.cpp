@@ -3973,7 +3973,7 @@ void log_menue()
     {
     case 1:
     {
-        if (login_student(&s))//law da5lt cahr mkan int yedrab error
+        if (login_student(&s))
         {
             system("cls");
             student_menue(&s);
