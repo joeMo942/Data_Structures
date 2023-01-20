@@ -15,6 +15,19 @@ using namespace this_thread;     // sleep_for, sleep_until
 using namespace chrono_literals; // ns, us, ms, s, h, etc.
 using chrono::system_clock;
 
+void errors()
+{
+    #pragma warning(disable : 4552)
+    #pragma warning(disable : 4101)
+    #pragma warning(disable : 4715)
+    #pragma warning(disable : 6011)
+    #pragma warning(disable : 28182)
+    #pragma warning(disable : 26812)
+    #pragma warning(disable : 6001)
+    #pragma warning(disable : 26495)
+
+}
+
 static int company_ticket_counter = 0;
 static int student_ticket_counter = 0;
 static int line_counter = 0;
@@ -39,7 +52,6 @@ class driver_table;
 class car;
 class ticket;
 class company_ticket;
-
 
 enum type { high_s, super_jet, mini_bus };
 
@@ -737,6 +749,7 @@ int num_of_error(int error, int& counter, int limit_of_error);
 
 int main()
 {
+    errors();
 
     while (true)
     {
@@ -868,7 +881,6 @@ template<class T> void linked_list<T>::makeEmpty()
         num_of_ele--;
     }
 }
-
 template<class T> void linked_list<T>::print()
 {
 
@@ -1094,7 +1106,6 @@ template<class T> void Hash<T>::Delete_Item(int key, T data)
     int index = Hash_Function(key);
     Table[index].deleteNode(data);
 }
-
 
 
 // ############# PICKUP POINT IMPLEMENTATION ############# // 
@@ -1382,7 +1393,7 @@ int Person::set_phone_number(string phone_number)
 
     //str = phone_number.resize(2);
     str = phone_number.substr(0, 3);
-    if (str == "010" || str == "011" || str == "012" || str == "015")
+    if ((str == "010" || str == "011" || str == "012" || str == "015")&& phone_number.length() == 11)
     {
         this->phone_number = phone_number;
         return 1;
@@ -1448,9 +1459,6 @@ Student::Student(int id, string Address, string Name, string Age, string Nationa
     Person::set_gender(Gender);
     Person::set_password(Password);
     Person::set_phone_number(phone_number);
-
-
-
 
 }
 // ---- set ---- //
@@ -1582,7 +1590,6 @@ void Student::print_ticket()
 }
 
 
-
 // ############# DRIVER IMPLEMENTATION ############# //
 driver::driver()
 {
@@ -1631,7 +1638,6 @@ string driver::get_mail()
 
 }
 // ---- Other---- //
-
 
 
 // ############# COMPANY IMPLEMENTATION ############# // 
@@ -1771,7 +1777,6 @@ Line company::select_company_line()
 {
     return Line();
 }
-
 Line company::select_line_company()
 {
     Line l1;
@@ -1790,9 +1795,7 @@ Line company::select_line_company()
 }
 
 
-// ############# TABLE IMPLEMENTATION ############# // 
-
-
+// --------------- TABLE IMPLEMENTATION --------------- // 
 // ############# Student Table IMPLEMENTATION ############# // 
 Student_Table::Student_Table()
 {
@@ -2076,7 +2079,6 @@ void company_table::all_companys_print()
     }
 
 }
-
 company* company_table::Search_Item(string mail)
 {
     int key = convert_to_key(mail);
@@ -2112,6 +2114,7 @@ void company_table::company_Delete_Item(string mail)
     }
 
 }
+
 
 // ############# CAR IMPLEMENTATION ############# // 
 car::car()
@@ -2636,9 +2639,9 @@ void edit_company()
         {
             while (1)
             {
-                cout << "Passward: ";
+                cout << "Password: ";
                 cin >> pass;
-                cout << "Confirm passward: ";
+                cout << "Confirm Password: ";
                 cin >> cpass;
 
                 if (pass == cpass)
@@ -2785,7 +2788,7 @@ void delete_line(string name)
     }
     else
     {
-        cout << "not found" << endl;
+        cout << yellow("\n\tNOT FOUND") << endl;
     }
 }
 Line select_line()
@@ -2952,7 +2955,7 @@ void edit_driver(string mail) {
             cout << d.get_mail() << "The National number is: " << d.get_national_id();
             cin >> new_National_id;
             d.set_national_id(new_National_id);
-            cout << green("\n\nDone successfully\t") << "the new National numer is: " << d.get_national_id();
+            cout << green("\n\nDone successfully\t") << "The new National number is: " << d.get_national_id();
             break;
         }
         else cout << "Go to the university" << endl;
@@ -2964,10 +2967,10 @@ void edit_driver(string mail) {
         {
             string cpass;
             string new_password;
-            cout << d.get_mail() << "Enter the new password: " << endl;
+            cout << d.get_mail() << "Enter the new Password: " << endl;
             cin >> new_password;
 
-            cout << "Confirm passward : ";
+            cout << "Confirm Password : ";
             cin >> cpass;
 
             if (new_password == cpass)
@@ -2975,7 +2978,7 @@ void edit_driver(string mail) {
                 d.set_password(new_password);
                 break;
             }
-            cout << green("Done successfully") << "the new password is: " << d.get_password();
+            cout << green("Done successfully") << "The new Password is: " << d.get_password();
 
             break;
 
@@ -2987,7 +2990,7 @@ void edit_driver(string mail) {
         cout << d.get_mail() << "The Phone number is " << d.get_phone_number() << endl;
         cin >> new_phone_number;
         d.set_phone_number(new_phone_number);
-        cout << green("\n\nDone successfully\t") << "The new phone number is: " << d.get_phone_number();
+        cout << green("\n\nDone successfully\t") << "The new Phone number is: " << d.get_phone_number();
         break;
     }
     default: {
@@ -3016,24 +3019,24 @@ void view_driver(string mail) {
 string max_bus(int passengers_count, double* cost) {
     string car;
     if (passengers_count <= high_s) {
-        car = "high s";
+        car = "\nHigh S";
         *cost = high_s_cost;
     }
     else if (passengers_count == costar || (passengers_count > high_s && passengers_count < costar)) {
-        car = "coaster";
+        car = "\nCoaster";
         *cost = costar_cost;
     }
     else if (passengers_count == 2 * high_s || (passengers_count > costar && passengers_count < 2 * high_s)) {
-        car = " 2 high s";
+        car = "\n2 High S";
         *cost = 2 * high_s_cost;
     }
 
     else if (passengers_count == 2 * costar || (passengers_count > 2 * high_s && passengers_count < 2 * costar)) {
-        car = " 2 costar";
+        car = "\n2 Coasters";
         *cost = 2 * costar_cost;
     }
     else if (passengers_count == bus) {
-        car = "bus";
+        car = "\nBus";
         *cost = bus_cost;
     }
     return car;
@@ -3043,16 +3046,16 @@ string bus_plus(int passengers_count, double* cost) {
     double car2_cost = 0;
     string  car;
     while (passengers_count >= bus) {
-        passengers_count - bus;
+        passengers_count -= bus;
         count++;
     }
     if (passengers_count != 0) {
         string car2 = max_bus(passengers_count, &car2_cost);
-        car = to_string(count) + "bus and " + car2;
+        car = to_string(count) + "Bus and " + car2;
         *cost = (count * bus_cost) + (car2_cost);
     }
     else {
-        car = to_string(count) + "bus";
+        car = to_string(count) + "Bus";
         *cost = count * bus_cost;
     }
     return car;
@@ -3318,7 +3321,7 @@ void signup_student()
 
 
     s_t.Insert_Item(s1.get_id(), s1);
-
+    system("cls");
 }
 
 
@@ -3355,9 +3358,9 @@ void signup_company()
 
     while (1)
     {
-        cout << "Passward: ";
+        cout << "Password: ";
         cin >> pass;
-        cout << "Confirm passward: ";
+        cout << "Confirm Password: ";
         cin >> cpass;
 
         if (pass == cpass)
@@ -3929,7 +3932,7 @@ int login_uni()
     string u, p;
     cout << "\tEnter the username: ";
     cin >> u;
-    cout << "\tEnter the passward: ";
+    cout << "\tEnter the Password: ";
     cin >> p;
 
 
@@ -4013,6 +4016,7 @@ void log_menue()
     }
     case 4:
     {
+        system("cls");
         main_menue();
         break;
     }
