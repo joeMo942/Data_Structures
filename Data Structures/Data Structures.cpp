@@ -3021,25 +3021,31 @@ string max_bus(int passengers_count, double* cost) {
     if (passengers_count <= high_s) {
         car = "\nHigh S";
         *cost = high_s_cost;
+        return car;
     }
     else if (passengers_count == costar || (passengers_count > high_s && passengers_count < costar)) {
         car = "\nCoaster";
         *cost = costar_cost;
+        return car;
     }
     else if (passengers_count == 2 * high_s || (passengers_count > costar && passengers_count < 2 * high_s)) {
         car = "\n2 High S";
         *cost = 2 * high_s_cost;
+        return car;
     }
 
     else if (passengers_count == 2 * costar || (passengers_count > 2 * high_s && passengers_count < 2 * costar)) {
         car = "\n2 Coasters";
         *cost = 2 * costar_cost;
+        return car;
     }
     else if (passengers_count == bus) {
         car = "\nBus";
         *cost = bus_cost;
+        return car;
     }
     return car;
+    
 }
 string bus_plus(int passengers_count, double* cost) {
     int count = 0;
@@ -3667,7 +3673,7 @@ void company_menue(company* c)
             system("cls");
             create_line_go();
             l = select_line();
-            view_line_go(l);
+            view_line_come(l);
             break;
         }
         case 4:
